@@ -6,6 +6,8 @@ const app = express();
 const cors = require("cors");
 const filesController = require("./controllers/files");
 const passwordRequirements = require("./routes/passwordRequirements");
+const upload = require('./controllers/processFile');
+
 
 dotenv.config()
 const config = process.env;
@@ -16,16 +18,12 @@ db = mysql.createConnection({
   password: config.DB_PASSWORD,
   database: config.DB_NAME,
 });
-
-// db.connect(function (err) {
-//   if (err) throw err;
-//   console.log("Connected!");
-// });
-
 app.use(cors());
+app.use(upload.array('files'));
+app.get("/",(req, res)=>{res.send("server is up and running")})
 app.use("/files", filesController);
 app.use("/passwordRequirements", passwordRequirements);
 
-app.listen(5000, () => {
-  console.log("listening on port 5000");
+app.listen(config.PORT, () => {
+  console.log(`listening on port ${config.PORT}`);
 });
