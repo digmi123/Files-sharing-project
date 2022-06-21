@@ -5,7 +5,7 @@ module.exports.login = async (req, res) => {
   let query = db.query(sql, [email], (error, results, fields));
 
   query.on("error", function (err) {
-    console.log(err)
+    logger.serverLogger.log('error', err)
     return res.status(500).send("An error occurred");
   });
   query.on("result", function (result) {

@@ -24,4 +24,13 @@ yarn-error.log*
 
 #project files
 .env
-files
+
+Server/files/*
+
+!Server/files/.gitkeep
+
+# exclude everything
+Server/logger/*
+
+# exception to the rule
+!Server/logger/.gitkeep
