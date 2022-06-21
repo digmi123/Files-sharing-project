@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router();
+const logger = require ('../logger')
 
 
 const updateDB = (req, res, next) => {
@@ -18,7 +19,7 @@ const updateDB = (req, res, next) => {
   let query = db.query(sql, [values]);
 
   query.on("error", function (err) {
-    console.log(err)
+    logger.serverLogger.log('error', err)
     res.status(500).send("There was an error uploading files to db");
   });
 
@@ -34,7 +35,7 @@ const EncryptFiles = (req, res, next) => {
 
 router.post("/uploadFiles", updateDB, (req,res)=>{
   const {insertId,affectedRows} = res.locals.DB;
-  console.log(`files id ${insertId} - ${insertId + affectedRows - 1} updetad to DB`);
+  logger.serverLogger.log('info',`files id ${insertId} - ${insertId + affectedRows - 1} updetad to DB`);
   res.send("Multiple files uploaded successfuly to the db")
 })
 
@@ -46,7 +47,7 @@ router.post("/downloadFile", async (req, res) => {
   let sql ="SELECT physical_path , name FROM files WHERE logical_path = (?) and name = (?)";
   let query = db.query(sql, [logical_path,name]);
   query.on("error", function (err) {
-    console.log(err)
+    logger.serverLogger.log('error', err)
     res.status(500).send("Erorr in Download File");
   });
   query.on("result", function (result) {
