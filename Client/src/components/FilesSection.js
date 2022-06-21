@@ -1,69 +1,46 @@
 import React from "react";
-import filesData from "../FilesData";
 import File from "./File";
 import { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import {useDropzone} from 'react-dropzone'
-import { BiFolder } from "react-icons/bi";
+import FilesArea from "./FilesArea";
+
 
 function FilesSection() {
   //Stats: 
   const [files, setFiles] = useState([]);
 
-  //Added Adir test:
-  const {getRootProps, getInputProps} = useDropzone({
-    accept: "image/*",
-    onDrop: (acceptedFiles) => {
-      setFiles([
-        ...files,
-        ...acceptedFiles.map(file => Object.assign(file, {
-            preview: URL.createObjectURL(file)
-        }))
-      ])
-      console.log(files);
-    }
-  })
-  //
 
   //Methods:
   const changeHandler = (e) => {
-    // console.log(e.target.files)
     console.log(e);
     setFiles([
       ...files,
       ...Array.from(e.target.files)
     ]);
-    //setFiles(e.target.files);
-    console.log(files);
-    //console.log(files)
   };
 
   const submitHandler = async () => {
-    const formData = new FormData();
-    console.log(files);
-    formData.append("files", files);
-    try {
-      let data = {};
-      for (var pair of formData.entries()) {
-        data[pair[0]] = pair[1];
-        console.log(`key: ${pair[0]}, value: ${pair[1]}`);
-      }
-      //console.log(formData)
-      await uploadFiles(data);
-    } catch (e) {
-      console.log(e);
-    }
+    await uploadFiles(files);
   };
 
-  const uploadFiles = async (data) => {
-    const response = axios.post(
-      "http://localhost:5000/files/uploadMultipleFiles",
-      { files: data }
-    );
-    if (response.status === 200) {
-      console.log(response.data);
-    }
+  const uploadFiles = async (files) => {
+  const data = new FormData();
+  data.append("logicalPath", "Popen");
+  files.forEach(file => {
+    data.append("files", file,file.name);
+  });
+  axios({
+      method: 'post',
+      url: 'http://localhost:5000/files/uploadFiles',
+      data: data
+  })
+  .then(function (response) {
+      console.log(response);
+  })
+  .catch(function (error) {
+      console.log(error);
+  });
   };
 
   return (
@@ -90,25 +67,8 @@ function FilesSection() {
 
       {/* <hr width="100vw" /> */}
 
-      <FilesContainer {...getRootProps()}>
-        <input {...getInputProps()}/>
-        {/* files section*/}
-        {/* {filesData.map((fileInfo, index) => {
-          return (
-            <>
-              <File key={index} info={fileInfo}></File>
-            </>
-          );
-        })} */}
-
-        {files.map((fileInfo, index) => {
-          console.log(fileInfo);
-          return (
-            <>
-              <File key={index} info={fileInfo}></File>
-            </>
-          );
-        })}
+      <FilesContainer>
+        <FilesArea/>
       </FilesContainer>
     </Container>
   );

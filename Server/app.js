@@ -27,3 +27,6 @@ app.use("/passwordRequirements", passwordRequirements);
 app.listen(config.PORT, () => {
   console.log(`listening on port ${config.PORT}`);
 });
+
+
+
