@@ -1,30 +1,15 @@
 import React from "react";
-import filesData from "../FilesData";
 import File from "./File";
 import { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import {useDropzone} from 'react-dropzone'
-import { BiFolder } from "react-icons/bi";
+import FilesArea from "./FilesArea";
+
 
 function FilesSection() {
   //Stats: 
   const [files, setFiles] = useState([]);
 
-  //Added Adir test:
-  const {getRootProps, getInputProps} = useDropzone({
-    accept: "image/*",
-    onDrop: (acceptedFiles) => {
-      setFiles([
-        ...files,
-        ...acceptedFiles.map(file => Object.assign(file, {
-            preview: URL.createObjectURL(file)
-        }))
-      ])
-      console.log(files);
-    }
-  })
-  //
 
   //Methods:
   const changeHandler = (e) => {
@@ -50,20 +35,22 @@ function FilesSection() {
         console.log(`key: ${pair[0]}, value: ${pair[1]}`);
       }
       //console.log(formData)
-      await uploadFiles(data);
+      await uploadFiles(formData);
     } catch (e) {
       console.log(e);
     }
   };
 
   const uploadFiles = async (data) => {
-    const response = axios.post(
-      "http://localhost:5000/files/uploadMultipleFiles",
-      { files: data }
-    );
-    if (response.status === 200) {
-      console.log(response.data);
-    }
+    const response = await axios.post({
+      method: "post",
+      url: "http://localhost:5000/test",
+      data: data,
+      // headers: { "Content-Type": "multipart/form-data" },
+    });
+    // if (response.status === 200) {
+    //   console.log(response.data);
+    // }
   };
 
   return (
@@ -90,25 +77,8 @@ function FilesSection() {
 
       {/* <hr width="100vw" /> */}
 
-      <FilesContainer {...getRootProps()}>
-        <input {...getInputProps()}/>
-        {/* files section*/}
-        {/* {filesData.map((fileInfo, index) => {
-          return (
-            <>
-              <File key={index} info={fileInfo}></File>
-            </>
-          );
-        })} */}
-
-        {files.map((fileInfo, index) => {
-          console.log(fileInfo);
-          return (
-            <>
-              <File key={index} info={fileInfo}></File>
-            </>
-          );
-        })}
+      <FilesContainer>
+        <FilesArea/>
       </FilesContainer>
     </Container>
   );
