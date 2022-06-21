@@ -19,28 +19,31 @@ uppy.on("complete", (result) => {
 });
 
 
-const uploadFile = async (filesToUpload) => {
-
-    const formData = new FormData();
-    formData.append("files", filesToUpload);
-
-    const res = await axios.post({
-      method: "post",
-      url: "http://localhost:5000/test",
-      data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    console.log(res);
-}
+const uploadFiles = async (files) => {
+  const data = new FormData();
+  data.append("logicalPath", "Popen");
+  files.forEach(file => {
+    data.append("files", file,file.name);
+  });
+  axios({
+      method: 'post',
+      url: 'http://localhost:5000/files/uploadFiles',
+      data: data
+  })
+  .then(function (response) {
+      console.log(response);
+  })
+  .catch(function (error) {
+      console.log(error);
+  });
+  };
 
 
 function FilesArea() {
 
      const { getRootProps, getInputProps } = useDropzone({
-       accept: "image/*",
        onDrop: (acceptedFiles) => {
-        uploadFile(acceptedFiles);
-         console.log(acceptedFiles);
+        uploadFiles(acceptedFiles);
        },
      });
 

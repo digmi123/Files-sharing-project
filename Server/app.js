@@ -24,12 +24,6 @@ app.get("/",(req, res)=>{res.send("server is up and running")})
 app.use("/files", filesController);
 app.use("/passwordRequirements", passwordRequirements);
 
-app.post("/test", (req, res) => {
-  console.log(req.files);
-  console.log(req.body);
-  res.send("test complete");
-});
-
 app.listen(config.PORT, () => {
   console.log(`listening on port ${config.PORT}`);
 });
