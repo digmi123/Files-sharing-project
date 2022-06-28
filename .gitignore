@@ -24,6 +24,7 @@ yarn-error.log*
 
 #project files
 .env
+dist
 
 Server/files/*
 

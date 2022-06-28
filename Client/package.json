@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@electron/remote": "github:electron/remote",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@mui/material": "^5.6.4",
@@ -10,6 +11,10 @@
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.26.1",
+    "concurrently": "^7.2.2",
+    "cross-env": "^7.0.3",
+    "electron-builder": "^23.1.0",
+    "electron-is-dev": "^2.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-dropzone": "^12.0.5",
@@ -18,13 +23,33 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.0",
     "styled-components": "^5.3.5",
+    "wait-on": "^6.0.1",
     "web-vitals": "^2.1.4"
   },
+  "main": "public/main.js",
+  "homepage": "./",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "scripts": {
+      "pack": "electron-builder --dir",
+      "dist": "electron-builder"
+    },
+    "electron-serve": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm run electron-start\"",
+    "electron-build": "npm run build && npm electron-builder -c.extraMetadata.main=build/main.js",
+    "electron-start": "wait-on tcp:3000 && electron ."
+  },
+  "build": {
+    "extends": null,
+    "appId": "com.example.electron-cra",
+    "files": [
+      "dist/**/*",
+      "build/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ]
   },
   "eslintConfig": {
     "extends": [
@@ -43,5 +68,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "electron": "^19.0.6",
+    "electron-packager": "^15.5.1"
   }
 }
