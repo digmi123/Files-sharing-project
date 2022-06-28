@@ -35,7 +35,7 @@ const EncryptFiles = (req, res, next) => {
 
 router.post("/uploadFiles", updateDB, (req,res)=>{
   const {insertId,affectedRows} = res.locals.DB;
-  logger.serverLogger.log('info',`files id ${insertId} - ${insertId + affectedRows - 1} updetad to DB`);
+  logger.serverLogger.log('info',`files id ${insertId} - ${insertId + affectedRows - 1} updated to DB`);
   res.send("Multiple files uploaded successfuly to the db")
 })
 
