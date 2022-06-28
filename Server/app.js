@@ -1,7 +1,6 @@
 var mysql = require("mysql2");
 const dotenv = require("dotenv");
 const express = require("express");
-const logger = require ("./logger")
 
 const app = express();
 const cors = require("cors");
@@ -26,8 +25,5 @@ app.use("/files", filesController);
 app.use("/passwordRequirements", passwordRequirements);
 
 app.listen(config.PORT, () => {
-  logger.serverLogger.log('info',`listening on port ${config.PORT}`);
+  console.log(`Server listening on port ${config.PORT}`);
 });
-
-
-
