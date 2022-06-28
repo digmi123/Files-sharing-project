@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios"
+import styled from "styled-components";
 
 const uploadFiles = async (files) => {
   const data = new FormData();
@@ -29,16 +30,30 @@ function FilesArea() {
        onDrop: (acceptedFiles) => {
         uploadFiles(acceptedFiles);
        },
+       noClick: true
      });
 
 
   return (
-    <div {...getRootProps()}>
+    <FilesContainer {...getRootProps()} style={{ display: "flex"}}>
       <input {...getInputProps()} />
-      <p>Drop files here</p>
-
-    </div>
+      <DropZoneTitle>Drop files here</DropZoneTitle>
+    </FilesContainer>
   );
 }
 
 export default FilesArea
+
+const FilesContainer = styled.div`
+  border: 1px solid black;
+  height: 60%;
+  width: 70%;
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 10px;
+`;
+
+const DropZoneTitle = styled.p`
+  width:100%
+`;
+

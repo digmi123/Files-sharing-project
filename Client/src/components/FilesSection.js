@@ -67,9 +67,7 @@ function FilesSection() {
 
       {/* <hr width="100vw" /> */}
 
-      <FilesContainer>
         <FilesArea/>
-      </FilesContainer>
     </Container>
   );
 }
