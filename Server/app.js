@@ -1,7 +1,7 @@
 var mysql = require("mysql2");
 const dotenv = require("dotenv");
 const express = require("express");
-
+const {serverLogger} = require ('./logger')
 const app = express();
 const cors = require("cors");
 const filesController = require("./controllers/files");
@@ -10,7 +10,7 @@ const upload = require('./controllers/processFile');
 
 
 dotenv.config()
-const config = process.env;
+config = process.env;
 
 db = mysql.createConnection({
   user: config.DB_USER,
@@ -25,5 +25,5 @@ app.use("/files", filesController);
 app.use("/passwordRequirements", passwordRequirements);
 
 app.listen(config.PORT, () => {
-  console.log(`Server listening on port ${config.PORT}`);
+  serverLogger.debug(`Server listening on port ${config.PORT}`)
 });
