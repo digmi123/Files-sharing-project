@@ -24,6 +24,30 @@ function FilesSection() {
     await uploadFiles(files);
   };
 
+  const downloadFile = async () =>{
+    const data = new FormData();
+    const name = "UiPathStudio.msi"
+    data.append("logicalPath", "Popen");
+    data.append("name", name);
+    axios({
+      method: 'post',
+      url: 'http://localhost:5000/files/downloadFile',
+      data: data,
+      responseType: 'blob',
+  })
+  .then(function (response) {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', name); //or any other extension
+    document.body.appendChild(link);
+    link.click();
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+  }
+
   const uploadFiles = async (files) => {
   const data = new FormData();
   data.append("logicalPath", "Popen");
@@ -59,7 +83,7 @@ function FilesSection() {
           </ActionButton>
         </FilesSelectionContainer>
 
-        <ActionButton variant="contained" onClick={()=>console.log(files)} >Download Selected</ActionButton>
+        <ActionButton variant="contained" onClick={downloadFile} >Download Selected</ActionButton>
         <ActionButton type="file" variant="contained">
           Select Files
         </ActionButton>
