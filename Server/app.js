@@ -4,9 +4,10 @@ const express = require("express");
 const {serverLogger} = require ('./logger')
 const app = express();
 const cors = require("cors");
-const filesController = require("./controllers/files");
-const passwordRequirements = require("./routes/passwordRequirements");
 const upload = require('./controllers/processFile');
+const filesController = require("./controllers/files");
+const foldersController = require('./routes/folders');
+const passwordRequirements = require("./routes/passwordRequirements");
 
 
 dotenv.config()
@@ -21,8 +22,10 @@ db = mysql.createConnection({
 app.use(cors());
 app.use(upload.array('files'));
 app.get("/",(req, res)=>{res.send("server is up and running")})
-app.use("/files", filesController);
 app.use("/passwordRequirements", passwordRequirements);
+
+app.use("/files", filesController);
+app.use("/folders", foldersController);
 
 app.listen(config.PORT, () => {
   serverLogger.debug(`Server listening on port ${config.PORT}`)
