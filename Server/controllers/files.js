@@ -29,7 +29,7 @@ module.exports.updateDB = (req, res, next) => {
   });
 
   query.on("result", function (result) {
-    req.DB = result;
+    req.db = result;
     return next();
   });
 };
@@ -53,7 +53,7 @@ module.exports.EncryptFiles = (req, res, next) => {
 }
 // End Point
 module.exports.uploadFiles = (req,res)=>{
-  const {insertId,affectedRows} = req.DB;
+  const {insertId,affectedRows} = req.db;
   serverLogger.info(`files id ${insertId}-${insertId + affectedRows - 1} updated to DB`);
   res.send("files uploaded successfuly")
 }
@@ -67,7 +67,7 @@ module.exports.getFileData = (req, res, next) =>{
     db.query(sql, [fileID],function (error, results){
       if (error) throw error;
       if(!results.length) return res.status(404).send("No file fond")
-      req.DB = results[0]
+      req.db = results[0]
       return next()
     });    
   }catch(err){
@@ -96,7 +96,7 @@ module.exports.DecryptFiles = (req, res, next) => {
 
 // End Point
 module.exports.downloadFile = async (req, res) => {
-  const {id} = req.DB
+  const {id} = req.db
   serverLogger.info(`sending file ${id} start`)
   res.sendFile(req.decrypt.decryptFilePath,{
     root : "./"
