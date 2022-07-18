@@ -8,7 +8,7 @@ module.exports.getPassRequirements = async (req, res) => {
   try {
       res.json(passReq["password requirements"]);
   } catch (err) {
-    serverLogger.log('error', err)
+    serverLogger.error(err)
     res.status(500).send("unable to fetch the requirements file")
   }
 };
