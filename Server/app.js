@@ -7,8 +7,9 @@ const cors = require("cors");
 const upload = require('./controllers/processFile');
 const filesRoutes = require("./routes/files");
 const foldersRoutes = require('./routes/folders');
+const usersRoutes = require('./routes/users');
 const passwordRequirements = require("./routes/passwordRequirements");
-
+const cookies = require('cookie-parser')
 
 dotenv.config()
 config = process.env;
@@ -27,6 +28,7 @@ app.use("/passwordRequirements", passwordRequirements);
 
 app.use("/files", filesRoutes);
 app.use("/folders", foldersRoutes);
+app.use("/users", usersRoutes);
 
 app.listen(config.PORT, () => {
   serverLogger.debug(`Server listening on port ${config.PORT}`)
