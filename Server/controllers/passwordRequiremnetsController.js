@@ -1,5 +1,4 @@
 const express = require("express");
-const router = express.Router();
 const {serverLogger} = require ('../logger')
 const passReq = require("../config.json");
 

@@ -1,5 +1,4 @@
 const express = require('express')
-const router = express.Router();
 const {serverLogger} = require ('../logger')
 
 
@@ -32,7 +31,7 @@ module.exports.insertRootFolderIntoDB = async (req, res,next) => {
         });
         query.on("result", function (result) {
             req.db.folders = result;
-            serverLogger.info("root folder was created")
+            serverLogger.info(`root folder was created for user ${req.db.users.insertId}`)
             return next();
         });
     }catch(err){
