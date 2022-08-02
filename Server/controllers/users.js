@@ -2,6 +2,23 @@ const passwordRequirements = require('../config')["password requirements"];
 const {serverLogger} = require ('../logger')
 const bcrypt = require('bcrypt')
 const jwt = require("jsonwebtoken");
+const Axios = require("axios")
+
+module.exports.captcha = (req, res, next) =>{
+  const {recaptcha} = req.body
+  Axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${config.CAPTCHA_KEY}&response=${recaptcha}`,
+  {
+    method: "POST",
+  }).then((response) => {
+      if(response.data.success){
+          return next()
+      }
+      return res.status(401).send("captcha");
+  }).catch((error) => {
+      console.log(error);
+      return res.status(500).send("An error occurred in captcha");
+  });
+}
 
 
 module.exports.login = async (req, res) => {
@@ -54,9 +71,9 @@ module.exports.hashPassword = async (req, res,next) => {
 }
 
 module.exports.insertNewUserIntoDB = async (req, res,next) => {
-  const { username,email,password } = req.body;
-  const sql = "INSERT INTO users (username, email, hased_password) VALUES (?,?,?)"
-  var query = db.query(sql, [username,email,password])
+  const { email,password } = req.body;
+  const sql = "INSERT INTO users (email, hased_password) VALUES (?,?)"
+  var query = db.query(sql, [email,password])
   query.on("error", function (err) {
     serverLogger.error(err)
     res.status(500).send("There was an error updataing the DB");

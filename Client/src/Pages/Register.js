@@ -3,27 +3,29 @@ import styled from "styled-components";
 import axios from "axios";
 import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
+import API from "../ApiEndPonts";
+import ReCAPTCHA from "react-google-recaptcha";
 
 function Register() {
 
     const navigate = useNavigate();
-
+    const recaptchaRef = React.useRef();
     // const [passwordError, setPasswordErr] = useState("");
     // const [confirmPasswordError, setConfirmPasswordError] = useState("");
-    const [passwordRequirements, setPasswordRequirements] = useState();
+    const [passwordRequirements, setPasswordRequirements] = useState([]);
     const [requirementsIsOpen, setRequirementsIsOpen] = useState(true);
 
-    useEffect(async () => {
-        setPasswordRequirements(await getPasswordRequirements());
+    useEffect(() => {
+      getPasswordRequirements()
     }, []);
 
     //Server requests:
     const getPasswordRequirements = async () => {
       const response = await axios.get(
-        "http://localhost:5000/passwordRequirements/getPasswordRequirements"
+        API.ps.getPs
       );
       if (response.status === 200) {
-        return response.data;
+        setPasswordRequirements(response.data)
       }
     };
 
@@ -43,6 +45,28 @@ function Register() {
       [e.target.name]: e.target.value,
     });
   };
+
+  const handleSubmit = (e)=>{
+    if(formData.password !== formData.confirmPassword){
+      return 
+    }
+    const recaptcha = recaptchaRef.current.execute();
+    const data = new FormData();
+    data.append("email", formData.email);
+    data.append("password", formData.password);
+    data.append("recaptcha", recaptcha);
+    axios({
+      method: 'post',
+      url: API.users.register,
+      data: data,
+  })
+  .then((response) => {
+    console.log(response.data)
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+  }
 
   return (
     <PageContainer>
@@ -92,7 +116,6 @@ function Register() {
                         borderRadius: "29px",
                       }}
                       key={key}
-                      // severity={re.test(userPassword) ? "success" : "error"}
                       severity={
                         re.test(formData.password) ? "success" : "error"
                       }
@@ -104,9 +127,13 @@ function Register() {
                 return filtered;
               }, [])}
           </Fields>
-
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            size="invisible"
+            sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+          />
           <Buttons>
-            <SubmitButton>Register</SubmitButton>
+            <SubmitButton onClick={handleSubmit}>Register</SubmitButton>
             <SubmitButton onClick = {()=>{navigate("/login")}}>Login</SubmitButton>
           </Buttons>
         </RegisterWrapper>
