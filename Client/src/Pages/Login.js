@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"
+import ReCAPTCHA from "react-google-recaptcha";
+import API from "../ApiEndPonts";
+
 
 function Login() {
   const navigate = useNavigate();
-
+  const recaptchaRef = React.useRef();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -16,6 +20,26 @@ function Login() {
       [e.target.name]: e.target.value,
     });
   };
+
+  const handleSubmit = (e)=>{
+    const recaptcha = recaptchaRef.current.execute();
+    const data = new FormData();
+    data.append("email", formData.email);
+    data.append("password", formData.password);
+    data.append("recaptcha", recaptcha);
+    axios({
+      method: 'post',
+      url: API.users.login,
+      data: data,
+  })
+  .then((response) => {
+    localStorage.setItem("token", response.data.token);
+    navigate("/")
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+  }
 
   return (
     <PageContainer>
@@ -38,9 +62,13 @@ function Login() {
               placeholder={"Password"}
             />
           </Fields>
-
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            size="invisible"
+            sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+          />
           <Buttons>
-            <SubmitButton>Login</SubmitButton>
+            <SubmitButton onClick={handleSubmit}>Login</SubmitButton>
             <SubmitButton
               onClick={() => {
                 navigate("/register");

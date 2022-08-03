@@ -1,41 +1,52 @@
 const passwordRequirements = require('../config')["password requirements"];
-const {serverLogger} = require ('../logger')
-const bcrypt = require('bcrypt')
+const {serverLogger} = require ('../logger');
+const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
-const Axios = require("axios")
+const Axios = require("axios");
 
 module.exports.captcha = (req, res, next) =>{
   const {recaptcha} = req.body
-  Axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${config.CAPTCHA_KEY}&response=${recaptcha}`,
-  {
-    method: "POST",
-  }).then((response) => {
+  Axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${config.CAPTCHA_KEY}&response=${recaptcha}`)
+  .then((response) => {
       if(response.data.success){
           return next()
       }
       return res.status(401).send("captcha");
   }).catch((error) => {
-      console.log(error);
-      return res.status(500).send("An error occurred in captcha");
+    serverLogger.error(error)
+    return res.status(500).send("An error occurred in captcha");
   });
 }
 
-
-module.exports.login = async (req, res) => {
+module.exports.getUserFromDB = async (req, res, next) => {
   const { password, email } = req.body;
-  const sql = "SELECT id,username,email,hased_password FROM users WHERE email=(?)"
+  const sql = "SELECT id,email,hased_password FROM users WHERE email=(?)"
   db.query(sql, [email], async (error, results) => {
-    if(error) return res.status(500).send("An error occurred");
-    if(!results.length) return res.status(400).send("Email or Password is incorrect");
-    const result = results[0]
-    const isPasswordValid = await bcrypt.compare(password, result.hased_password);
-    if (!isPasswordValid){
-      return res.status(500).send("Email or Password is incorrect");
+    if(error) {
+      serverLogger.error(error)
+      return res.status(500).send("An error occurred");
     }
-    const {id} = result
-    const token = jwt.sign({id}, process.env.TOKEN_KEY);
-    return res.json({ token });
-  });
+    if(!results.length) return res.status(400).send("Email or Password is incorrect");
+    req.db = {user:results[0]};
+    next();
+  })
+}
+
+module.exports.verifyPassword = async (req, res, next) => {
+  const {hased_password} = req.db.user;
+  const {password} = req.body;
+  const isPasswordValid = await bcrypt.compare(password,hased_password);
+  if (!isPasswordValid){
+    return res.status(500).send("Email or Password is incorrect");
+  }
+  next()
+}
+
+module.exports.sendToken = (req, res) => {
+  const {id} = req.db.user;
+  const options = {expiresIn : "30d"}
+  const token = jwt.sign({id}, config.TOKEN_KEY,options);
+  return res.json({ token });
 }
 
 module.exports.verifyPasswordRequirements = async (req, res,next) => {
