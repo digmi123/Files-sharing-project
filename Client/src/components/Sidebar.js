@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from "styled-components";
 import FileTree from "./FileTree";
-import FilesData from "../FilesData";
+import {useSelector } from "react-redux"
 
-function Sidebar() {
+function Sidebar({filesData}) {
   return (
     <Container>
       I am a SideBar
-      <FileTree contains={FilesData} />
+      <FileTree contains={filesData.contains} />
     </Container>
   );
 }
