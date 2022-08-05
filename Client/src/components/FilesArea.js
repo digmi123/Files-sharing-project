@@ -1,43 +1,47 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import axios from "axios"
 import styled from "styled-components";
+import FilesSectionContextMenu from "./FilesSectionContextMenu";
+import File from './File';
+import {uploadFiles} from "../functions/files"
 
-const uploadFiles = async (files) => {
-  const data = new FormData();
-  data.append("logicalPath", "Popen");
-  files.forEach(file => {
-    data.append("files", file,file.name);
+
+
+function FilesArea({filesData,updateFilesData}) {
+
+  const [showContextMenu, setShowcontextMenu] = useState(false)
+  const [contextMenuPosition,setContextMenuPosition] = useState({x:0,y:0})
+
+
+  useEffect(()=>{
+    const handleClik = ()=>{setShowcontextMenu(false)}
+    window.addEventListener('click',handleClik)
+    console.log(filesData);
+    return () => window.removeEventListener('click',handleClik)
+  },[])
+
+
+  const contextMenuHandler = (e) =>{
+    e.preventDefault()
+    setShowcontextMenu(true)
+    setContextMenuPosition({ x : e.pageX, y : e.pageY})
+  }
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop: (acceptedFiles) => {
+    uploadFiles(filesData,acceptedFiles,updateFilesData);
+    },
+    noClick: true
   });
-  axios({
-      method: 'post',
-      url: 'http://localhost:5000/files/uploadFiles',
-      data: data
-  })
-  .then(function (response) {
-      console.log(response);
-  })
-  .catch(function (error) {
-      console.log(error);
-  });
-  };
-
-
-function FilesArea() {
-
-     const { getRootProps, getInputProps } = useDropzone({
-       onDrop: (acceptedFiles) => {
-        uploadFiles(acceptedFiles);
-       },
-       noClick: true
-     });
 
 
   return (
-    <FilesContainer {...getRootProps()} style={{ display: "flex"}}>
+    <FilesContainer onContextMenu={contextMenuHandler} {...getRootProps()} style={{ display: "flex"} }>
+    {/* // <FilesContainer {...getRootProps()} style={{ display: "flex"} }> */}
       <input {...getInputProps()} />
-      <DropZoneTitle>Drop files here</DropZoneTitle>
+      {filesData.contains?.map(fileData =>(<File id={fileData.name} info={fileData} updateFilesData={updateFilesData} />))}
+      {showContextMenu && <FilesSectionContextMenu position={contextMenuPosition}/>}
     </FilesContainer>
   );
 }
@@ -51,9 +55,5 @@ const FilesContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   padding-top: 10px;
-`;
-
-const DropZoneTitle = styled.p`
-  width:100%
 `;
 
