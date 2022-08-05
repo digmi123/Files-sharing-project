@@ -36,6 +36,9 @@ const uploadFiles = async (filesData,files,cb) => {
   files.forEach(file => {
     data.append("files", file,file.name);
   });
+  for(var val of data.entries()){
+    console.log(val);
+  }
   axios({
       method: 'post',
       url: API.files.uploadFiles,

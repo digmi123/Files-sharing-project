@@ -33,7 +33,7 @@ const updateFilesData = () => async (dispatch) => {
   console.log("test");
   Axios.get(API.folders.getTree,{headers})
   .then(response => {
-    update(response.data)
+    dispatch(update(response.data))
   })
   .catch(error =>{
     console.log("error");

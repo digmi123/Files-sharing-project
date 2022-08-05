@@ -1,22 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 import {downloadFile,deleteFiles} from "../functions/files"
+import {useSelector , useDispatch} from "react-redux"
+import {updateFilesData} from "../store/filesDataSlice"
 
 
-
-function FileContextMenu({position, fileInfo ,updateFilesData }){
-    console.log(`blue (${position.x},${position.y})`);
+function FileContextMenu({position, fileInfo }){
+    const dispatch = useDispatch()
     return(
         <Container position={position}>
             {fileInfo.type !== "Folder" ?(<>
             <Button onClick={()=>downloadFile(fileInfo)}>Download</Button>
-            <Button onClick={()=>deleteFiles(fileInfo,updateFilesData)}>Delete</Button>
+            <Button onClick={()=>deleteFiles(fileInfo,() => {dispatch(updateFilesData())})}>Delete</Button>
             </>)
             :
             (<>
             <Button onClick={()=>console.log(fileInfo)}>Open</Button>
             </>)}
-            <Button onClick={()=>updateFilesData()}>refresh</Button>
+            <Button onClick={()=>dispatch(updateFilesData())}>refresh</Button>
         </Container>
     )
 }

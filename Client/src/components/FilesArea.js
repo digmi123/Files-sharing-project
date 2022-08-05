@@ -5,19 +5,22 @@ import styled from "styled-components";
 import FilesSectionContextMenu from "./FilesSectionContextMenu";
 import File from './File';
 import {uploadFiles} from "../functions/files"
+import {useSelector , useDispatch} from "react-redux"
+import {updateFilesData} from "../store/filesDataSlice"
 
 
 
-function FilesArea({filesData,updateFilesData}) {
+function FilesArea() {
 
   const [showContextMenu, setShowcontextMenu] = useState(false)
   const [contextMenuPosition,setContextMenuPosition] = useState({x:0,y:0})
+  const dispatch = useDispatch()
+  let {filesData} = useSelector(state => state.filesData)
 
 
   useEffect(()=>{
     const handleClik = ()=>{setShowcontextMenu(false)}
     window.addEventListener('click',handleClik)
-    console.log(filesData);
     return () => window.removeEventListener('click',handleClik)
   },[])
 
@@ -30,7 +33,9 @@ function FilesArea({filesData,updateFilesData}) {
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles) => {
-    uploadFiles(filesData,acceptedFiles,updateFilesData);
+    uploadFiles(filesData,acceptedFiles,()=>{
+      dispatch(updateFilesData())
+    });
     },
     noClick: true
   });
@@ -40,7 +45,7 @@ function FilesArea({filesData,updateFilesData}) {
     <FilesContainer onContextMenu={contextMenuHandler} {...getRootProps()} style={{ display: "flex"} }>
     {/* // <FilesContainer {...getRootProps()} style={{ display: "flex"} }> */}
       <input {...getInputProps()} />
-      {filesData.contains?.map(fileData =>(<File id={fileData.name} info={fileData} updateFilesData={updateFilesData} />))}
+      {filesData.contains?.map(fileData =>(<File id={fileData.name} info={fileData} />))}
       {showContextMenu && <FilesSectionContextMenu position={contextMenuPosition}/>}
     </FilesContainer>
   );

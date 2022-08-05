@@ -2,13 +2,17 @@ import React,{ useState } from "react";
 import styled from "styled-components";
 import FilesArea from "./FilesArea";
 import {uploadFiles} from "../functions/files"
+import {useSelector , useDispatch} from "react-redux"
+import {updateFilesData} from "../store/filesDataSlice"
 
 
 
-function FilesSection({filesData,updateFilesData}) {
+function FilesSection() {
+  const dispatch = useDispatch()
   //Stats: 
+  let {filesData} = useSelector(state => state.filesData)
   const [files, setFiles] = useState([]);
-
+  const updateFilesData = ()=>{console.log("pass");}
   
   //Methods:
   const changeHandler = (e) => {
@@ -20,7 +24,9 @@ function FilesSection({filesData,updateFilesData}) {
   };
 
   const submitHandler = async () => {
-    // uploadFiles(filesData,files,updateFilesData);
+    uploadFiles(filesData,files,()=>{
+      dispatch(updateFilesData())
+    });
   };
 
 
@@ -49,7 +55,7 @@ function FilesSection({filesData,updateFilesData}) {
       </ActionsWrapper>
 
       {/* <hr width="100vw" /> */}
-        <FilesArea filesData={filesData} updateFilesData={updateFilesData}/>
+        <FilesArea/>
     </Container>
   );
 }

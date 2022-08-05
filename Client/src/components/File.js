@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {getIconByType} from "../FilesData";
 import FileContextMenu from "./FileContextMenu";
 
-function File({ info , updateFilesData }) {
+function File({ info }) {
   const [showContextMenu, setShowcontextMenu] = useState(false)
   const [contextMenuPosition,setContextMenuPosition] = useState({x:0,y:0})
 
@@ -30,7 +30,7 @@ function File({ info , updateFilesData }) {
         <Image alt="" />
         <FileName>{info.name}</FileName>
       </FileInfo>
-      {showContextMenu && <FileContextMenu position={contextMenuPosition} fileInfo={info} updateFilesData={updateFilesData}/>}
+      {showContextMenu && <FileContextMenu position={contextMenuPosition} fileInfo={info}/>}
     </FileCard>
   );
 }
