@@ -47,7 +47,7 @@ module.exports.createFolder = async (req, res) => {
     res.status(200).send("Folder created successfuly");
 }
 
-const createfileTree = (folderID) => {
+const createFileTree = (folderID) => {
     return new Promise(async(res,rej)=>{
         let sql ="SELECT id,type,name FROM files WHERE folder = (?)";
         db.query(sql, [folderID],function (error, results){
@@ -64,10 +64,9 @@ const createFolderTree = (folderID) =>{
             if(error) rej(error)
             res(Promise.all(results.map( async (folder) => {
                 return {
-                    id : folder.id,
+                    ...folder,
                     type: "Folder",
-                    name: folder.name,
-                    contains : createTree(folder.id)
+                    contains : await createTree(folder.id)
                 }
             })))
         });
@@ -75,14 +74,30 @@ const createFolderTree = (folderID) =>{
 }
 
 const createTree = async (folderID) =>{
-    return [...await createFolderTree(folderID),...await createfileTree(folderID)]
+    return [...await createFolderTree(folderID),...await createFileTree(folderID)]
+}
+
+module.exports.findRootFolder = (req, res, next) =>{
+    const sql = "SELECT folder_id FROM `secure-collaboration`.users_folders WHERE user_id=(?);"
+    let query = db.query(sql,[req.user.id])
+    query.on("error", function (err) {
+        serverLogger.error(err)
+        res.status(500).send("There was an error uploading files to db");
+    });
+    query.on("result", function (result) {
+        req.user.rootFolderID = result.folder_id;
+        return next();
+    });
 }
 
 module.exports.fileTree = async (req, res) => {
     try{
-        const {folderId} = req.body
-        const tree = await createTree(folderId);
-        res.status(200).json(tree)
+        res.status(200).json({
+            id : req.user.rootFolderID,
+            type: "Folder",
+            name: "root",
+            contains : await createTree(req.user.rootFolderID)
+        })
     }catch{
         res.status(500).send("Error")
     }   
