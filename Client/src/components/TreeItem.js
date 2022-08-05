@@ -23,7 +23,7 @@ function TreeItem({ info }) {
 
   return (
     <Container>
-      {info.contains.length !== 0 ? (
+      {info.contains?.length  ? (
         <Arrow
           style={{ marginRight: "8px" }}
           onClick={HandleArrowToggle}
@@ -32,7 +32,7 @@ function TreeItem({ info }) {
       ) : (
         <Icon style={{ marginRight: "8px" }} />
       )}
-      {info.fileName}
+      {info.name}
       {isOpen && <FileTree contains={info.contains} />}
     </Container>
   );
