@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from "react";
 import styled from "styled-components";
-import axios from "axios";
 import Alert from "@mui/material/Alert";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import API from "../ApiEndPonts";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -10,8 +10,6 @@ function Register() {
 
     const navigate = useNavigate();
     const recaptchaRef = React.useRef();
-    // const [passwordError, setPasswordErr] = useState("");
-    // const [confirmPasswordError, setConfirmPasswordError] = useState("");
     const [passwordRequirements, setPasswordRequirements] = useState([]);
     const [requirementsIsOpen, setRequirementsIsOpen] = useState(true);
 
@@ -61,6 +59,7 @@ function Register() {
       data: data,
   })
   .then((response) => {
+    navigate("/login")
     console.log(response.data)
   })
   .catch((error) => {
