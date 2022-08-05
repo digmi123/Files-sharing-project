@@ -8,10 +8,11 @@ const API = {
     files : {
         uploadFiles : server+"/files/uploadFiles",
         downloadFile : server+"/files/downloadFile",
+        deleteFile : server+"/files/deleteFile",
     },
     folders:{
         createFolder:server+"/folders/createFolder",
-        getTree:server+"/folders/creatgetTreeeFolder",
+        getTree:server+"/folders/getTree",
     },
     users:{
         register:server+"/users/register",
