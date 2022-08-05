@@ -1,4 +1,3 @@
-const express = require('express')
 const {serverLogger} = require ('../logger')
 const encrypt = require('node-file-encrypt');
 const fs = require('fs');
@@ -21,7 +20,7 @@ module.exports.updateDB = (req, res, next) => {
 
   query.on("error", function (err) {
     req.files.map((file) => {
-      fs.unlink("./file/" + file.encryptFileName, function() {serverLogger.info(`Delet ${file.encryptFileName} due to error in DB`)})
+      fs.unlink("./file/" + file.encryptFileName, function() {serverLogger.info(`Delet ${file.encryptFileName} due to error`)})
     });
     serverLogger.error(err)
     res.status(500).send("There was an error uploading files to db");
@@ -62,7 +61,7 @@ module.exports.uploadFiles = (req,res)=>{
 module.exports.getFileData = (req, res, next) =>{
   try{
     const {fileID} = req.body
-    let sql ="SELECT physical_path , name, id FROM files WHERE id = (?)";
+    let sql ="SELECT * FROM files WHERE id = (?)";
     db.query(sql, [fileID],function (error, results){
       if (error) throw error;
       if(!results.length) return res.status(404).send("No file fond")
@@ -77,19 +76,19 @@ module.exports.getFileData = (req, res, next) =>{
 
 module.exports.DecryptFiles = (req, res, next) => {
   try{
-    const {physical_path,id} = req.DB
-    serverLogger.info(`decrypt file ${id} start`)
-    const path = "./files/" + physical_path
+    const {physical_path,id} = req.db;
+    serverLogger.info(`decrypt file ${id} start`);
+    const path = "./files/" + physical_path;
     let f = new encrypt.FileEncrypt(path);
     f.openSourceFile();
     f.decrypt(config.ENCRYPTION_KEY);
     req.decrypt = f;
-    serverLogger.info(`decrypt file ${id} complete`)
+    serverLogger.info(`decrypt file ${id} complete`);
     return next();
   }
   catch(err){
-    serverLogger.error(err)
-    res.status(500).send("Error")
+    serverLogger.error(err);
+    res.status(500).send("Error");
   }
 }
 
@@ -108,5 +107,30 @@ module.exports.downloadFile = async (req, res) => {
         serverLogger.info(`Cleaner ${id}`)
       });
       serverLogger.info(`sending file ${id} complete`)
+  });
+}
+
+// ------------------- Delete Files ------------------------
+
+module.exports.removeFromDB = (req, res, next) =>{
+  const {fileID} = req.body
+  const sql = "DELETE FROM files WHERE id = (?);"
+  let query = db.query(sql, [fileID]);
+
+  query.on("error", function (err) {
+    serverLogger.error(err)
+    res.status(500).send("There was an error uploading the db");
+  });
+
+  query.on("result", function (result) {
+    return next();
+  });
+
+}
+
+module.exports.deleteFile = async (req, res) => {
+  fs.unlink("./files/" + req.db.physical_path, function() {
+    serverLogger.info(`user ${req.user.id} delete ${req.db.id} file`)
+    res.status(200).send("file deleted successfully")
   });
 }

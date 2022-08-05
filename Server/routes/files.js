@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const verifyToken = require("../auth")
 
-const FilesController = require("../controllers/files");
+const {EncryptFiles,updateDB,uploadFiles,getFileData,DecryptFiles,downloadFile,removeFromDB,deleteFile} = require("../controllers/files");
 
-router.post("/uploadFiles",FilesController.EncryptFiles, FilesController.updateDB,FilesController.uploadFiles)
-router.post("/downloadFile",FilesController.getFileData, FilesController.DecryptFiles,FilesController.downloadFile)
+router.use(verifyToken)
+router.post("/uploadFiles",EncryptFiles, updateDB,uploadFiles)
+router.post("/downloadFile",getFileData, DecryptFiles,downloadFile)
+router.delete("/deleteFile",getFileData,removeFromDB,deleteFile)
 
 module.exports = router;
