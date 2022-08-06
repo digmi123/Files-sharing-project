@@ -29,18 +29,9 @@ export const { update } = filesDataSlice.actions
 export default filesDataSlice.reducer
 
 
-const updateFilesData = () => async (dispatch) => {
-  console.log("test");
+export const updateFilesData = () => async (dispatch) => {
   Axios.get(API.folders.getTree,{headers})
-  .then(response => {
-    dispatch(update(response.data))
-  })
-  .catch(error =>{
-    console.log("error");
-    dispatch(update(initialState))
-  })
-  return {}
+  .then(response => { dispatch(update(response.data)) })
+  .catch(error =>{ dispatch(update(initialState))})
 }
 
-
-export {updateFilesData}
