@@ -1,23 +1,38 @@
 import React from "react";
 import styled from "styled-components";
 import {downloadFile,deleteFiles} from "../functions/files"
-import {useSelector , useDispatch} from "react-redux"
+import {useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
 
 
-function FileContextMenu({position, fileInfo }){
+function FileContextMenu({position, fileInfo ,onOpen ,openEdit}){
     const dispatch = useDispatch()
+
+    const onDelete = async ()=>{
+      await deleteFiles(fileInfo);
+      dispatch(updateFilesData());
+    }
+
+    const onDownload = () => downloadFile(fileInfo)
+
+    const onRefresh = () => dispatch(updateFilesData())
+
     return(
         <Container position={position}>
-            {fileInfo.type !== "Folder" ?(<>
-            <Button onClick={()=>downloadFile(fileInfo)}>Download</Button>
-            <Button onClick={()=>deleteFiles(fileInfo,() => {dispatch(updateFilesData())})}>Delete</Button>
+            {
+            fileInfo.type !== "Folder" ?
+            (<>
+            <Button onClick={onDownload}>Download</Button>
+            <Button onClick={onDelete}>Delete</Button>
             </>)
             :
             (<>
-            <Button onClick={()=>console.log(fileInfo)}>Open</Button>
-            </>)}
-            <Button onClick={()=>dispatch(updateFilesData())}>refresh</Button>
+            <Button onClick={onOpen}>Open</Button>
+            </>)
+            }
+            <Button onClick={openEdit}>Edit</Button>
+            <Button onClick={onRefresh}>Refresh</Button>
+
         </Container>
     )
 }
