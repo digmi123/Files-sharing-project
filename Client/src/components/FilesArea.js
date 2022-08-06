@@ -4,7 +4,7 @@ import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 import FilesSectionContextMenu from "./FilesSectionContextMenu";
 import File from './File';
-import {uploadFiles} from "../functions/files"
+import {uploadFiles} from "../functions/ApiCalls"
 import { useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
 
@@ -33,8 +33,8 @@ function FilesArea({filesData , back , path}) {
   }
 
   const { getRootProps, getInputProps } = useDropzone({
-    onDrop: (acceptedFiles) => {
-    uploadFiles(filesData,acceptedFiles);
+    onDrop: async (acceptedFiles) => {
+    await uploadFiles(filesData,acceptedFiles);
     dispatch(updateFilesData())
     },
     noClick: true
@@ -49,14 +49,13 @@ function FilesArea({filesData , back , path}) {
 
   return (
     <FilesContainer onContextMenu={contextMenuHandler} {...getRootProps()} style={{ display: "flex"} }>
-      
       <UpBar>
       <input {...getInputProps()} />
         <Button onClick={back}>back</Button>
         {path + filesData.name + "/"}
       </UpBar>
       {filesData.contains?.map((fileData) =>(<File key={fileData.type + fileData.id} info={fileData} setFolder={setFolder}/>))}
-      {showContextMenu && <FilesSectionContextMenu position={contextMenuPosition}/>}
+      {showContextMenu && <FilesSectionContextMenu position={contextMenuPosition} filesData={filesData}/>}
     </FilesContainer>
   );
 }
@@ -68,13 +67,9 @@ const FilesContainer = styled.div`
   width: 70%;
   display: flex;
   flex-wrap: wrap;
-  padding-top: 10px;
+  min-height: 10em;
 `;
 
-const test = styled.div`
-  border: 1px solid red;
-  width: 100%;
-`;
 
 const UpBar = styled.div`
 width : 100%;
@@ -87,7 +82,7 @@ const Button = styled.button`
   font-size: 1em;
   margin: 0.25em;
   padding: 0.25em 0.5em;
-  width:10%;
+  width:5em;
   border: 2px solid #5499C7;
   border-radius: 3px;
   background: white;
