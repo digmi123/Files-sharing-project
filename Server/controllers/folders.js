@@ -4,8 +4,8 @@ const {serverLogger} = require ('../logger')
 
 module.exports.InsertNewFolderIntoDB = (req, res, next) => {
     try{
+        const sql = "INSERT INTO folders (name, parent_id) VALUES (?,?);"
         const {name,parentId} = req.body
-        const sql = "INSERT INTO folders (name, parent_id) VALUES ?"
         let query = db.query(sql,[name,parentId])
         query.on("error", function (err) {
             serverLogger.error(err)
