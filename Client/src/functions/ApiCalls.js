@@ -68,4 +68,14 @@ const rename = async (file,name) => {
   console.log(response);
 }
 
-export {downloadFile,uploadFiles,deleteFiles,getFilesData,rename}
+const createFolder = async (folderInfo) =>{
+  const data = new FormData();
+  data.append("parentId", folderInfo.id);
+  data.append("name", "New Folder");
+  const response = await axios({method: 'post', url : API.folders.createFolder, data, headers})
+  if(response.status === 200)
+    return console.log(response.data)
+  console.log(response);
+}
+
+export {downloadFile,uploadFiles,deleteFiles,getFilesData,rename,createFolder}
