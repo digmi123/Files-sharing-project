@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 
 function FilesSectionContextMenu({position}){
-    console.log(`red (${position.x},${position.y})`);
     return(
         <Container position={position}>
             <p>FilesSectionContextMenu</p>
