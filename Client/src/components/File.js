@@ -2,10 +2,13 @@ import React,{useState,useEffect} from "react";
 import styled from "styled-components";
 import {getIconByType} from "../FilesData";
 import FileContextMenu from "./FileContextMenu";
+import { IconContext } from "react-icons";
+import EditFile from "./EditFile";
 
-function File({ info }) {
+function File({ info , setFolder }) {
   const [showContextMenu, setShowcontextMenu] = useState(false)
   const [contextMenuPosition,setContextMenuPosition] = useState({x:0,y:0})
+  const [editOpen,setEditOpen] = useState(false)
 
   useEffect(()=>{
     const handleClik = ()=>{setShowcontextMenu(false)}
@@ -19,19 +22,27 @@ function File({ info }) {
     setContextMenuPosition({ x : e.pageX, y : e.pageY})
   }
 
-  const Image = styled(getIconByType(info.type))`
-    font-size: 60px;
-  `;
+
+  const Image = getIconByType(info.type)
+
+  const onOpen = () =>{
+    if(info.type === "Folder")
+      setFolder({open:true,data:info})
+  }
+
+  
 
   return (
-    <FileCard onContextMenu={contextMenuHandler}>
-      <CheckBox type="checkbox" name={info.fileName} />
-      <FileInfo>
+    // <FileCard  >
+      <FileInfo onDoubleClick={onOpen} onContextMenu={contextMenuHandler}>
+      <IconContext.Provider value={{ color: 'black', size: '50px' }}>
         <Image alt="" />
         <FileName>{info.name}</FileName>
+        </IconContext.Provider>
+        {showContextMenu && <FileContextMenu position={contextMenuPosition} fileInfo={info} onOpen={onOpen} openEdit={()=>{setEditOpen(true)}}/>}
+      {editOpen && <EditFile info={info} close={()=>{setEditOpen(false)}}/>}
       </FileInfo>
-      {showContextMenu && <FileContextMenu position={contextMenuPosition} fileInfo={info}/>}
-    </FileCard>
+    //  </FileCard>
   );
 }
 
@@ -44,24 +55,23 @@ const FileCard = styled.div`
 `;
 
 const FileName = styled.p`
-  font-size: 1.2rem;
+  font-size: 0.8rem;
   font-weight: bold;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 `;
 
-const CheckBox = styled.input`
-  position: absolute;
-  top: -2px;
-  right: -4px;
-`;
 
 const FileInfo = styled.div`
-  display: flex;
+  width : 100px;
+  height: 100px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   align-content: flex-end;
-  margin-right: 30px;
-  margin-left: 30px;
-  position: relative;
-  border: 1px solid red;
+  margin : 1em;
 `;

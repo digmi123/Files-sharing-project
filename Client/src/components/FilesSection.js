@@ -1,4 +1,4 @@
-import React,{ useState } from "react";
+import React,{ useState ,useEffect } from "react";
 import styled from "styled-components";
 import FilesArea from "./FilesArea";
 import {uploadFiles} from "../functions/files"
@@ -6,17 +6,14 @@ import {useSelector , useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
 
 
-
 function FilesSection() {
   const dispatch = useDispatch()
   //Stats: 
   let {filesData} = useSelector(state => state.filesData)
   const [files, setFiles] = useState([]);
-  const updateFilesData = ()=>{console.log("pass");}
   
   //Methods:
   const changeHandler = (e) => {
-    console.log(e);
     setFiles([
       ...files,
       ...Array.from(e.target.files)
@@ -24,9 +21,8 @@ function FilesSection() {
   };
 
   const submitHandler = async () => {
-    uploadFiles(filesData,files,()=>{
-      dispatch(updateFilesData())
-    });
+    await uploadFiles(filesData,files);
+    dispatch(updateFilesData())
   };
 
 
@@ -41,21 +37,19 @@ function FilesSection() {
             onChange={changeHandler}
             multiple="multiple"
           />
-          <ActionButton variant="contained" onClick={submitHandler}>
-            Upload Files
-          </ActionButton>
-        </FilesSelectionContainer>
-
-        <ActionButton variant="contained" >
-          Download Selected
-        </ActionButton>
-        <ActionButton type="file" variant="contained">
+        <Button variant="contained" onClick={submitHandler}>
+          Upload Files
+        </Button>
+        <Button variant="contained">
+          test
+        </Button>
+        <Button type="file" variant="contained">
           Select Files
-        </ActionButton>
+        </Button>
+        </FilesSelectionContainer>
       </ActionsWrapper>
-
       {/* <hr width="100vw" /> */}
-        <FilesArea/>
+        <FilesArea filesData={filesData} back={()=>{console.log("in root")} } path=""/>
     </Container>
   );
 }
@@ -92,6 +86,38 @@ const ActionButton = styled.button`
     background-color: rgb(49, 134, 99) !important;
   }
 `;
+
+const Button = styled.button`
+  font-size: 1em;
+  margin: 0.25em;
+  padding: 0.25em 0.5em;
+  border: 2px solid #5499C7;
+  width : 20%;
+  height : 20%;
+  border-radius: 3px;
+  background: white;
+  color: #5499C7;
+  &:hover {
+    background: #5499C7;
+    color: white;
+  }
+`
+
+const Input = styled.input`
+  font-size: 1em;
+  margin: 0.25em;
+  padding: 0.25em 0.5em;
+  border: 2px solid #5499C7;
+  width : 20%;
+  height : 20%;
+  border-radius: 3px;
+  background: white;
+  color: #5499C7;
+  &:hover {
+    background: #5499C7;
+    color: white;
+  }
+`
 
 const FilesContainer = styled.div`
   border: 1px solid black;
