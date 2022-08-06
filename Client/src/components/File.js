@@ -27,7 +27,7 @@ function File({ info , setFolder }) {
 
   const onOpen = () =>{
     if(info.type === "Folder")
-      setFolder({open:true,data:info})
+      setFolder({open:true,data:info.id})
   }
 
   

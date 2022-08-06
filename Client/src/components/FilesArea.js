@@ -16,14 +16,14 @@ function FilesArea({filesData , back , path}) {
   const [contextMenuPosition,setContextMenuPosition] = useState({x:0,y:0})
   const dispatch = useDispatch()
 
-  const [folder,setFolder] = useState({open:false,data:{}})
+  const [folder,setFolder] = useState({open:false,data:0})
 
 
   useEffect(()=>{
     const handleClik = ()=>{setShowContextMenu(false)}
     window.addEventListener('click',handleClik)
     return () => window.removeEventListener('click',handleClik)
-  },[])
+  },[filesData])
 
 
   const contextMenuHandler = (e) =>{
@@ -41,11 +41,11 @@ function FilesArea({filesData , back , path}) {
   });
 
   const closeFolder = () =>{
-    setFolder({open:false,data:{}})
+    setFolder({open:false,data:0})
   }
  
   if(folder.open)
-  return(<FilesArea filesData={folder.data} back={closeFolder} path={path + filesData.name + "/"}/>)
+  return(<FilesArea filesData={filesData.contains.find((item) => item.id === folder.data)} back={closeFolder} path={path + filesData.name + "/"}/>)
 
   return (
     <FilesContainer onContextMenu={contextMenuHandler} {...getRootProps()} style={{ display: "flex"} }>
