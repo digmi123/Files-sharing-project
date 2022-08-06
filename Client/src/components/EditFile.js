@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import styled from "styled-components";
-import { rename } from "../functions/files";
+import { rename } from "../functions/ApiCalls";
 import {useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
 

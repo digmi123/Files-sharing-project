@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {downloadFile,deleteFiles} from "../functions/files"
+import {downloadFile,deleteFiles} from "../functions/ApiCalls"
 import {useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
 

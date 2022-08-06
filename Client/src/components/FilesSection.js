@@ -1,7 +1,7 @@
 import React,{ useState ,useEffect } from "react";
 import styled from "styled-components";
 import FilesArea from "./FilesArea";
-import {uploadFiles} from "../functions/files"
+import {uploadFiles} from "../functions/ApiCalls"
 import {useSelector , useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
 
@@ -75,18 +75,6 @@ const FilesSelectionContainer = styled.div`
   align-items: flex-end;
 `;
 
-const ActionButton = styled.button`
-  margin-right: 10px !important;
-  background-color: white !important;
-  width: 25%;
-  height: 50px;
-  cursor: pointer;
-  border-radius: 60px;
-  &:hover {
-    background-color: rgb(49, 134, 99) !important;
-  }
-`;
-
 const Button = styled.button`
   font-size: 1em;
   margin: 0.25em;
@@ -103,21 +91,6 @@ const Button = styled.button`
   }
 `
 
-const Input = styled.input`
-  font-size: 1em;
-  margin: 0.25em;
-  padding: 0.25em 0.5em;
-  border: 2px solid #5499C7;
-  width : 20%;
-  height : 20%;
-  border-radius: 3px;
-  background: white;
-  color: #5499C7;
-  &:hover {
-    background: #5499C7;
-    color: white;
-  }
-`
 
 const FilesContainer = styled.div`
   border: 1px solid black;
