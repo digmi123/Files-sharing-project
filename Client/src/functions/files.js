@@ -13,7 +13,7 @@ const downloadFile = async (fileInfo) =>{
     axios({
       method: 'post',
       url: API.files.downloadFile,
-      data: data,
+      data,
       responseType: 'blob',
       headers,
   })
@@ -21,7 +21,7 @@ const downloadFile = async (fileInfo) =>{
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', fileInfo.name); //or any other extension
+    link.setAttribute('download', fileInfo.name);
     document.body.appendChild(link);
     link.click();
   })
@@ -30,51 +30,42 @@ const downloadFile = async (fileInfo) =>{
   });
 }
 
-const uploadFiles = async (filesData,files,cb) => {
+const uploadFiles = async (filesData,files) => {
   const data = new FormData();
   data.append("folder", filesData.id);
-  files.forEach(file => {
-    data.append("files", file,file.name);
-  });
-  for(var val of data.entries()){
-    console.log(val);
-  }
-  axios({
-      method: 'post',
-      url: API.files.uploadFiles,
-      data: data,
-      headers,
-  })
-  .then(function (response) {
-      console.log(response);
-      cb()
-  })
-  .catch(function (error) {
-      console.log(error);
-  });
+  files.forEach(file => { data.append("files", file, file.name) });
+  const response = await axios({ method: 'post', url: API.files.uploadFiles, data: data, headers,})
+  if(response.status === 200)
+    return console.log(response.data)
+  console.log(response);
 };
 
-const deleteFiles = async (fileInfo,cb) => {
-  if(fileInfo.type === "Folder") {
-    console.log("you try to delete a folder");
-    return;
-  }
+const deleteFiles = async (fileInfo) => {
+    if(fileInfo.type === "Folder") return console.log("you try to delete a folder");
+    const data = new FormData();
+    data.append("fileID", fileInfo.id);
+    const response = await axios({method: 'delete', url: API.files.deleteFile, data, headers,})
+    if(response.status === 200)
+      return console.log(response.data)
+    console.log(response);
+}
+
+const getFilesData = async () => {
+  const response = await axios(API.folders.getTree,{headers})
+  if(response.status === 200)
+    return response.data
+  console.log(response);
+}
+
+const rename = async (file,name) => {
+  const url = file.type === "Folder" ? API.folders.renameFolder : API.files.renameFile;
   const data = new FormData();
-  data.append("fileID", fileInfo.id);
-  axios({
-      method: 'delete',
-      url: API.files.deleteFile,
-      data: data,
-      headers,
-  })
-  .then(function (response) {
-      console.log(response);
-      cb()
-  })
-  .catch(function (error) {
-      console.log(error);
-  });
-};
+  data.append("id", file.id);
+  data.append("name", name);
+  const response = await axios({method: 'post', url, data, headers})
+  if(response.status === 200)
+    return console.log(response.data)
+  console.log(response);
+}
 
-
-export {downloadFile,uploadFiles,deleteFiles}
+export {downloadFile,uploadFiles,deleteFiles,getFilesData,rename}
