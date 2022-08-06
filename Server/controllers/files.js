@@ -134,3 +134,16 @@ module.exports.deleteFile = async (req, res) => {
     res.status(200).send("file deleted successfully")
   });
 }
+
+module.exports.renameFile = async (req, res) => {
+  const sql = "UPDATE files SET name = (?) WHERE id = (?);";
+  const {name,id} = req.body;
+  query = db.query(sql,[name,id]);
+  query.on("error", (err)=>{
+      serverLogger.error(err)
+      res.status(500).send("There was an error uploading files to db");
+  })
+  query.on("result", (result) => {
+      res.status(200).send("Name Update successfuly")
+  });
+}

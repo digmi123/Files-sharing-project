@@ -59,7 +59,7 @@ const createFileTree = (folderID) => {
 
 const createFolderTree = (folderID) =>{
     return new Promise(async(res,rej)=>{
-        let sql ="SELECT id,name FROM folders WHERE parent_id = (?)";
+        let sql ="SELECT * FROM folders WHERE parent_id = (?)";
         db.query(sql, [folderID],function (error, results){
             if(error) rej(error)
             res(Promise.all(results.map( async (folder) => {
@@ -85,20 +85,46 @@ module.exports.findRootFolder = (req, res, next) =>{
         res.status(500).send("There was an error uploading files to db");
     });
     query.on("result", function (result) {
-        req.user.rootFolderID = result.folder_id;
+        req.folderID = result.folder_id;
         return next();
     });
 }
 
-module.exports.fileTree = async (req, res) => {
+module.exports.setFolderID = (req, res, next) =>{
+    req.folderID = req.body.folderID;
+    next()
+}
+
+module.exports.getFolder = async (req, res) => {
     try{
-        res.status(200).json({
-            id : req.user.rootFolderID,
-            type: "Folder",
-            name: "root",
-            contains : await createTree(req.user.rootFolderID)
-        })
+        const {folderID} = req;
+        const sql ="SELECT * FROM folders WHERE id = (?)";
+        const query = db.query(sql,[folderID])
+        query.on("error", function (err) {
+            serverLogger.error(err)
+            res.status(500).send("There was an error uploading files to db");
+        });
+        query.on("result", async (result) => {
+            res.status(200).json({
+                ...result,
+                contains : await createTree(folderID)
+            })
+        });
+        
     }catch{
         res.status(500).send("Error")
     }   
+}
+
+module.exports.renameFolder = async (req, res) => {
+    const sql = "UPDATE folders SET name = (?) WHERE id = (?);";
+    const {name,id} = req.body;
+    query = db.query(sql,[name,id]);
+    query.on("error", (err)=>{
+        serverLogger.error(err)
+        res.status(500).send("There was an error uploading files to db");
+    })
+    query.on("result", (result) => {
+        res.status(200).send("Name Update successfuly")
+    });
 }
