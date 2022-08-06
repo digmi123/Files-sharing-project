@@ -11,7 +11,7 @@ export const getIconByType = (fileType) => {
     case "folder":
       return FiFolder;
 
-    case "pdf":
+    case "application/pdf":
       return AiOutlineFilePdf;
 
     case "image/jpeg":
