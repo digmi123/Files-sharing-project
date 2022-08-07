@@ -1,5 +1,5 @@
 const protocol_ = "http"
-const addresses = "192.168.1.197"
+const addresses = "localhost"
 const port = 5000
 
 const server = `${protocol_}://${addresses}:${port}`
