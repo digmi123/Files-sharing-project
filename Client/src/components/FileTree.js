@@ -21,6 +21,7 @@ const Container = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-left: 10px;
-  font-size: 1.3rem;
+  padding-left: 1em;
+  font-size: 1rem;
+  text-align:left;
 `;
