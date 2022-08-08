@@ -65,7 +65,7 @@ const FileInfo = styled.div`
   justify-content: center;
   align-items: center;
   align-content: flex-end;
-  margin : 1em;
+  margin : 0.5em;
 `;
 
 const FileName = styled.p`
