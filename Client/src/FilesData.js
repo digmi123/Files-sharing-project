@@ -6,7 +6,7 @@ import { AiOutlineFileText } from "react-icons/ai";
 
 
 export const getIconByType = (fileType) => {
-  const type = fileType.toLowerCase();
+  const type = fileType?.toLowerCase();
   switch (type) {
     case "folder":
       return FiFolder;

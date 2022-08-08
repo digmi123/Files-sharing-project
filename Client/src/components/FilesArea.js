@@ -1,35 +1,25 @@
-import React,{useEffect} from 'react'
+import React from 'react'
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 import FilesSectionContextMenu from "./FilesSectionContextMenu";
 import File from './File';
-import {uploadFiles} from "../functions/ApiCalls"
+import {moveFile, uploadFiles} from "../functions/ApiCalls"
 import { useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
-
+import ShadowFile from './ShadowFile';
 
 
 function FilesArea({filesData , back , path}) {
 
-  const [showContextMenu, setShowContextMenu] = useState(false)
-  const [contextMenuPosition,setContextMenuPosition] = useState({x:0,y:0})
   const dispatch = useDispatch()
-
+  const [contextMenu, setContextMenu] = useState({show:false,x:0,y:0})
   const [folder,setFolder] = useState({open:false,data:0})
-
-
-  useEffect(()=>{
-    const handleClik = ()=>{setShowContextMenu(false)}
-    window.addEventListener('click',handleClik)
-    return () => window.removeEventListener('click',handleClik)
-  },[filesData])
-
+  const [move,setMove] = useState({show:false, source:null})
 
   const contextMenuHandler = (e) =>{
     e.preventDefault()
-    setShowContextMenu(true)
-    setContextMenuPosition({ x : e.pageX, y : e.pageY})
+    setContextMenu({show:true, x : e.pageX, y : e.pageY})
   }
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -43,19 +33,27 @@ function FilesArea({filesData , back , path}) {
   const closeFolder = () =>{
     setFolder({open:false,data:0})
   }
+
+  const handleBackMouseUp = async () =>{
+    if(filesData.parent_id){
+      await moveFile(move.source,filesData.parent_id);
+      dispatch(updateFilesData());
+    }
+  }
  
   if(folder.open)
   return(<FilesArea filesData={filesData.contains.find((item) => item.id === folder.data)} back={closeFolder} path={path + filesData.name + "/"}/>)
 
   return (
     <FilesContainer onContextMenu={contextMenuHandler} {...getRootProps()} style={{ display: "flex"} }>
-      <UpBar>
+      <UpperBar>
       <input {...getInputProps()} />
-        <Button onClick={back}>back</Button>
+        <Button onMouseUp={handleBackMouseUp} onClick={back}>back</Button>
         {path + filesData.name + "/"}
-      </UpBar>
-      {filesData.contains?.map((fileData) =>(<File key={fileData.type + fileData.id} info={fileData} setFolder={setFolder}/>))}
-      {showContextMenu && <FilesSectionContextMenu position={contextMenuPosition} filesData={filesData}/>}
+      </UpperBar>
+      {filesData.contains?.map((fileData) =>(<File key={fileData.type + fileData.id} info={fileData} setFolder={setFolder} move={move} setMove={setMove}/>))}
+      <FilesSectionContextMenu position={contextMenu} filesData={filesData} setContextMenu={setContextMenu}/>
+      <ShadowFile info={move} setMove={setMove}/>
     </FilesContainer>
   );
 }
@@ -71,7 +69,7 @@ const FilesContainer = styled.div`
 `;
 
 
-const UpBar = styled.div`
+const UpperBar = styled.div`
 width : 100%;
 height : 40px;
 border: 1px solid blue;

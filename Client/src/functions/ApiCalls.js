@@ -78,4 +78,15 @@ const createFolder = async (folderInfo) =>{
   console.log(response);
 }
 
-export {downloadFile,uploadFiles,deleteFiles,getFilesData,rename,createFolder}
+const moveFile = async (source , destinationID) =>{
+  const url = source.type === "Folder" ? API.folders.moveFolder : API.files.moveFile;
+  const data = new FormData();
+  data.append("destinationID", destinationID);
+  data.append("sourceID", source.id);
+  const response = await axios({method: 'post', url, data, headers})
+  if(response.status === 200)
+    return console.log(response.data)
+  console.log(response);
+}
+
+export {downloadFile,uploadFiles,deleteFiles,getFilesData,rename,createFolder,moveFile}

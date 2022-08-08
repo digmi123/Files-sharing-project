@@ -1,18 +1,25 @@
-import React from "react";
+import React,{useEffect} from "react";
 import styled from "styled-components";
 import {createFolder} from "../functions/ApiCalls"
 import {useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
 
 
-function FilesSectionContextMenu({position , filesData}){
+function FilesSectionContextMenu({position , filesData , setContextMenu}){
+
     const dispatch = useDispatch()
+
+    useEffect(()=>{
+      const handleCloseContextMenu = ()=>{setContextMenu({show:false,x:0,y:0})}
+      window.addEventListener('click',handleCloseContextMenu)
+      return () => window.removeEventListener('click',handleCloseContextMenu)
+    },[setContextMenu])
 
     const onNewFolder = async () =>{
         await createFolder(filesData)
         dispatch(updateFilesData());
     }
-
+    if(!position.show) return(<></>)
     return(
         <Container position={position}>
             <Button onClick={onNewFolder}>New Folder</Button>
