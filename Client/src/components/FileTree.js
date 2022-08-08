@@ -1,5 +1,4 @@
 import React from "react";
-import filesData from "../FilesData";
 import TreeItem from "./TreeItem";
 import styled from "styled-components";
 
