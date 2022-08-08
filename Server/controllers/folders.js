@@ -128,3 +128,10 @@ module.exports.renameFolder = async (req, res) => {
         res.status(200).send("Name Update successfuly")
     });
 }
+
+module.exports.moveFolder = async (req, res) => {
+    const {destinationID, sourceID} = req.body
+    const sql = "UPDATE folders SET parent_id = (?) WHERE id = (?);";
+    console.log(db.format(sql,[destinationID, sourceID]));
+    res.send("Location update successfuly")
+}

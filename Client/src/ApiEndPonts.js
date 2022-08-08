@@ -10,12 +10,14 @@ const API = {
         downloadFile : server+"/files/downloadFile",
         deleteFile : server+"/files/deleteFile",
         renameFile : server+"/files/renameFile",
+        moveFile : server+"/files/moveFile"
     },
     folders:{
         createFolder:server+"/folders/createFolder",
         getTree:server+"/folders/getTree",
         getFolder:server+"/folders/getFolder",
         renameFolder:server+"/folders/renameFolder",
+        moveFolder:server+"/folders/moveFolder"
     },
     users:{
         register:server+"/users/register",
