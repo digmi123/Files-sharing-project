@@ -1,12 +1,18 @@
-import React from "react";
+import React,{useEffect} from "react";
 import styled from "styled-components";
 import {downloadFile,deleteFiles} from "../functions/ApiCalls"
 import {useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
 
 
-function FileContextMenu({position, fileInfo ,onOpen ,openEdit}){
+function FileContextMenu({position, fileInfo ,functions, setContextMenu}){
     const dispatch = useDispatch()
+
+    useEffect(()=>{
+      const handleClik = ()=>{setContextMenu({show:false,x:0,y:0})}
+      window.addEventListener('click',handleClik)
+      return () => window.removeEventListener('click',handleClik)
+    },[setContextMenu])
 
     const onDelete = async ()=>{
       await deleteFiles(fileInfo);
@@ -16,6 +22,7 @@ function FileContextMenu({position, fileInfo ,onOpen ,openEdit}){
     const onDownload = () => downloadFile(fileInfo)
 
     const onRefresh = () => dispatch(updateFilesData())
+    if(!position.show) return(<></>)
 
     return(
         <Container position={position}>
@@ -27,10 +34,10 @@ function FileContextMenu({position, fileInfo ,onOpen ,openEdit}){
             </>)
             :
             (<>
-            <Button onClick={onOpen}>Open</Button>
+            <Button onClick={functions.onOpen}>Open</Button>
             </>)
             }
-            <Button onClick={openEdit}>Edit</Button>
+            <Button onClick={functions.openEdit}>Edit</Button>
             <Button onClick={onRefresh}>Refresh</Button>
 
         </Container>

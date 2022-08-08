@@ -1,57 +1,71 @@
-import React,{useState,useEffect} from "react";
+import React,{useState} from "react";
 import styled from "styled-components";
 import {getIconByType} from "../FilesData";
 import FileContextMenu from "./FileContextMenu";
 import { IconContext } from "react-icons";
 import EditFile from "./EditFile";
+import {moveFile} from "../functions/ApiCalls"
+import {useDispatch} from "react-redux"
+import {updateFilesData} from "../store/filesDataSlice"
 
-function File({ info , setFolder }) {
-  const [showContextMenu, setShowcontextMenu] = useState(false)
-  const [contextMenuPosition,setContextMenuPosition] = useState({x:0,y:0})
+function File({ info , setFolder , move , setMove}) {
+  const dispatch = useDispatch()
+  const [contextMenu, setContextMenu] = useState({show:false,x:0,y:0})
   const [editOpen,setEditOpen] = useState(false)
-
-  useEffect(()=>{
-    const handleClik = ()=>{setShowcontextMenu(false)}
-    window.addEventListener('click',handleClik)
-    return () => window.removeEventListener('click',handleClik)
-  },[])
 
   const contextMenuHandler = (e) =>{
     e.preventDefault()
-    setShowcontextMenu(true)
-    setContextMenuPosition({ x : e.pageX, y : e.pageY})
+    setContextMenu({show:true, x : e.pageX, y : e.pageY})
   }
 
 
   const Image = getIconByType(info.type)
 
-  const onOpen = () =>{
+  const handleOpen = () =>{
     if(info.type === "Folder")
       setFolder({open:true,data:info.id})
   }
 
-  
+  const openEdit = ()=>{setEditOpen(true)}
+
+  const handleMouseDown = () =>{
+    setMove({show:true, source:info})
+  }
+
+  const handleMouseUp = async () =>{
+    if( info.type === "Folder" && move.source.id !== info.id){
+      await moveFile(move.source,info.id);
+      dispatch(updateFilesData());
+    }
+  }
 
   return (
-    // <FileCard  >
-      <FileInfo onDoubleClick={onOpen} onContextMenu={contextMenuHandler}>
+    <FileInfo 
+    onDoubleClick={handleOpen}
+    onContextMenu={contextMenuHandler}
+    onMouseDown={handleMouseDown}
+    onMouseUp={handleMouseUp}
+    >
       <IconContext.Provider value={{ color: 'black', size: '50px' }}>
         <Image alt="" />
         <FileName>{info.name}</FileName>
         </IconContext.Provider>
-        {showContextMenu && <FileContextMenu position={contextMenuPosition} fileInfo={info} onOpen={onOpen} openEdit={()=>{setEditOpen(true)}}/>}
+        <FileContextMenu position={contextMenu} fileInfo={info} functions={{handleOpen,openEdit}} setContextMenu={setContextMenu}/>
       {editOpen && <EditFile info={info} close={()=>{setEditOpen(false)}}/>}
-      </FileInfo>
-    //  </FileCard>
+    </FileInfo>
   );
 }
 
 export default File;
 
-const FileCard = styled.div`
- border: 1px solid black;
- display: flex;
+const FileInfo = styled.div`
+  width : 100px;
+  height: 100px;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: flex-end;
+  margin : 1em;
 `;
 
 const FileName = styled.p`
@@ -65,13 +79,3 @@ const FileName = styled.p`
   user-select: none;
 `;
 
-
-const FileInfo = styled.div`
-  width : 100px;
-  height: 100px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  align-content: flex-end;
-  margin : 1em;
-`;

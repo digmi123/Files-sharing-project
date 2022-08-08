@@ -151,6 +151,12 @@ module.exports.renameFile = async (req, res) => {
 module.exports.moveFile = async (req, res) => {
   const {destinationID, sourceID} = req.body
   const sql = "UPDATE files SET folder = (?) WHERE id = (?);";
-  console.log(db.format(sql,[destinationID, sourceID]));
-  res.send("Location update successfuly")
+  let query = db.query(sql,[destinationID, sourceID]);
+  query.on("error", (err)=>{
+      serverLogger.error(err)
+      res.status(500).send("There was an error uploading files to db");
+  })
+  query.on("result", (result) => {
+      res.status(200).send("Location update successfuly")
+  });
 }
