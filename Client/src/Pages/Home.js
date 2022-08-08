@@ -1,16 +1,25 @@
-import React,{useState,useEffect} from 'react'
+import React,{useEffect} from 'react'
 import Sidebar from '../components/Sidebar'
 import FilesSection from '../components/FilesSection'
 import styled from "styled-components";
 import { useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const dispatch = useDispatch()
-  
+  const navigate = useNavigate()
   useEffect(()=>{
-    dispatch(updateFilesData())
-  },[dispatch])
+    const dispatchUpdateFilesData = async () =>{
+      const success = await dispatch(updateFilesData());
+      if(!success){
+        navigate("/login")
+      }
+    }
+    dispatchUpdateFilesData()
+  },[dispatch, navigate])
+
+
 
 
   return (

@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import  Axios  from 'axios';
 import API from "../ApiEndPonts"
-// import { useNavigate } from "react-router-dom";
 
 const headers = { "x-access-token": localStorage.getItem("token")};
 
@@ -30,8 +29,12 @@ export default filesDataSlice.reducer
 
 
 export const updateFilesData = () => async (dispatch) => {
-  Axios.get(API.folders.getTree,{headers})
-  .then(response => { dispatch(update(response.data)) })
-  .catch(error =>{ dispatch(update(initialState))})
+  const response = await Axios.get(API.folders.getTree,{headers})
+  if(response.status === 200){
+    dispatch(update(response.data))
+    return true;
+  }
+  dispatch(update(initialState))
+  return false;
 }
 
