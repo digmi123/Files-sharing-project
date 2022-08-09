@@ -20,7 +20,10 @@ module.exports.updateDB = (req, res, next) => {
 
   query.on("error", function (err) {
     req.files.map((file) => {
-      fs.unlink("./file/" + file.encryptFileName, function() {serverLogger.info(`Delet ${file.encryptFileName} due to error`)})
+      fs.unlink("./file/" + file.encryptFileName,  (erorr) => {
+        if(erorr) {serverLogger.error(err)};
+        serverLogger.info(`Delet ${file.encryptFileName} due to error`)
+      })
     });
     serverLogger.error(err)
     res.status(500).send("There was an error uploading files to db");
@@ -39,7 +42,7 @@ module.exports.EncryptFiles = (req, res, next) => {
       f.openSourceFile();
       f.encrypt(config.ENCRYPTION_KEY);
       file = {...file,encryptFileName:f.encryptFileName}
-      fs.unlink(file.path, function() {});
+      fs.unlink(file.path, (erorr) => { if(erorr) serverLogger.error(err) });
       return file;
     });
     return next();
@@ -92,21 +95,22 @@ module.exports.DecryptFiles = (req, res, next) => {
   }
 }
 
-// End Point
-module.exports.downloadFile = async (req, res) => {
+
+module.exports.sendFile = async (req, res, next) => {
   const {id} = req.db
   serverLogger.info(`sending file ${id} start`)
-  res.sendFile(req.decrypt.decryptFilePath,{
-    root : "./"
-  }, function (err) {
-      if (err) {
-        serverLogger.error(err)
-        return res.status(500).send("Error");
-      } 
-      fs.unlink("./" + req.decrypt.decryptFilePath, function() {
-        serverLogger.info(`Cleaner ${id}`)
-      });
+  res.sendFile(req.decrypt.decryptFilePath,{root : "./"}, 
+  (err) => {
+      if (err) {serverLogger.error(err); return res.status(500).send("Error"); } 
       serverLogger.info(`sending file ${id} complete`)
+      next()
+  });
+}
+
+module.exports.cleanUp = () =>{
+  fs.unlink("./" + req.decrypt.decryptFilePath, (erorr) => {
+    if(erorr) { serverLogger.error(err); return res.status(500).send("Error")};
+    serverLogger.info(`Cleaner ${id}`)
   });
 }
 
@@ -129,11 +133,17 @@ module.exports.removeFromDB = (req, res, next) =>{
 }
 
 module.exports.deleteFile = async (req, res) => {
-  fs.unlink("./files/" + req.db.physical_path, function() {
+  fs.unlink("./files/" + req.db.physical_path,(erorr) => {
+    if(erorr) {
+      serverLogger.error(err)
+      return res.status(500).send("Error")
+    };
     serverLogger.info(`user ${req.user.id} delete ${req.db.id} file`)
     res.status(200).send("file deleted successfully")
   });
 }
+
+// ---------------------------------------------------------
 
 module.exports.renameFile = async (req, res) => {
   const sql = "UPDATE files SET name = (?) WHERE id = (?);";
