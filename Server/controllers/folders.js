@@ -142,3 +142,57 @@ module.exports.moveFolder = async (req, res) => {
         res.status(200).send("Location update successfuly")
     });
 }
+
+// ------------ Delete Folder ---------------
+
+const getAllSubFolders = async (folderIds) =>{
+    if(!folderIds.length) return [];
+    return new Promise((resolve,reject) => {
+        const sql = "select id from folders where parent_id in (?);"
+        db.query(sql,[folderIds],async (error, results)=>{
+            if(error) reject(error);
+            const list = results.map((item) => item.id)
+            resolve([...list,...await getAllSubFolders(list)])
+        });
+    })
+}
+
+
+module.exports.findSubfolders = async (req, res,next) => {
+    try{
+        serverLogger.debug("findSubfolders")
+        const {folderID} = req.body
+        req.folders = [folderID,...await getAllSubFolders(folderID)]
+        next()
+    }catch(error){
+        serverLogger.error(error);
+        res.status(500).send("Error");
+    }
+}
+
+module.exports.findFolderFiles = (req, res,next) => {
+    serverLogger.debug("findFolderFiles")
+    const sql = "select * from files where folder in (?);"
+    db.query(sql,[req.folders],(error, results)=>{
+        if(error){
+            serverLogger.error(error);
+            res.status(500).send("Error");
+        }
+        req.files = results;
+        next();
+    })
+}
+
+module.exports.removefoldersFromDB = (req, res) =>{
+    serverLogger.debug("removefoldersFromDB")
+    const IDs = req.folders
+    const sql = "delete from folders where id in (?);"
+
+    db.query(sql,[IDs],(error, results)=>{
+        if(error){
+            serverLogger.error(err)
+            return res.status(500).send("There was an error deleting folders the db");
+        }
+        return res.status(200).send("folder has been deleted successfuly")
+    });
+  }

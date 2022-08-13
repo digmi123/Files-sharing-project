@@ -89,4 +89,13 @@ const moveFile = async (source , destinationID) =>{
   console.log(response);
 }
 
-export {downloadFile,uploadFiles,deleteFiles,getFilesData,rename,createFolder,moveFile}
+const deleteFolder = async (fileInfo) => {
+  const data = new FormData();
+  data.append("folderID", fileInfo.id);
+  const response = await axios({method: 'post', url:API.folders.deleteFolder, data, headers})
+  if(response.status === 200)
+    return console.log(response.data)
+  console.log(response);
+}
+
+export {downloadFile,uploadFiles,deleteFiles,getFilesData,rename,createFolder,moveFile,deleteFolder}

@@ -22,7 +22,7 @@ module.exports.updateDB = (req, res, next) => {
     req.files.map((file) => {
       fs.unlink("./file/" + file.encryptFileName,  (erorr) => {
         if(erorr) {serverLogger.error(err)};
-        serverLogger.info(`Delet ${file.encryptFileName} due to error`)
+        serverLogger.info(`Delete ${file.encryptFileName} due to error`)
       })
     });
     serverLogger.error(err)
@@ -168,5 +168,35 @@ module.exports.moveFile = async (req, res) => {
   })
   query.on("result", (result) => {
       res.status(200).send("Location update successfuly")
+  });
+}
+
+
+module.exports.removeLocalFiles = (req, res, next) => {
+  serverLogger.debug("removeLocalFiles")
+  const paths = req.files.map(item => item.physical_path)
+  console.log(paths);
+  paths.forEach(path => {
+    fs.unlink("./files/" + path, (erorr) => {
+      if(erorr) { serverLogger.error(err)};
+      serverLogger.info(`Local file ${path} removed`)
+    });
+  });
+  next()
+}
+
+module.exports.removeFilesFromDB = (req, res, next) =>{
+  serverLogger.debug("removeFilesFromDB")
+  const IDs = req.files.map(item => item.id)
+  const sql = "delete from files where id in (?)"
+  if(!IDs.length) return next();
+  const query = db.query(sql,[IDs])
+  query.on("error", function (err) {
+    serverLogger.error(err)
+    res.status(500).send("There was an error deleting files the db");
+  });
+
+  query.on("result", function (result) {
+    return next();
   });
 }

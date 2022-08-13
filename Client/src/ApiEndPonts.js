@@ -6,25 +6,26 @@ const server = `${protocol_}://${addresses}:${port}`
 
 const API = {
     files : {
-        uploadFiles : server+"/files/uploadFiles",
-        downloadFile : server+"/files/downloadFile",
-        deleteFile : server+"/files/deleteFile",
-        renameFile : server+"/files/renameFile",
-        moveFile : server+"/files/moveFile"
+        uploadFiles: server+"/files/uploadFiles",
+        downloadFile: server+"/files/downloadFile",
+        deleteFile: server+"/files/deleteFile",
+        renameFile: server+"/files/renameFile",
+        moveFile: server+"/files/moveFile"
     },
     folders:{
-        createFolder:server+"/folders/createFolder",
-        getTree:server+"/folders/getTree",
-        getFolder:server+"/folders/getFolder",
-        renameFolder:server+"/folders/renameFolder",
-        moveFolder:server+"/folders/moveFolder"
+        createFolder: server+"/folders/createFolder",
+        getTree: server+"/folders/getTree",
+        getFolder: server+"/folders/getFolder",
+        renameFolder: server+"/folders/renameFolder",
+        moveFolder: server+"/folders/moveFolder",
+        deleteFolder: server+"/folders/deleteFolder"
     },
     users:{
-        register:server+"/users/register",
-        login:server+"/users/login",
+        register: server+"/users/register",
+        login: server+"/users/login",
     },
     ps:{
-        getPs:server+"/passwordRequirements/getPasswordRequirements",
+        getPs: server+"/passwordRequirements/getPasswordRequirements",
     },
 }
 

@@ -1,6 +1,6 @@
 import React,{useEffect} from "react";
 import styled from "styled-components";
-import {downloadFile,deleteFiles} from "../functions/ApiCalls"
+import {downloadFile,deleteFiles,deleteFolder} from "../functions/ApiCalls"
 import {useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
 
@@ -15,7 +15,11 @@ function FileContextMenu({position, fileInfo ,functions, setContextMenu}){
     },[setContextMenu])
 
     const onDelete = async ()=>{
-      await deleteFiles(fileInfo);
+      if(fileInfo.type === "Folder"){
+        await deleteFolder(fileInfo)
+      }else{
+        await deleteFiles(fileInfo);
+      }
       dispatch(updateFilesData());
     }
 
@@ -30,13 +34,13 @@ function FileContextMenu({position, fileInfo ,functions, setContextMenu}){
             fileInfo.type !== "Folder" ?
             (<>
             <Button onClick={onDownload}>Download</Button>
-            <Button onClick={onDelete}>Delete</Button>
             </>)
             :
             (<>
             <Button onClick={functions.onOpen}>Open</Button>
             </>)
             }
+            <Button onClick={onDelete}>Delete</Button>
             <Button onClick={functions.openEdit}>Edit</Button>
             <Button onClick={onRefresh}>Refresh</Button>
 
