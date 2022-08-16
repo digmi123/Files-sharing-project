@@ -1,4 +1,4 @@
-import React,{ useState ,useEffect } from "react";
+import React,{ useState } from "react";
 import styled from "styled-components";
 import FilesArea from "./FilesArea";
 import {uploadFiles} from "../functions/ApiCalls"
@@ -11,6 +11,7 @@ function FilesSection() {
   //Stats: 
   let {filesData} = useSelector(state => state.filesData)
   const [files, setFiles] = useState([]);
+  const [currentFolder,setCurrentFolder] = useState([]);
   
   //Methods:
   const changeHandler = (e) => {
@@ -21,7 +22,7 @@ function FilesSection() {
   };
 
   const submitHandler = async () => {
-    await uploadFiles(filesData,files);
+    await uploadFiles(currentFolder,files);
     dispatch(updateFilesData())
   };
 
@@ -40,16 +41,16 @@ function FilesSection() {
         <Button variant="contained" onClick={submitHandler}>
           Upload Files
         </Button>
-        <Button variant="contained">
+        <Button variant="contained" onClick={(e)=>{console.log(currentFolder.name)}}>
           test
         </Button>
-        <Button type="file" variant="contained">
+        <Button variant="contained">
           Select Files
         </Button>
         </FilesSelectionContainer>
       </ActionsWrapper>
       {/* <hr width="100vw" /> */}
-        <FilesArea filesData={filesData} back={()=>{console.log("in root")} } path=""/>
+        <FilesArea filesData={filesData} back={()=>{console.log("in root")} } path="" setCurrentFolder={setCurrentFolder}/>
     </Container>
   );
 }
@@ -80,8 +81,8 @@ const Button = styled.button`
   margin: 0.25em;
   padding: 0.25em 0.5em;
   border: 2px solid #5499C7;
-  width : 20%;
-  height : 20%;
+  width: 20%;
+  height: 20%;
   border-radius: 3px;
   background: white;
   color: #5499C7;
@@ -90,13 +91,3 @@ const Button = styled.button`
     color: white;
   }
 `
-
-
-const FilesContainer = styled.div`
-  border: 1px solid black;
-  height: 60%;
-  width: 70%;
-  display: flex;
-  flex-wrap: wrap;
-  padding-top: 10px;
-`;

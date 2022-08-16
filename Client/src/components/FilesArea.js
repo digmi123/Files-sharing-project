@@ -10,7 +10,7 @@ import {updateFilesData} from "../store/filesDataSlice"
 import ShadowFile from './ShadowFile';
 
 
-function FilesArea({filesData , back , path}) {
+function FilesArea({filesData , back , path , setCurrentFolder}) {
 
   const dispatch = useDispatch()
   const [contextMenu, setContextMenu] = useState({show:false,x:0,y:0})
@@ -35,15 +35,19 @@ function FilesArea({filesData , back , path}) {
   }
 
   const handleBackMouseUp = async () =>{
-    if(filesData.parent_id){
+    if(move.source != null && filesData.parent_id){
       await moveFile(move.source,filesData.parent_id);
       dispatch(updateFilesData());
     }
   }
  
   if(folder.open)
-  return(<FilesArea filesData={filesData.contains.find((item) => item.id === folder.data)} back={closeFolder} path={path + filesData.name + "/"}/>)
+  return(<FilesArea 
+    filesData={filesData.contains.find((item) => item.id === folder.data)} 
+    back={closeFolder} path={path + filesData.name + "/"} 
+    setCurrentFolder={setCurrentFolder}/>)
 
+  setCurrentFolder(filesData)
   return (
     <FilesContainer onContextMenu={contextMenuHandler} {...getRootProps()} style={{ display: "flex"} }>
       <UpperBar>
