@@ -10,14 +10,8 @@ function Home() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   useEffect(()=>{
-    const dispatchUpdateFilesData = async () =>{
-      const success = await dispatch(updateFilesData());
-      if(!success){
-        navigate("/login")
-      }
-    }
-    dispatchUpdateFilesData()
-  },[dispatch, navigate])
+    dispatch(updateFilesData(navigate))
+},[dispatch, navigate])
 
 
 

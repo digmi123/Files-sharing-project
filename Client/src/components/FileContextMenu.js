@@ -3,10 +3,12 @@ import styled from "styled-components";
 import {downloadFile,deleteFiles,deleteFolder} from "../functions/ApiCalls"
 import {useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
+import { useNavigate } from "react-router-dom";
 
 
 function FileContextMenu({position, fileInfo ,functions, setContextMenu}){
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(()=>{
       const handleClik = ()=>{setContextMenu({show:false,x:0,y:0})}
@@ -20,12 +22,12 @@ function FileContextMenu({position, fileInfo ,functions, setContextMenu}){
       }else{
         await deleteFiles(fileInfo);
       }
-      dispatch(updateFilesData());
+      dispatch(updateFilesData(navigate));
     }
 
     const onDownload = () => downloadFile(fileInfo)
 
-    const onRefresh = () => dispatch(updateFilesData())
+    const onRefresh = () => dispatch(updateFilesData(navigate))
     if(!position.show) return(<></>)
 
     return(

@@ -4,6 +4,7 @@ import FilesArea from "./FilesArea";
 import {uploadFiles} from "../functions/ApiCalls"
 import {useSelector , useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
+import { useNavigate } from "react-router-dom";
 
 
 function FilesSection() {
@@ -12,6 +13,7 @@ function FilesSection() {
   let {filesData} = useSelector(state => state.filesData)
   const [files, setFiles] = useState([]);
   const [currentFolder,setCurrentFolder] = useState([]);
+  const navigate = useNavigate()
   
   //Methods:
   const changeHandler = (e) => {
@@ -23,7 +25,7 @@ function FilesSection() {
 
   const submitHandler = async () => {
     await uploadFiles(currentFolder,files);
-    dispatch(updateFilesData())
+    dispatch(updateFilesData(navigate))
   };
 
 

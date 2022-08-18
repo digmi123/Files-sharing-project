@@ -7,11 +7,13 @@ import EditFile from "./EditFile";
 import {moveFile} from "../functions/ApiCalls"
 import {useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
+import { useNavigate } from "react-router-dom";
 
 function File({ info , setFolder , move , setMove}) {
   const dispatch = useDispatch()
   const [contextMenu, setContextMenu] = useState({show:false,x:0,y:0})
   const [editOpen,setEditOpen] = useState(false)
+  const navigate = useNavigate()
 
   const contextMenuHandler = (e) =>{
     e.preventDefault()
@@ -35,7 +37,7 @@ function File({ info , setFolder , move , setMove}) {
   const handleMouseUp = async () =>{
     if( info.type === "Folder" && move.source.id !== info.id){
       await moveFile(move.source,info.id);
-      dispatch(updateFilesData());
+      dispatch(updateFilesData(navigate));
     }
   }
 

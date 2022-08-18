@@ -3,14 +3,17 @@ import styled from "styled-components";
 import { rename } from "../functions/ApiCalls";
 import {useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
+import { useNavigate } from "react-router-dom";
+
 
 function EditFile ({info , close}){
   const dispatch = useDispatch()
   const [name,setName] = useState()
+  const navigate = useNavigate()
 
   const handleSubmit = async (e)=>{
       await rename(info,name);
-      dispatch(updateFilesData());
+      dispatch(updateFilesData(navigate));
       close();
   }
 

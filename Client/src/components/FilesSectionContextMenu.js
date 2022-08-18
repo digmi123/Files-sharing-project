@@ -3,11 +3,13 @@ import styled from "styled-components";
 import {createFolder} from "../functions/ApiCalls"
 import {useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
+import { useNavigate } from "react-router-dom";
 
 
 function FilesSectionContextMenu({position , filesData , setContextMenu}){
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(()=>{
       const handleCloseContextMenu = ()=>{setContextMenu({show:false,x:0,y:0})}
@@ -17,7 +19,7 @@ function FilesSectionContextMenu({position , filesData , setContextMenu}){
 
     const onNewFolder = async () =>{
         await createFolder(filesData)
-        dispatch(updateFilesData());
+        dispatch(updateFilesData(navigate));
     }
     if(!position.show) return(<></>)
     return(

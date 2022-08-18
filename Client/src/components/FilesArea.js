@@ -8,6 +8,7 @@ import {moveFile, uploadFiles} from "../functions/ApiCalls"
 import { useDispatch} from "react-redux"
 import {updateFilesData} from "../store/filesDataSlice"
 import ShadowFile from './ShadowFile';
+import { useNavigate } from "react-router-dom";
 
 
 function FilesArea({filesData , back , path , setCurrentFolder}) {
@@ -16,6 +17,7 @@ function FilesArea({filesData , back , path , setCurrentFolder}) {
   const [contextMenu, setContextMenu] = useState({show:false,x:0,y:0})
   const [folder,setFolder] = useState({open:false,data:0})
   const [move,setMove] = useState({show:false, source:null})
+  const navigate = useNavigate()
 
   const contextMenuHandler = (e) =>{
     e.preventDefault()
@@ -25,7 +27,7 @@ function FilesArea({filesData , back , path , setCurrentFolder}) {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: async (acceptedFiles) => {
     await uploadFiles(filesData,acceptedFiles);
-    dispatch(updateFilesData())
+    dispatch(updateFilesData(navigate))
     },
     noClick: true
   });
@@ -37,7 +39,7 @@ function FilesArea({filesData , back , path , setCurrentFolder}) {
   const handleBackMouseUp = async () =>{
     if(move.source != null && filesData.parent_id){
       await moveFile(move.source,filesData.parent_id);
-      dispatch(updateFilesData());
+      dispatch(updateFilesData(navigate));
     }
   }
  

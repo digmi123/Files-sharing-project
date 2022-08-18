@@ -27,14 +27,9 @@ export const filesDataSlice = createSlice({
 export const { update } = filesDataSlice.actions
 export default filesDataSlice.reducer
 
-
-export const updateFilesData = () => async (dispatch) => {
-  const response = await Axios.get(API.folders.getTree,{headers})
-  if(response.status === 200){
-    dispatch(update(response.data))
-    return true;
-  }
-  dispatch(update(initialState))
-  return false;
+export const updateFilesData = (navigate) => async (dispatch) => {
+  console.log(`in updateFilesData`);
+  Axios.get(API.folders.getTree,{headers})
+  .then(response=> dispatch(update(response.data)))
+  .catch(error => navigate("/login",{ replace: true }))
 }
-
