@@ -49,18 +49,17 @@ function Register() {
       return 
     }
     const recaptcha = recaptchaRef.current.execute();
-    const data = new FormData();
-    data.append("email", formData.email);
-    data.append("password", formData.password);
+    e.preventDefault()
+    const data = new FormData(e.target)
     data.append("recaptcha", recaptcha);
     axios({
       method: 'post',
       url: API.users.register,
-      data: data,
+      data,
   })
   .then((response) => {
-    navigate("/login")
-    console.log(response.data)
+    navigate("/login");
+    console.log(response.data);
   })
   .catch((error) => {
     console.log(error);
@@ -71,7 +70,7 @@ function Register() {
     <PageContainer>
       <RegisterContainer>
         <Title>Register 🔒</Title>
-        <RegisterWrapper>
+        <RegisterWrapper onSubmit={handleSubmit}>
           <Fields>
             <Input
               onChange={handleChange}
@@ -96,12 +95,12 @@ function Register() {
               placeholder={"Confirm Password"}
             />
 
-            <SubmitButton
+            <Button
               onClick={handleRequirements}
               style={{ marginBottom: "15px", fontSize: "13px" , width: "70%"}}
             >
               {requirementsIsOpen ? "Hide requirements" : "Show requirements"}
-            </SubmitButton>
+            </Button>
 
             {passwordRequirements &&
               requirementsIsOpen &&
@@ -132,8 +131,8 @@ function Register() {
             sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
           />
           <Buttons>
-            <SubmitButton onClick={handleSubmit}>Register</SubmitButton>
-            <SubmitButton onClick = {()=>{navigate("/login")}}>Login</SubmitButton>
+            <Button type="submit">Register</Button>
+            <Button onClick = {()=>{navigate("/login")}}>Login</Button>
           </Buttons>
         </RegisterWrapper>
       </RegisterContainer>
@@ -168,7 +167,7 @@ const Title = styled.p`
   font-weight: bold;
 `;
 
-const RegisterWrapper = styled.div`
+const RegisterWrapper = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -205,7 +204,7 @@ const Input = styled.input`
   width: 100%;
 `;
 
-const SubmitButton = styled.button`
+const Button = styled.button`
   border-radius: 29px;
   background-color: rgb(55, 37, 255);
   color: white;

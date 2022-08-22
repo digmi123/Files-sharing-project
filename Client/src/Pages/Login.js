@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
@@ -9,31 +9,19 @@ import API from "../ApiEndPonts";
 function Login() {
   const navigate = useNavigate();
   const recaptchaRef = React.useRef();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   const handleSubmit = (e)=>{
+    e.preventDefault()
+    const data = new FormData(e.target)
     const recaptcha = recaptchaRef.current.execute();
-    const data = new FormData();
-    data.append("email", formData.email);
-    data.append("password", formData.password);
-    data.append("recaptcha", recaptcha);
+    data.append("recaptcha", recaptcha)
     axios({
       method: 'post',
       url: API.users.login,
-      data: data,
+      data,
   })
   .then((response) => {
-    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("access-token", response.data.token);
     navigate("/")
   })
   .catch((error) => {
@@ -45,20 +33,20 @@ function Login() {
     <PageContainer>
       <LoginContainer>
         <Title>Login 🔒</Title>
-        <LoginWrapper>
+        <LoginWrapper onSubmit={handleSubmit}>
           <Fields>
             <Input
-              onChange={handleChange}
+              // onChange={handleChange}
               name="email"
-              value={formData.email}
+              // value={formData.email}
               placeholder={"Email"}
               email
             />
             <Input
               type="password"
-              onChange={handleChange}
+              // onChange={handleChange}
               name="password"
-              value={formData.password}
+              // value={formData.password}
               placeholder={"Password"}
             />
           </Fields>
@@ -68,14 +56,14 @@ function Login() {
             sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
           />
           <Buttons>
-            <SubmitButton onClick={handleSubmit}>Login</SubmitButton>
-            <SubmitButton
+            <Button type="submit">Login</Button>
+            <Button
               onClick={() => {
                 navigate("/register");
               }}
             >
               Register
-            </SubmitButton>
+            </Button>
           </Buttons>
         </LoginWrapper>
       </LoginContainer>
@@ -110,7 +98,7 @@ const Title = styled.p`
   font-weight: bold;
 `;
 
-const LoginWrapper = styled.div`
+const LoginWrapper = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -146,7 +134,7 @@ const Input = styled.input`
   width: 100%;
 `;
 
-const SubmitButton = styled.button`
+const Button = styled.button`
   border-radius: 29px;
   background-color: rgb(55, 37, 255);
   color: white;
