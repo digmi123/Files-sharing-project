@@ -81,7 +81,7 @@ module.exports.DecryptFiles = (req, res, next) => {
   try{
     const {physical_path,id} = req.db;
     serverLogger.info(`decrypt file ${id} start`);
-    const path = "./files/" + physical_path;
+    const path = "./filesData/" + physical_path;
     let f = new encrypt.FileEncrypt(path);
     f.openSourceFile();
     f.decrypt(config.ENCRYPTION_KEY);
@@ -133,7 +133,7 @@ module.exports.removeFromDB = (req, res, next) =>{
 }
 
 module.exports.deleteFile = async (req, res) => {
-  fs.unlink("./files/" + req.db.physical_path,(erorr) => {
+  fs.unlink("./filesData/" + req.db.physical_path,(erorr) => {
     if(erorr) {
       serverLogger.error(err)
       return res.status(500).send("Error")
@@ -177,7 +177,7 @@ module.exports.removeLocalFiles = (req, res, next) => {
   const paths = req.files.map(item => item.physical_path)
   console.log(paths);
   paths.forEach(path => {
-    fs.unlink("./files/" + path, (erorr) => {
+    fs.unlink("./filesData/" + path, (erorr) => {
       if(erorr) { serverLogger.error(err)};
       serverLogger.info(`Local file ${path} removed`)
     });
