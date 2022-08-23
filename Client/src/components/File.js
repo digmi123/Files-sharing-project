@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import styled from "styled-components";
-import {getIconByType} from "../FilesData";
+import {getIconByType} from "../FilesIcons";
 import FileContextMenu from "./FileContextMenu";
 import { IconContext } from "react-icons";
 import EditFile from "./EditFile";

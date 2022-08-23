@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BiRightArrow } from "react-icons/bi";
 import styled from "styled-components";
-import { getIconByType } from "../FilesData";
+import { getIconByType } from "../FilesIcons";
 import FileTree from "./FileTree";
 
 function TreeItem({ info }) {

@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
 import styled from "styled-components";
-import {getIconByType} from "../FilesData";
+import {getIconByType} from "../FilesIcons";
 import { IconContext } from "react-icons";
 
 function ShadowFile({ info , setMove}) {
@@ -17,7 +17,7 @@ function ShadowFile({ info , setMove}) {
             window.removeEventListener('mousemove',handleMouseMove)
             window.removeEventListener('mouseup',handleMouseUp)
         }
-    },[])
+    },[setMove])
 
     const {source} = info
     const Image = getIconByType(source?.type)
