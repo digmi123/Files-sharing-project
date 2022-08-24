@@ -4,9 +4,8 @@ import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 import FilesSectionContextMenu from "./FilesSectionContextMenu";
 import File from './File';
-import {moveFile, uploadFiles} from "../functions/ApiCalls"
+import {moveFile, uploadFiles, updateFilesData} from "../functions/ApiCalls"
 import { useDispatch} from "react-redux"
-import {updateFilesData} from "../store/filesDataSlice"
 import ShadowFile from './ShadowFile';
 import { useNavigate } from "react-router-dom";
 

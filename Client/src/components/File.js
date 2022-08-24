@@ -4,9 +4,8 @@ import {getIconByType} from "../FilesIcons";
 import FileContextMenu from "./FileContextMenu";
 import { IconContext } from "react-icons";
 import EditFile from "./EditFile";
-import {moveFile} from "../functions/ApiCalls"
+import {moveFile , updateFilesData} from "../functions/ApiCalls"
 import {useDispatch} from "react-redux"
-import {updateFilesData} from "../store/filesDataSlice"
 import { useNavigate } from "react-router-dom";
 
 function File({ info , setFolder , move , setMove}) {

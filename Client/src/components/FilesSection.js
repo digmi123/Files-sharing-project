@@ -1,9 +1,8 @@
 import React,{ useState } from "react";
 import styled from "styled-components";
 import FilesArea from "./FilesArea";
-import {uploadFiles} from "../functions/ApiCalls"
+import {uploadFiles , updateFilesData} from "../functions/ApiCalls"
 import {useSelector , useDispatch} from "react-redux"
-import {updateFilesData} from "../store/filesDataSlice"
 import { useNavigate } from "react-router-dom";
 
 

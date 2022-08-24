@@ -1,8 +1,7 @@
 import React,{useEffect} from "react";
 import styled from "styled-components";
-import {createFolder} from "../functions/ApiCalls"
+import {createFolder , updateFilesData} from "../functions/ApiCalls"
 import {useDispatch} from "react-redux"
-import {updateFilesData} from "../store/filesDataSlice"
 import { useNavigate } from "react-router-dom";
 
 

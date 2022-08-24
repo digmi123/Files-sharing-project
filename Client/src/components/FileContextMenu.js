@@ -1,8 +1,7 @@
 import React,{useEffect} from "react";
 import styled from "styled-components";
-import {downloadFile,deleteFiles,deleteFolder} from "../functions/ApiCalls"
+import {downloadFile,deleteFiles,deleteFolder,updateFilesData} from "../functions/ApiCalls"
 import {useDispatch} from "react-redux"
-import {updateFilesData} from "../store/filesDataSlice"
 import { useNavigate } from "react-router-dom";
 
 
