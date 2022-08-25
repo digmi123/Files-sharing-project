@@ -1,8 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import  Axios  from 'axios';
-import API from "../ApiEndPonts"
-
-const headers = { "x-access-token": localStorage.getItem("access-token")};
 
 const initialState = {
   filesData:{

@@ -1,4 +1,3 @@
-const express = require("express");
 const {serverLogger} = require ('../logger')
 const passReq = require("../config.json");
 
