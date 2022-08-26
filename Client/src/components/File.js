@@ -41,19 +41,21 @@ function File({ info , setFolder , move , setMove}) {
   }
 
   return (
-    <FileInfo 
-    onDoubleClick={handleOpen}
-    onContextMenu={contextMenuHandler}
-    onMouseDown={handleMouseDown}
-    onMouseUp={handleMouseUp}
-    >
-      <IconContext.Provider value={{ color: 'black', size: '50px' }}>
-        <Image alt="" />
-        <FileName>{info.name}</FileName>
-        </IconContext.Provider>
-        <FileContextMenu position={contextMenu} fileInfo={info} functions={{handleOpen,openEdit}} setContextMenu={setContextMenu}/>
+    <>
+      <FileInfo 
+      onDoubleClick={handleOpen}
+      onContextMenu={contextMenuHandler}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      >
+        <IconContext.Provider value={{ color: 'black', size: '50px' }}>
+          <Image alt="" />
+          <FileName>{info.name}</FileName>
+          </IconContext.Provider>
+      </FileInfo>
+      <FileContextMenu position={contextMenu} fileInfo={info} functions={{handleOpen,openEdit}} setContextMenu={setContextMenu}/>
       {editOpen && <EditFile info={info} close={()=>{setEditOpen(false)}}/>}
-    </FileInfo>
+    </>
   );
 }
 

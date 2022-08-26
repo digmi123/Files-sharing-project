@@ -50,6 +50,7 @@ function FilesArea({filesData , back , path , setCurrentFolder}) {
 
   setCurrentFolder(filesData)
   return (
+    <>
     <FilesContainer onContextMenu={contextMenuHandler} {...getRootProps()} style={{ display: "flex"} }>
       <UpperBar>
       <input {...getInputProps()} />
@@ -57,9 +58,10 @@ function FilesArea({filesData , back , path , setCurrentFolder}) {
         {path + filesData.name + "/"}
       </UpperBar>
       {filesData.contains?.map((fileData) =>(<File key={fileData.type + fileData.id} info={fileData} setFolder={setFolder} move={move} setMove={setMove}/>))}
-      <FilesSectionContextMenu position={contextMenu} filesData={filesData} setContextMenu={setContextMenu}/>
-      <ShadowFile info={move} setMove={setMove}/>
     </FilesContainer>
+    <FilesSectionContextMenu position={contextMenu} filesData={filesData} setContextMenu={setContextMenu}/>
+    <ShadowFile info={move} setMove={setMove}/>
+    </>
   );
 }
 
