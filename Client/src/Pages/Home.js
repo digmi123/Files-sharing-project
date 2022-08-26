@@ -11,16 +11,13 @@ function Home() {
   const navigate = useNavigate()
   useEffect(()=>{
     dispatch(updateFilesData(navigate))
-},[dispatch, navigate])
-
-
-
+  },[dispatch, navigate])
 
   return (
     <HomeContainer>
       {/* files section*/}
       <FilesSection/>
-      <hr width="1" size="800" />
+      <Partition width="1" />
       {/* folders bar on left */}
       <Sidebar/>
     </HomeContainer>
@@ -32,4 +29,9 @@ export default Home
 const HomeContainer = styled.div`
   display: flex;
   width: 100%;
+`;
+
+const Partition = styled.hr`
+  width:1px;
+  background-color:black;
 `;
