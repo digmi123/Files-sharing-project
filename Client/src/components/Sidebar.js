@@ -7,7 +7,6 @@ function Sidebar() {
   let {filesData} = useSelector(state => state.filesData)
   return (
     <Container>
-      I am a SideBar
       <FileTree contains={filesData.contains} />
     </Container>
   );

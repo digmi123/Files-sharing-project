@@ -41,6 +41,10 @@ transform: ${(props) => (props.toggle === "true" ? "rotate(90deg)" : "rotate(0de
 `;
 
 const Container = styled.li`
+  font-size: 25px;
+  margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default TreeItem;

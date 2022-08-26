@@ -33,21 +33,12 @@ function FilesSection() {
       <ActionsWrapper>
         {/* 3 Buttoons */}
         <FilesSelectionContainer>
-          <input
+          <FilesInput
             type="file"
             name="file"
             onChange={changeHandler}
             multiple="multiple"
           />
-        <Button variant="contained" onClick={submitHandler}>
-          Upload Files
-        </Button>
-        <Button variant="contained" onClick={(e)=>{console.log(currentFolder.name)}}>
-          test
-        </Button>
-        <Button variant="contained">
-          Select Files
-        </Button>
         </FilesSelectionContainer>
       </ActionsWrapper>
       {/* <hr width="100vw" /> */}
@@ -72,9 +63,13 @@ const ActionsWrapper = styled.div`
   align-items: center;
 `;
 
+const FilesInput = styled.input`
+`;
+
 const FilesSelectionContainer = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Button = styled.button`
