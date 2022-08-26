@@ -37,6 +37,7 @@ function TreeItem({ info }) {
 
 
 const Arrow = styled(BiRightArrow)`
+transition: all 0.3s ease-in-out;
 transform: ${(props) => (props.toggle === "true" ? "rotate(90deg)" : "rotate(0deg)")};
 `;
 
