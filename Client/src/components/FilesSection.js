@@ -92,6 +92,7 @@ const FilesSelectionContainer = styled.div`
 `;
 
 const Button = styled.button`
+  transition: 0.5s all ease-out;
   font-size: 1em;
   margin: 0.25em;
   padding: 0.25em 0.5em;

@@ -128,6 +128,7 @@ const Button = styled.button`
   border-radius: 5px;
   background: white;
   color: #5499c7;
+  transition: 0.5s all ease-out;
   &:hover {
     background: #5499c7;
     color: white;
