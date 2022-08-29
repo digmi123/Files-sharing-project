@@ -14,7 +14,7 @@ const API = {
     },
     folders:{
         createFolder: server+"/folders/createFolder",
-        getTree: server+"/folders/getTree",
+        getProjectTree: server+"/folders/getProjectTree",
         getFolder: server+"/folders/getFolder",
         renameFolder: server+"/folders/renameFolder",
         moveFolder: server+"/folders/moveFolder",
@@ -23,6 +23,10 @@ const API = {
     users:{
         register: server+"/users/register",
         login: server+"/users/login",
+    },
+    projects:{
+        getProjects:server+"/projects/getProjects",
+        createProject:server+"/projects/createProject"
     },
     ps:{
         getPs: server+"/passwordRequirements/getPasswordRequirements",

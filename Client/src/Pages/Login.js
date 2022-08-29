@@ -22,7 +22,7 @@ function Login() {
   })
   .then((response) => {
     localStorage.setItem("access-token", response.data.token);
-    navigate("/")
+    navigate("/projects")
   })
   .catch((error) => {
     console.log(error);
@@ -36,17 +36,13 @@ function Login() {
         <LoginWrapper onSubmit={handleSubmit}>
           <Fields>
             <Input
-              // onChange={handleChange}
               name="email"
-              // value={formData.email}
               placeholder={"Email"}
               email
             />
             <Input
               type="password"
-              // onChange={handleChange}
               name="password"
-              // value={formData.password}
               placeholder={"Password"}
             />
           </Fields>

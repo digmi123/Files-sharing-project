@@ -48,7 +48,11 @@ export const deleteFiles = async (fileInfo) => {
 }
 
 export const updateFilesData = (navigate) => async (dispatch) => {
-  axios.get(API.folders.getTree,{headers})
+  const data = new FormData();
+  const projectID = localStorage.getItem("projectID");
+  if(!projectID) navigate("/projects")
+  data.append("projectID",projectID)
+  axios({method: 'post', url: API.folders.getProjectTree, data, headers})
   .then(response=> dispatch(update(response.data)))
   .catch(error => navigate("/login",{ replace: true }))
 }
@@ -86,6 +90,18 @@ export const deleteFolder = async (fileInfo) => {
   const data = new FormData();
   data.append("folderID", fileInfo.id);
   axios({method: 'post', url:API.folders.deleteFolder, data, headers})
+  .then(response => console.log(response.data))
+  .catch((error => console.error(error.response.data)))
+}
+
+export const getProjectsList = async (setList) => {
+  axios({method: 'get', url:API.projects.getProjects, headers})
+  .then(response => setList(response.data))
+  .catch((error => console.error(error.response.data)))
+}
+
+export const createProject = async (data) => {
+  axios({method: 'post', url:API.projects.createProject, data, headers})
   .then(response => console.log(response.data))
   .catch((error => console.error(error.response.data)))
 }

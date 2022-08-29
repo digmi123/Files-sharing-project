@@ -6,7 +6,7 @@ const {removeLocalFiles,removeFilesFromDB} = require("../controllers/files")
 
 router.use(verifyToken);
 router.post("/createFolder",InsertNewFolderIntoDB ,createFolder);
-router.get("/getTree",findRootFolder,getFolder);
+router.post("/getProjectTree",findRootFolder,getFolder);
 router.post("/getFolder",setFolderID,getFolder);
 router.post("/renameFolder",renameFolder);
 router.post("/moveFolder",moveFolder);

@@ -51,7 +51,7 @@ function FilesSection() {
         </FilesSelectionContainer>
       </ActionsWrapper>
       {/* <hr width="100vw" /> */}
-        <FilesArea filesData={filesData} back={()=>{console.log("in root")} } path="" setCurrentFolder={setCurrentFolder}/>
+        <FilesArea filesData={filesData} back={()=>{navigate("/projects")}} path="" setCurrentFolder={setCurrentFolder}/>
     </Container>
   );
 }
