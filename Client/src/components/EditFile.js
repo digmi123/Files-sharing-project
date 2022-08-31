@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import styled from "styled-components";
-import { rename , updateFilesData} from "../functions/ApiCalls";
+import { rename , updateFilesData} from "../API/ApiCalls";
 import {useDispatch} from "react-redux"
 import { useNavigate } from "react-router-dom";
 

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { createProject } from "../functions/ApiCalls";
+import { createProject } from "../API/ApiCalls";
+import {MdDelete} from 'react-icons/md';
 // import {useDispatch} from "react-redux"
 // import { useNavigate } from "react-router-dom";
 

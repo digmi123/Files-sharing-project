@@ -3,7 +3,7 @@ import Sidebar from '../components/Sidebar'
 import FilesSection from '../components/FilesSection'
 import styled from "styled-components";
 import { useDispatch} from "react-redux"
-import {updateFilesData} from "../functions/ApiCalls"
+import {updateFilesData} from "../API/ApiCalls"
 import { useNavigate } from "react-router-dom";
 
 function Home() {

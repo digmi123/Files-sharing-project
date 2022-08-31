@@ -4,7 +4,7 @@ import {getIconByType} from "../FilesIcons";
 import FileContextMenu from "./FileContextMenu";
 import { IconContext } from "react-icons";
 import EditFile from "./EditFile";
-import {moveFile , updateFilesData} from "../functions/ApiCalls"
+import {moveData , updateFilesData} from "../API/ApiCalls"
 import {useDispatch} from "react-redux"
 import { useNavigate } from "react-router-dom";
 
@@ -35,7 +35,7 @@ function File({ info , setFolder , move , setMove}) {
 
   const handleMouseUp = async () =>{
     if( info.type === "Folder" && move.source.id !== info.id){
-      await moveFile(move.source,info.id);
+      await moveData(move.source,info.id);
       dispatch(updateFilesData(navigate));
     }
   }

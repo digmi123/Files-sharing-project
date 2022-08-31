@@ -1,7 +1,7 @@
 import React,{ useState } from "react";
 import styled from "styled-components";
 import FilesArea from "./FilesArea";
-import {uploadFiles , updateFilesData} from "../functions/ApiCalls"
+import {uploadFiles , updateFilesData} from "../API/ApiCalls"
 import {useSelector , useDispatch} from "react-redux"
 import { useNavigate } from "react-router-dom";
 

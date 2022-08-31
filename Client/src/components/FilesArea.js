@@ -4,7 +4,7 @@ import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 import FilesSectionContextMenu from "./FilesSectionContextMenu";
 import File from './File';
-import {moveFile, uploadFiles, updateFilesData} from "../functions/ApiCalls"
+import {moveData, uploadFiles, updateFilesData} from "../API/ApiCalls"
 import { useDispatch} from "react-redux"
 import ShadowFile from './ShadowFile';
 import { useNavigate } from "react-router-dom";
@@ -37,7 +37,7 @@ function FilesArea({filesData , back , path , setCurrentFolder}) {
 
   const handleBackMouseUp = async () =>{
     if(move.source != null && filesData.parent_id){
-      await moveFile(move.source,filesData.parent_id);
+      await moveData(move.source,filesData.parent_id);
       dispatch(updateFilesData(navigate));
     }
   }

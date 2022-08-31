@@ -1,6 +1,6 @@
 import React,{useEffect} from "react";
 import styled from "styled-components";
-import {downloadFile,deleteFiles,deleteFolder,updateFilesData} from "../functions/ApiCalls"
+import {downloadFile,deleteData,updateFilesData} from "../API/ApiCalls"
 import {useDispatch} from "react-redux"
 import { useNavigate } from "react-router-dom";
 
@@ -16,11 +16,7 @@ function FileContextMenu({position, fileInfo ,functions, setContextMenu}){
     },[setContextMenu])
 
     const onDelete = async ()=>{
-      if(fileInfo.type === "Folder"){
-        await deleteFolder(fileInfo)
-      }else{
-        await deleteFiles(fileInfo);
-      }
+      await deleteData(fileInfo)
       dispatch(updateFilesData(navigate));
     }
 

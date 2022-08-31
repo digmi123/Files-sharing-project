@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import API from "../ApiEndPonts";
+import {users, ps} from "../API/ApiEndPonts";
 import ReCAPTCHA from "react-google-recaptcha";
 
 function Register() {
@@ -19,9 +19,7 @@ function Register() {
 
     //Server requests:
     const getPasswordRequirements = async () => {
-      const response = await axios.get(
-        API.ps.getPs
-      );
+      const response = await axios(ps.getPs);
       if (response.status === 200) {
         setPasswordRequirements(response.data)
       }
@@ -52,11 +50,7 @@ function Register() {
     e.preventDefault()
     const data = new FormData(e.target)
     data.append("recaptcha", recaptcha);
-    axios({
-      method: 'post',
-      url: API.users.register,
-      data,
-  })
+    axios({...users.register, data })
   .then((response) => {
     navigate("/login");
     console.log(response.data);
