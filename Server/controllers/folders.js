@@ -90,11 +90,6 @@ module.exports.findRootFolder = (req, res, next) =>{
     });
 }
 
-module.exports.setFolderID = (req, res, next) =>{
-    req.folderID = req.body.folderID;
-    next()
-}
-
 module.exports.getFolder = async (req, res) => {
     try{
         const {folderID} = req;
