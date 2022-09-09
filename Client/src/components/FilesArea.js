@@ -15,7 +15,8 @@ function FilesArea({filesData , back , path , setCurrentFolder}) {
   const dispatch = useDispatch()
   const [contextMenu, setContextMenu] = useState({show:false,x:0,y:0})
   const [folder,setFolder] = useState({open:false,data:0})
-  const [move,setMove] = useState({show:false, source:null})
+  const moveState = useState({show:false, source:null})
+  const move = moveState[0]
   const navigate = useNavigate()
 
   const contextMenuHandler = (e) =>{
@@ -57,10 +58,10 @@ function FilesArea({filesData , back , path , setCurrentFolder}) {
         <Button onMouseUp={handleBackMouseUp} onClick={back}>back</Button>
         {path + filesData.name + "/"}
       </UpperBar>
-      {filesData.contains?.map((fileData) =>(<File key={fileData.type + fileData.id} info={fileData} setFolder={setFolder} move={move} setMove={setMove}/>))}
+      {filesData.contains?.map((fileData) =>(<File key={fileData.type + fileData.id} info={fileData} setFolder={setFolder} moveState={moveState}/>))}
     </FilesContainer>
     <FilesSectionContextMenu position={contextMenu} filesData={filesData} setContextMenu={setContextMenu}/>
-    <ShadowFile info={move} setMove={setMove}/>
+    <ShadowFile moveState={moveState}/>
     </>
   );
 }

@@ -8,7 +8,8 @@ import {moveData , updateFilesData} from "../API/ApiCalls"
 import {useDispatch} from "react-redux"
 import { useNavigate } from "react-router-dom";
 
-function File({ info , setFolder , move , setMove}) {
+function File({ info , setFolder ,moveState}) {
+  const [move,setMove] = moveState
   const dispatch = useDispatch()
   const [contextMenu, setContextMenu] = useState({show:false,x:0,y:0})
   const [editOpen,setEditOpen] = useState(false)
