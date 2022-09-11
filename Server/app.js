@@ -25,6 +25,7 @@ db = mysql.createConnection({
 });
 app.use(cors());
 app.use(cookies());
+app.use(express.json());
 app.use(upload.array('files'));
 
 app.get("/",(req, res)=>{res.send("server is up and running")})

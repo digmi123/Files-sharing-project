@@ -7,8 +7,7 @@ export const downloadFile = async (fileInfo) =>{
     console.error("you try to download a folder");
       return;
   }
-  const data = new FormData();
-  data.append("fileID", fileInfo.id);
+  const data = {fileID : fileInfo.id};
   axios({...files.download , data})
   .then((response) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -32,18 +31,16 @@ export const uploadFiles = async (folder,filesData) => {
 
 export const deleteData = async (fileInfo) => {
   const {deleteData} = fileInfo.type === "Folder" ? folders : files;
-    const data = new FormData();
-    data.append("fileID", fileInfo.id);
+    const data = {fileID:fileInfo.id}
     axios({...deleteData, data})
     .then(response => console.log(response.data))
     .catch((error => console.error(error.response.data)))
 }
 
 export const updateFilesData = (navigate) => async (dispatch) => {
-  const data = new FormData();
   const projectID = localStorage.getItem("projectID");
   if(!projectID) navigate("/projects",{ replace: true })
-  data.append("projectID",projectID)
+  const data = {projectID}
   axios({...folders.getProjectTree, data})
   .then(response=> dispatch(update(response.data)))
   .catch(error => navigate("/login",{ replace: true }))
@@ -51,18 +48,14 @@ export const updateFilesData = (navigate) => async (dispatch) => {
 
 export const rename = async (file,name) => {
   const {rename} = file.type === "Folder" ? folders : files;
-  const data = new FormData();
-  data.append("id", file.id);
-  data.append("name", name);
+  const data = {id:file.id,name}
   axios({...rename, data})
   .then(response => console.log(response.data))
   .catch((error => console.error(error.response.data)))
 }
 
 export const createFolder = async (folderInfo) =>{
-  const data = new FormData();
-  data.append("parentId", folderInfo.id);
-  data.append("name", "New Folder");
+  const data = {parentId:folderInfo.id,name:"New Folder"}
   axios({...folders.create, data})
   .then(response => console.log(response.data))
   .catch((error => console.error(error.response.data)))
@@ -70,9 +63,7 @@ export const createFolder = async (folderInfo) =>{
 
 export const moveData = async (source , destinationID) =>{
   const {move} = source.type === "Folder" ? folders : files;
-  const data = new FormData();
-  data.append("destinationID", destinationID);
-  data.append("sourceID", source.id);
+  const data = {destinationID,sourceID:source.id};
   axios({...move, data})
   .then(response => console.log(response.data))
   .catch((error => console.error(error.response.data)))
