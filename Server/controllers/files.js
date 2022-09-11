@@ -107,10 +107,10 @@ module.exports.sendFile = async (req, res, next) => {
   });
 }
 
-module.exports.cleanUp = () =>{
+module.exports.cleanUp = (req, res) =>{
   fs.unlink("./" + req.decrypt.decryptFilePath, (erorr) => {
     if(erorr) { serverLogger.error(err); return res.status(500).send("Error")};
-    serverLogger.info(`Cleaner ${id}`)
+    serverLogger.info(`Cleaner ${req.db.id}`)
   });
 }
 
