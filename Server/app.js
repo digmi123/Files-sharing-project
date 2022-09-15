@@ -13,6 +13,7 @@ const usersRoutes = require('./routes/users');
 const projectsRoutes = require("./routes/projects")
 const permissionsRoutes = require("./routes/permissions")
 const passwordRequirements = require("./routes/passwordRequirements");
+const { emailNoExists } = require("./controllers/users");
 
 dotenv.config()
 config = process.env;

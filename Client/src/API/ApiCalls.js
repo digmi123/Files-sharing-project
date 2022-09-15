@@ -1,4 +1,4 @@
-import {files,folders,projects} from "./ApiEndPonts";
+import {files,folders,projects,permissions} from "./ApiEndPonts";
 import axios from "axios";
 import { update } from "../store/filesDataSlice";
 
@@ -75,8 +75,20 @@ export const getProjectsList = async (setList) => {
   .catch((error => console.error(error.response.data)))
 }
 
-export const createProject = async (data) => {
-  axios({...projects.createProject, data})
+export const createProject = async (updateProjectsList) => {
+  axios(projects.createProject)
+  .then(response => updateProjectsList())
+  .catch((error => console.error(error.response.data)))
+}
+
+export const getPermissionsList = async (PermissionsList) =>{
+  axios(permissions.permissionsList)
+  .then(response => PermissionsList(response.data))
+  .catch((error => console.error(error.response.data)))
+}
+
+export const editProject = async (data) =>{
+  axios({...projects.editProject,data})
   .then(response => console.log(response.data))
   .catch((error => console.error(error.response.data)))
 }

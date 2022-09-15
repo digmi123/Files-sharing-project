@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   filesData:{
-    id : 0,
+    id : null,
     type: "Folder",
     name: "root",
     contains : []
@@ -20,5 +20,5 @@ export const filesDataSlice = createSlice({
 })
 
 
-export const { update } = filesDataSlice.actions
+export const { update , setProjectID } = filesDataSlice.actions
 export default filesDataSlice.reducer

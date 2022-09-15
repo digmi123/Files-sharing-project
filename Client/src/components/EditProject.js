@@ -1,40 +1,57 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { createProject } from "../API/ApiCalls";
-import {MdDelete} from 'react-icons/md';
-// import {useDispatch} from "react-redux"
-// import { useNavigate } from "react-router-dom";
+import { editProject } from "../API/ApiCalls";
+import { MdDelete } from 'react-icons/md';
+import ProjectAccess from "./ProjectAccess";
 
 
-function EditProject ({info , EditProjectState}){
-//   const dispatch = useDispatch()
-  const operation = info ? ((data)=>{console.log("edit")}) : createProject;
-  const [show,setShow] = EditProjectState;
-  const close = () => {setShow(false)}
+function EditProject({ projectInfoState, EditProjectState }) {
+  const [projectInfo,setProjectInfo] = projectInfoState
 
-  const handleSubmit = async (e)=>{
-    e.preventDefault()
-    const data = new FormData(e.target)
-    operation(data)
-    close();
+  useEffect(() => {
+    console.log(projectInfo?.id);
+  }, [projectInfo])
+
+  const [show, setShow] = EditProjectState;
+
+  const close = e => {
+    e.preventDefault();
+    setShow(false);
   }
-  if(!show) return (<></>);
-  return(
-  <Container>
-      <Text>{info ? 'Edit' : 'New'} Project</Text>
+
+  const handleRename = e => {
+    setProjectInfo(pre => ({...pre,name:e.target.value}))
+  }
+
+  const handleSubmit = async (e) => {
+    editProject(projectInfo)
+    close(e);
+  }
+  if (!show) return (<></>);
+  return (
+    <Container>
+      <Text>{projectInfo?.id ? 'Edit' : 'New'} Project</Text>
       <form onSubmit={handleSubmit}>
-      <input name="name" defaultValue={info?.name}></input>    
+        <input value={projectInfo.name} onChange={handleRename}></input>
+        <ProjectAccess projectInfoState={projectInfoState} name="ProjectAccess" />
         <div>
-            <Button onClick={close}>Cancel</Button>
-            <Button type="submit">Submit</Button>        
+          <Button onClick={close}>Cancel</Button>
+          <Button type="submit">Submit</Button>
         </div>
       </form>
-  </Container>
+      <div>
+        {projectInfo?.id && (
+          <DeleteButton>
+            <MdDelete />
+          </DeleteButton>)}
+      </div>
+
+    </Container>
   )
 }
 
 const Container = styled.div`
-  background-color:#fff;
+  background-color:#ffffff;
   border: 2px solid #5499C7;
   border-radius: 5px;
   box-sizing: border-box;
@@ -68,5 +85,18 @@ const Button = styled.button`
     color: white;
   }
 `
+
+const DeleteButton = styled.button`
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 0.5em;
+  border: 2px solid #ff0000;
+  border-radius: 3px;
+  background: white;
+  color: #ff0000;
+  &:hover {
+    background: #ff0000;
+    color: white;
+}`
 
 export default EditProject;

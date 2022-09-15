@@ -4,7 +4,8 @@ const verifyToken = require("../auth")
 
 const {getPermissionsList} = require("../controllers/permissions");
 
-router.use(verifyToken)
 router.get("/permissionsList", getPermissionsList);
+router.use(verifyToken)
+
 
 module.exports = router;
