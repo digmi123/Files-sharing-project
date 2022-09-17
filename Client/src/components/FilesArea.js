@@ -4,7 +4,7 @@ import { useDropzone } from "react-dropzone";
 import styled from "styled-components";
 import FilesSectionContextMenu from "./FilesSectionContextMenu";
 import File from "./File";
-import { moveFile, uploadFiles, updateFilesData } from "../functions/ApiCalls";
+import { moveData, uploadFiles, updateFilesData } from "../API/ApiCalls";
 import { useDispatch } from "react-redux";
 import ShadowFile from "./ShadowFile";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,8 @@ function FilesArea({ filesData, back, path, setCurrentFolder }) {
   const dispatch = useDispatch();
   const [contextMenu, setContextMenu] = useState({ show: false, x: 0, y: 0 });
   const [folder, setFolder] = useState({ open: false, data: 0 });
-  const [move, setMove] = useState({ show: false, source: null });
+  const moveState = useState({ show: false, source: null });
+  const move = moveState[0];
   const navigate = useNavigate();
 
   const contextMenuHandler = (e) => {
@@ -35,7 +36,7 @@ function FilesArea({ filesData, back, path, setCurrentFolder }) {
 
   const handleBackMouseUp = async () => {
     if (move.source != null && filesData.parent_id) {
-      await moveFile(move.source, filesData.parent_id);
+      await moveData(move.source, filesData.parent_id);
       dispatch(updateFilesData(navigate));
     }
   };
@@ -52,36 +53,35 @@ function FilesArea({ filesData, back, path, setCurrentFolder }) {
 
   setCurrentFolder(filesData);
   return (
-    <FilesContainer
-      onContextMenu={contextMenuHandler}
-      {...getRootProps()}
-      style={{ display: "flex" }}
-    >
-      <UpperBar>
-        <input {...getInputProps()} />
-        <Button onMouseUp={handleBackMouseUp} onClick={back}>
-          back
-        </Button>
-        <PathContainer>{path + filesData.name + "/"}</PathContainer>
-      </UpperBar>
-      <FilesWrapper>
+    <>
+      <FilesContainer
+        onContextMenu={contextMenuHandler}
+        {...getRootProps()}
+        style={{ display: "flex" }}
+      >
+        <UpperBar>
+          <input {...getInputProps()} />
+          <Button onMouseUp={handleBackMouseUp} onClick={back}>
+            back
+          </Button>
+          <PathContainer>{path + filesData.name + "/"}</PathContainer>
+        </UpperBar>
         {filesData.contains?.map((fileData) => (
           <File
             key={fileData.type + fileData.id}
             info={fileData}
             setFolder={setFolder}
-            move={move}
-            setMove={setMove}
+            moveState={moveState}
           />
         ))}
-      </FilesWrapper>
+      </FilesContainer>
       <FilesSectionContextMenu
         position={contextMenu}
         filesData={filesData}
         setContextMenu={setContextMenu}
       />
-      <ShadowFile info={move} setMove={setMove} />
-    </FilesContainer>
+      <ShadowFile moveState={moveState} />
+    </>
   );
 }
 

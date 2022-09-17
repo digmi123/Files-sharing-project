@@ -96,21 +96,6 @@ module.exports.insertNewUserIntoDB = async (req, res,next) => {
   });
 }
 
-module.exports.insertUsersFoldersIntoDB = async (req, res,next) => {
-  const folderID = req.db.folders.insertId;
-  const userID = req.db.users.insertId;
-  const sql = "INSERT INTO users_folders (folder_id, user_id) VALUES (?,?)"
-  var query = db.query(sql, [folderID,userID])
-  query.on("error", function (err) {
-    serverLogger.error(err)
-    res.status(500).send("There was an error updataing the DB");
-  });
-  query.on("result", function (result) {
-    req.db.UsersFolders = result;
-    return next();
-  });
-}
-
 module.exports.register = async (req, res) => {
   res.status(200).send("Registration completed successfully")
 }

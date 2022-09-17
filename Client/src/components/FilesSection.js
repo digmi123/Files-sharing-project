@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import FilesArea from "./FilesArea";
-import { uploadFiles, updateFilesData } from "../functions/ApiCalls";
-import { useSelector, useDispatch } from "react-redux";
+import {uploadFiles , updateFilesData} from "../API/ApiCalls"
+import {useSelector , useDispatch} from "react-redux"
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -54,14 +54,7 @@ function FilesSection() {
         </FilesSelectionContainer>
       </ActionsWrapper>
       {/* <hr width="100vw" /> */}
-      <FilesArea
-        filesData={filesData}
-        back={() => {
-          console.log("in root");
-        }}
-        path=""
-        setCurrentFolder={setCurrentFolder}
-      />
+        <FilesArea filesData={filesData} back={()=>{navigate("/projects")}} path="" setCurrentFolder={setCurrentFolder}/>
     </Container>
   );
 }

@@ -3,9 +3,9 @@ import styled from "styled-components";
 import {getIconByType} from "../FilesIcons";
 import { IconContext } from "react-icons";
 
-function ShadowFile({ info , setMove}) {
+function ShadowFile({ moveState }) {
 
-
+    const [info , setMove] = moveState;
     const [mouseCoordinates,satMouseCoordinates] = useState({x:0,y:0})
 
     useEffect(()=>{

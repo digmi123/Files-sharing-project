@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
 import ReCAPTCHA from "react-google-recaptcha";
-import API from "../ApiEndPonts";
+import {users} from "../API/ApiEndPonts";
 
 
 function Login() {
@@ -15,14 +15,10 @@ function Login() {
     const data = new FormData(e.target)
     const recaptcha = recaptchaRef.current.execute();
     data.append("recaptcha", recaptcha)
-    axios({
-      method: 'post',
-      url: API.users.login,
-      data,
-  })
+    axios({...users.login, data })
   .then((response) => {
     localStorage.setItem("access-token", response.data.token);
-    navigate("/")
+    navigate("/projects")
   })
   .catch((error) => {
     console.log(error);
@@ -36,17 +32,13 @@ function Login() {
         <LoginWrapper onSubmit={handleSubmit}>
           <Fields>
             <Input
-              // onChange={handleChange}
+              type="text"
               name="email"
-              // value={formData.email}
               placeholder={"Email"}
-              email
             />
             <Input
               type="password"
-              // onChange={handleChange}
               name="password"
-              // value={formData.password}
               placeholder={"Password"}
             />
           </Fields>

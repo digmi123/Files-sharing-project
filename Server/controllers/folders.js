@@ -1,4 +1,3 @@
-const express = require('express')
 const {serverLogger} = require ('../logger')
 
 
@@ -30,8 +29,8 @@ module.exports.insertRootFolderIntoDB = async (req, res,next) => {
             res.status(500).send("There was an error uploading folder to db");
         });
         query.on("result", function (result) {
-            req.db.folders = result;
-            serverLogger.info(`root folder was created for user ${req.db.users.insertId}`)
+            req.foldersID = result.insertId;
+            serverLogger.info(`root folder was created - folder id : ${result.insertId}`)
             return next();
         });
     }catch(err){
@@ -78,8 +77,9 @@ const createTree = async (folderID) =>{
 }
 
 module.exports.findRootFolder = (req, res, next) =>{
-    const sql = "SELECT folder_id FROM `secure-collaboration`.users_folders WHERE user_id=(?);"
-    let query = db.query(sql,[req.user.id])
+    const {projectID} = req.body;
+    const sql = "SELECT folder_id FROM projects WHERE id=(?);"
+    let query = db.query(sql,[projectID])
     query.on("error", function (err) {
         serverLogger.error(err)
         res.status(500).send("There was an error uploading files to db");
@@ -88,11 +88,6 @@ module.exports.findRootFolder = (req, res, next) =>{
         req.folderID = result.folder_id;
         return next();
     });
-}
-
-module.exports.setFolderID = (req, res, next) =>{
-    req.folderID = req.body.folderID;
-    next()
 }
 
 module.exports.getFolder = async (req, res) => {
