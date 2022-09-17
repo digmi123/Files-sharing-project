@@ -29,9 +29,13 @@ module.exports.removeAccess = (req, res, next) => {
     sql = "DELETE FROM access where project_id=? and user_id not in (select id from users where email in (?));"
     const { id, accessinfo } = req.body
     const emails = accessinfo.map(access => access.email)
-    // console.log(db.formt(sql, [id, emails]));
     db.query(sql, [id, emails], (error, results) => {
         if (error) { serverLogger.error(error) }
     });
     next()
+}
+
+
+module.exports.confirmPermissions = permissions => (req, res, next) => {
+    sql = "SELECT * FROM `secure-collaboration`.permissions where name in (SELECT roll FROM access where user_id=3 and project_id=4)"
 }

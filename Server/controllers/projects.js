@@ -38,9 +38,6 @@ module.exports.giveAccess = (req, res, next) => {
     })
 }
 
-module.exports.createProject = (req, res) => {
-    res.status(200).send("Project created successfuly");
-}
 
 module.exports.rename = (req, res, next) => {
     const {name , projectID} = req.body;

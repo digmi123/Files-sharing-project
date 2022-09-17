@@ -12,7 +12,7 @@ const { createAndUpdateAccess, removeAccess } = require("../controllers/permissi
 
 router.use(verifyToken)
 router.get("/getProjects", getProjectsList);
-router.get("/createProject", insertRootFolderIntoDB, insertProjectIntoDB, giveAccess, createProject);
+router.get("/createProject", insertRootFolderIntoDB, insertProjectIntoDB, giveAccess, (req, res) => res.status(200).send("Project created successfuly"));
 router.post("/editProject", rename, createAndUpdateAccess, removeAccess, (req, res) => res.status(200).send("Project Update successfuly"));
 
 module.exports = router;
