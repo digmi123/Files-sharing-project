@@ -95,6 +95,7 @@ const FilesContainer = styled.div`
   flex-wrap: wrap;
   min-height: 60vh;
   align-content: flex-start;
+  background-color: rgb(255, 255, 255, 0.5);
 `;
 
 const FilesWrapper = styled.div`
@@ -117,6 +118,7 @@ const PathContainer = styled.div`
   margin-left: 1em;
   font-size: 18px;
   font-weight: 500;
+  background-color: rgb(0, 0, 170, 0.015);
 `;
 
 const Button = styled.button`
