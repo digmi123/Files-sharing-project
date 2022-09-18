@@ -1,19 +1,19 @@
-import React,{ useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import FilesArea from "./FilesArea";
-import {uploadFiles , updateFilesData} from "../API/ApiCalls"
-import {useSelector , useDispatch} from "react-redux"
+import { uploadFiles, updateFilesData } from "../API/ApiCalls"
+import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom";
 
 
 function FilesSection() {
   const dispatch = useDispatch()
   //Stats: 
-  let {filesData} = useSelector(state => state.filesData)
+  let { filesData } = useSelector(state => state.filesData)
   const [files, setFiles] = useState([]);
-  const [currentFolder,setCurrentFolder] = useState([]);
+  const [currentFolder, setCurrentFolder] = useState([]);
   const navigate = useNavigate()
-  
+
   //Methods:
   const changeHandler = (e) => {
     setFiles([
@@ -23,7 +23,7 @@ function FilesSection() {
   };
 
   const submitHandler = async () => {
-    await uploadFiles(currentFolder,files);
+    await uploadFiles(currentFolder, files);
     dispatch(updateFilesData(navigate))
   };
 
@@ -39,19 +39,19 @@ function FilesSection() {
             onChange={changeHandler}
             multiple="multiple"
           />
-        <Button variant="contained" onClick={submitHandler}>
-          Upload Files
-        </Button>
-        <Button variant="contained" onClick={(e)=>{console.log(currentFolder.name)}}>
-          test
-        </Button>
-        <Button variant="contained">
-          Select Files
-        </Button>
+          <Button variant="contained" onClick={submitHandler}>
+            Upload Files
+          </Button>
+          <Button variant="contained" onClick={(e) => { console.log(currentFolder.name) }}>
+            test
+          </Button>
+          <Button variant="contained">
+            Select Files
+          </Button>
         </FilesSelectionContainer>
       </ActionsWrapper>
       {/* <hr width="100vw" /> */}
-        <FilesArea filesData={filesData} back={()=>{navigate("/projects")}} path="" setCurrentFolder={setCurrentFolder}/>
+      <FilesArea filesData={filesData} back={() => { navigate("/projects") }} path="" setCurrentFolder={setCurrentFolder} />
     </Container>
   );
 }

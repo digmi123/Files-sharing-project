@@ -45,7 +45,7 @@ function ProjectAccess({ projectInfoState }) {
                         ))}
                     </select>
                     <button type="button" onClick={removeIndex(index)}>
-                        <MdDelete/>
+                        <MdDelete />
                     </button>
                 </div>
             ))}

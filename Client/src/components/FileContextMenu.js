@@ -1,48 +1,48 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import {downloadFile,deleteData,updateFilesData} from "../API/ApiCalls"
-import {useDispatch} from "react-redux"
+import { downloadFile, deleteData, updateFilesData } from "../API/ApiCalls"
+import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom";
 
 
-function FileContextMenu({position, fileInfo ,functions, setContextMenu}){
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+function FileContextMenu({ position, fileInfo, functions, setContextMenu }) {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-    useEffect(()=>{
-      const handleClik = ()=>{setContextMenu({show:false,x:0,y:0})}
-      window.addEventListener('click',handleClik)
-      return () => window.removeEventListener('click',handleClik)
-    },[setContextMenu])
+  useEffect(() => {
+    const handleClik = () => { setContextMenu({ show: false, x: 0, y: 0 }) }
+    window.addEventListener('click', handleClik)
+    return () => window.removeEventListener('click', handleClik)
+  }, [setContextMenu])
 
-    const onDelete = async ()=>{
-      await deleteData(fileInfo)
-      dispatch(updateFilesData(navigate));
-    }
+  const onDelete = async () => {
+    await deleteData(fileInfo)
+    dispatch(updateFilesData(navigate));
+  }
 
-    const onDownload = () => downloadFile(fileInfo)
+  const onDownload = () => downloadFile(fileInfo)
 
-    const onRefresh = () => dispatch(updateFilesData(navigate))
-    if(!position.show) return(<></>)
+  const onRefresh = () => dispatch(updateFilesData(navigate))
+  if (!position.show) return (<></>)
 
-    return(
-        <Container position={position}>
-            {
-            fileInfo.type !== "Folder" ?
-            (<>
+  return (
+    <Container position={position}>
+      {
+        fileInfo.type !== "Folder" ?
+          (<>
             <Button onClick={onDownload}>Download</Button>
-            </>)
-            :
-            (<>
+          </>)
+          :
+          (<>
             <Button onClick={functions.onOpen}>Open</Button>
-            </>)
-            }
-            <Button onClick={onDelete}>Delete</Button>
-            <Button onClick={functions.openEdit}>Edit</Button>
-            <Button onClick={onRefresh}>Refresh</Button>
+          </>)
+      }
+      <Button onClick={onDelete}>Delete</Button>
+      <Button onClick={functions.openEdit}>Edit</Button>
+      <Button onClick={onRefresh}>Refresh</Button>
 
-        </Container>
-    )
+    </Container>
+  )
 }
 
 const Container = styled.div`

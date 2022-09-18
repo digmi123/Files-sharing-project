@@ -6,7 +6,7 @@ function Projects() {
 
   return (
     <Container>
-        <ProjectsList/>
+      <ProjectsList />
     </Container>
   );
 }

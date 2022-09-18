@@ -6,7 +6,7 @@ import ProjectAccess from "./ProjectAccess";
 
 
 function EditProject({ projectInfoState, EditProjectState }) {
-  const [projectInfo,setProjectInfo] = projectInfoState
+  const [projectInfo, setProjectInfo] = projectInfoState
 
   useEffect(() => {
     console.log(projectInfo?.id);
@@ -20,7 +20,7 @@ function EditProject({ projectInfoState, EditProjectState }) {
   }
 
   const handleRename = e => {
-    setProjectInfo(pre => ({...pre,name:e.target.value}))
+    setProjectInfo(pre => ({ ...pre, name: e.target.value }))
   }
 
   const handleSubmit = async (e) => {

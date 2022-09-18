@@ -3,26 +3,26 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
 import ReCAPTCHA from "react-google-recaptcha";
-import {users} from "../API/ApiEndPonts";
+import { users } from "../API/ApiEndPonts";
 
 
 function Login() {
   const navigate = useNavigate();
   const recaptchaRef = React.useRef();
 
-  const handleSubmit = (e)=>{
+  const handleSubmit = (e) => {
     e.preventDefault()
     const data = new FormData(e.target)
     const recaptcha = recaptchaRef.current.execute();
     data.append("recaptcha", recaptcha)
-    axios({...users.login, data })
-  .then((response) => {
-    localStorage.setItem("access-token", response.data.token);
-    navigate("/projects")
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+    axios({ ...users.login, data })
+      .then((response) => {
+        localStorage.setItem("access-token", response.data.token);
+        navigate("/projects")
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   return (

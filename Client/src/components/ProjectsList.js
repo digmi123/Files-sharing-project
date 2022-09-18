@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { MdEdit } from 'react-icons/md';
 import { useNavigate } from "react-router-dom";
-import { getProjectsList ,createProject } from "../API/ApiCalls"
+import { getProjectsList, createProject } from "../API/ApiCalls"
 import EditeProject from "./EditProject"
 
 

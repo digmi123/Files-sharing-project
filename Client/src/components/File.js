@@ -1,61 +1,61 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import {getIconByType} from "../FilesIcons";
+import { getIconByType } from "../FilesIcons";
 import FileContextMenu from "./FileContextMenu";
 import { IconContext } from "react-icons";
 import EditFile from "./EditFile";
-import {moveData , updateFilesData} from "../API/ApiCalls"
-import {useDispatch} from "react-redux"
+import { moveData, updateFilesData } from "../API/ApiCalls"
+import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom";
 
-function File({ info , setFolder ,moveState}) {
-  const [move,setMove] = moveState
+function File({ info, setFolder, moveState }) {
+  const [move, setMove] = moveState
   const dispatch = useDispatch()
-  const [contextMenu, setContextMenu] = useState({show:false,x:0,y:0})
-  const [editOpen,setEditOpen] = useState(false)
+  const [contextMenu, setContextMenu] = useState({ show: false, x: 0, y: 0 })
+  const [editOpen, setEditOpen] = useState(false)
   const navigate = useNavigate()
 
-  const contextMenuHandler = (e) =>{
+  const contextMenuHandler = (e) => {
     e.preventDefault()
-    setContextMenu({show:true, x : e.pageX, y : e.pageY})
+    setContextMenu({ show: true, x: e.pageX, y: e.pageY })
   }
 
 
   const Image = getIconByType(info.type)
 
-  const handleOpen = () =>{
-    if(info.type === "Folder")
-      setFolder({open:true,data:info.id})
+  const handleOpen = () => {
+    if (info.type === "Folder")
+      setFolder({ open: true, data: info.id })
   }
 
-  const openEdit = ()=>{setEditOpen(true)}
+  const openEdit = () => { setEditOpen(true) }
 
-  const handleMouseDown = () =>{
-    setMove({show:true, source:info})
+  const handleMouseDown = () => {
+    setMove({ show: true, source: info })
   }
 
-  const handleMouseUp = async () =>{
-    if( info.type === "Folder" && move.source.id !== info.id){
-      await moveData(move.source,info.id);
+  const handleMouseUp = async () => {
+    if (info.type === "Folder" && move.source.id !== info.id) {
+      await moveData(move.source, info.id);
       dispatch(updateFilesData(navigate));
     }
   }
 
   return (
     <>
-      <FileInfo 
-      onDoubleClick={handleOpen}
-      onContextMenu={contextMenuHandler}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
+      <FileInfo
+        onDoubleClick={handleOpen}
+        onContextMenu={contextMenuHandler}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
       >
         <IconContext.Provider value={{ color: 'black', size: '50px' }}>
           <Image alt="" />
           <FileName>{info.name}</FileName>
-          </IconContext.Provider>
+        </IconContext.Provider>
       </FileInfo>
-      <FileContextMenu position={contextMenu} fileInfo={info} functions={{handleOpen,openEdit}} setContextMenu={setContextMenu}/>
-      {editOpen && <EditFile info={info} close={()=>{setEditOpen(false)}}/>}
+      <FileContextMenu position={contextMenu} fileInfo={info} functions={{ handleOpen, openEdit }} setContextMenu={setContextMenu} />
+      {editOpen && <EditFile info={info} close={() => { setEditOpen(false) }} />}
     </>
   );
 }

@@ -1,56 +1,56 @@
 const passwordRequirements = require('../config')["password requirements"];
-const {serverLogger} = require ('../logger');
+const { serverLogger } = require('../logger');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const Axios = require("axios");
 
-module.exports.captcha = (req, res, next) =>{
+module.exports.captcha = (req, res, next) => {
   return next() // offline mode
-  const {recaptcha} = req.body
+  const { recaptcha } = req.body
   Axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${config.CAPTCHA_KEY}&response=${recaptcha}`)
-  .then((response) => {
-      if(response.data.success){
-          return next()
+    .then((response) => {
+      if (response.data.success) {
+        return next()
       }
       return res.status(401).send("captcha");
-  }).catch((error) => {
-    serverLogger.error(error)
-    return res.status(500).send("An error occurred in captcha");
-  });
+    }).catch((error) => {
+      serverLogger.error(error)
+      return res.status(500).send("An error occurred in captcha");
+    });
 }
 
 module.exports.getUserFromDB = async (req, res, next) => {
   const { password, email } = req.body;
   const sql = "SELECT id,email,hased_password FROM users WHERE email=(?)"
   db.query(sql, [email], async (error, results) => {
-    if(error) {
+    if (error) {
       serverLogger.error(error)
       return res.status(500).send("An error occurred");
     }
-    if(!results.length) return res.status(400).send("Email or Password is incorrect");
-    req.db = {user:results[0]};
+    if (!results.length) return res.status(400).send("Email or Password is incorrect");
+    req.db = { user: results[0] };
     next();
   })
 }
 
 module.exports.verifyPassword = async (req, res, next) => {
-  const {hased_password} = req.db.user;
-  const {password} = req.body;
-  const isPasswordValid = await bcrypt.compare(password,hased_password);
-  if (!isPasswordValid){
+  const { hased_password } = req.db.user;
+  const { password } = req.body;
+  const isPasswordValid = await bcrypt.compare(password, hased_password);
+  if (!isPasswordValid) {
     return res.status(500).send("Email or Password is incorrect");
   }
   next()
 }
 
 module.exports.sendToken = (req, res) => {
-  const {id} = req.db.user;
-  const options = {expiresIn : "30d"}
-  const token = jwt.sign({id}, config.TOKEN_KEY,options);
+  const { id } = req.db.user;
+  const options = { expiresIn: "30d" }
+  const token = jwt.sign({ id }, config.TOKEN_KEY, options);
   return res.json({ token });
 }
 
-module.exports.verifyPasswordRequirements = async (req, res,next) => {
+module.exports.verifyPasswordRequirements = async (req, res, next) => {
   const password = req.body.password
   const valid = Object.values(passwordRequirements).every(requirement => {
     let re = new RegExp(requirement.regex)
@@ -62,36 +62,36 @@ module.exports.verifyPasswordRequirements = async (req, res,next) => {
   return next();
 }
 
-module.exports.emailNoExists = async (req, res,next) => {
-  const {email} = req.body
+module.exports.emailNoExists = async (req, res, next) => {
+  const { email } = req.body
   const sql = "SELECT id FROM users WHERE email=(?)"
-  db.query(sql, [email],(error, results)=>{
-    if(error) return res.status(500).send("An error occurred");
-    if(results.length) return res.status(400).send("Email can`t be used");
+  db.query(sql, [email], (error, results) => {
+    if (error) return res.status(500).send("An error occurred");
+    if (results.length) return res.status(400).send("Email can`t be used");
     next();
   })
 }
 
-module.exports.hashPassword = async (req, res,next) => {
-  try{
+module.exports.hashPassword = async (req, res, next) => {
+  try {
     req.body.password = await bcrypt.hash(req.body.password, 10)
     next()
-  }catch(err){
+  } catch (err) {
     serverLogger.error(err)
     res.status(500).send("An error occurred")
   }
 }
 
-module.exports.insertNewUserIntoDB = async (req, res,next) => {
-  const { email,password } = req.body;
+module.exports.insertNewUserIntoDB = async (req, res, next) => {
+  const { email, password } = req.body;
   const sql = "INSERT INTO users (email, hased_password) VALUES (?,?)"
-  var query = db.query(sql, [email,password])
+  var query = db.query(sql, [email, password])
   query.on("error", function (err) {
     serverLogger.error(err)
     res.status(500).send("There was an error updataing the DB");
   });
   query.on("result", function (result) {
-    req.db = {users : result};
+    req.db = { users: result };
     serverLogger.info(`User id ${result.insertId} was created in the DB`)
     return next();
   });

@@ -1,7 +1,7 @@
 var mysql = require("mysql2");
 const dotenv = require("dotenv");
 const express = require("express");
-const {serverLogger} = require ('./logger')
+const { serverLogger } = require('./logger')
 const app = express();
 const cors = require("cors");
 const cookies = require('cookie-parser')
@@ -29,7 +29,7 @@ app.use(cookies());
 app.use(express.json());
 app.use(upload.array('files'));
 
-app.get("/",(req, res)=>{res.send("server is up and running")})
+app.get("/", (req, res) => { res.send("server is up and running") })
 app.use("/passwordRequirements", passwordRequirements);
 app.use("/files", filesRoutes);
 app.use("/folders", foldersRoutes);

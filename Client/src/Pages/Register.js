@@ -1,29 +1,29 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {users, ps} from "../API/ApiEndPonts";
+import { users, ps } from "../API/ApiEndPonts";
 import ReCAPTCHA from "react-google-recaptcha";
 
 function Register() {
 
-    const navigate = useNavigate();
-    const recaptchaRef = React.useRef();
-    const [passwordRequirements, setPasswordRequirements] = useState([]);
-    const [requirementsIsOpen, setRequirementsIsOpen] = useState(true);
+  const navigate = useNavigate();
+  const recaptchaRef = React.useRef();
+  const [passwordRequirements, setPasswordRequirements] = useState([]);
+  const [requirementsIsOpen, setRequirementsIsOpen] = useState(true);
 
-    useEffect(() => {
-      getPasswordRequirements()
-    }, []);
+  useEffect(() => {
+    getPasswordRequirements()
+  }, []);
 
-    //Server requests:
-    const getPasswordRequirements = async () => {
-      const response = await axios(ps.getPs);
-      if (response.status === 200) {
-        setPasswordRequirements(response.data)
-      }
-    };
+  //Server requests:
+  const getPasswordRequirements = async () => {
+    const response = await axios(ps.getPs);
+    if (response.status === 200) {
+      setPasswordRequirements(response.data)
+    }
+  };
 
   const [formData, setFormData] = useState({
     email: "",
@@ -31,8 +31,8 @@ function Register() {
     confirmPassword: ""
   });
 
-  const handleRequirements = () =>{
-      setRequirementsIsOpen(!requirementsIsOpen);
+  const handleRequirements = () => {
+    setRequirementsIsOpen(!requirementsIsOpen);
   }
 
   const handleChange = (e) => {
@@ -42,22 +42,22 @@ function Register() {
     });
   };
 
-  const handleSubmit = (e)=>{
-    if(formData.password !== formData.confirmPassword){
-      return 
+  const handleSubmit = (e) => {
+    if (formData.password !== formData.confirmPassword) {
+      return
     }
     const recaptcha = recaptchaRef.current.execute();
     e.preventDefault()
     const data = new FormData(e.target)
     data.append("recaptcha", recaptcha);
-    axios({...users.register, data })
-  .then((response) => {
-    navigate("/login");
-    console.log(response.data);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+    axios({ ...users.register, data })
+      .then((response) => {
+        navigate("/login");
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   return (
@@ -91,7 +91,7 @@ function Register() {
 
             <Button
               onClick={handleRequirements}
-              style={{ marginBottom: "15px", fontSize: "13px" , width: "70%"}}
+              style={{ marginBottom: "15px", fontSize: "13px", width: "70%" }}
             >
               {requirementsIsOpen ? "Hide requirements" : "Show requirements"}
             </Button>
@@ -126,7 +126,7 @@ function Register() {
           />
           <Buttons>
             <Button type="submit">Register</Button>
-            <Button onClick = {()=>{navigate("/login")}}>Login</Button>
+            <Button onClick={() => { navigate("/login") }}>Login</Button>
           </Buttons>
         </RegisterWrapper>
       </RegisterContainer>
