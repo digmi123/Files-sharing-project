@@ -1,4 +1,4 @@
-CREATE TABLE `secure-collaboration`.`files` (
+CREATE TABLE `files` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `physical_path` VARCHAR(150) NOT NULL,
   `folder` INT NOT NULL,

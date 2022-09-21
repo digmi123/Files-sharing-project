@@ -1,4 +1,4 @@
-CREATE TABLE `secure-collaboration`.`users` (
+CREATE TABLE `users` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(45) NOT NULL,
   `hased_password` VARCHAR(140) NOT NULL,

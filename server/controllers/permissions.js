@@ -37,5 +37,5 @@ module.exports.removeAccess = (req, res, next) => {
 
 
 module.exports.confirmPermissions = permissions => (req, res, next) => {
-    sql = "SELECT * FROM `secure-collaboration`.permissions where name in (SELECT roll FROM access where user_id=3 and project_id=4)"
+    sql = "SELECT * FROM permissions where name in (SELECT roll FROM access where user_id=3 and project_id=4)"
 }

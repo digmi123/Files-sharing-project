@@ -1,4 +1,4 @@
-CREATE TABLE `secure-collaboration`.`folders` (
+CREATE TABLE `folders` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `parent_id` INT NULL DEFAULT NULL,

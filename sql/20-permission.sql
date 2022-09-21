@@ -1,4 +1,4 @@
-CREATE TABLE `secure-collaboration`.`permission` (
+CREATE TABLE `permission` (
   `name` VARCHAR(255) NOT NULL,
   `upload` TINYINT NOT NULL,
   `download` TINYINT NOT NULL,

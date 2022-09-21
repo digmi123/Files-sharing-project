@@ -8,6 +8,5 @@ docker compose --file docker-compose.yaml --env-file ./conf/db.env --env-file ./
 
 ### Removal
 ```sh
-docker compose --file docker-compose.yaml down
-docker volume rm -f files-sharing-project_db_data
+docker compose --file docker-compose.yaml down --volumes
 ```
