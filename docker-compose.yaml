@@ -1,0 +1,50 @@
+---
+services:
+  frontend:
+    container_name: frontend
+    hostname: frontend
+    image: alpine:latest
+    depends_on:
+      - backend
+      - db
+    env_file: ./conf/app.env
+    environment:
+      - "${API_PORT:-5000}"
+      - "${API_ADDRESS:-backend}"
+      - "${UI_PORT:-3000}"
+    expose: 
+      - "${UI_PORT:-3000}"
+    command: ["env"]
+
+  backend:
+    container_name: backend
+    hostname: backend
+    image: alpine:latest
+    depends_on:
+      - db
+    env_file: ./conf/db.env
+    command: ["env"]
+
+  db:
+    container_name: db
+    hostname: db
+    image: mariadb:latest
+    env_file: ./conf/db.env
+    environment:
+      MARIADB_USER: "${DB_USER:-root}"
+      MARIADB_PASSWORD: "${DB_PASS:-}"
+      MARIADB_DATABASE: "${DB_NAME:-secure-collaboration}"
+      MYSQL_TCP_PORT: "${DB_PORT:-3306}"
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
+    volumes:
+      - type: bind
+        source: "./sql"
+        target: "/docker-entrypoint-initdb.d"
+        read_only: true
+      - type: volume
+        source: db_data
+        target: /var/lib/mysql
+    restart: on-failure
+
+volumes:
+  db_data:

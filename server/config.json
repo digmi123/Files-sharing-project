@@ -1,5 +1,5 @@
 {
-  "password requirements": {
+  "password_requirements": {
     "minLength": {
       "require": true,
       "regex": ".{8,}",

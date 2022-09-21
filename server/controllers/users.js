@@ -1,4 +1,4 @@
-const passwordRequirements = require('../config')["password requirements"];
+const passwordRequirements = require('../config')["password_requirements"];
 const { serverLogger } = require('../logger');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
@@ -7,7 +7,7 @@ const Axios = require("axios");
 module.exports.captcha = (req, res, next) => {
   return next() // offline mode
   const { recaptcha } = req.body
-  Axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${config.CAPTCHA_KEY}&response=${recaptcha}`)
+  Axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${env.CAPTCHA_KEY}&response=${recaptcha}`)
     .then((response) => {
       if (response.data.success) {
         return next()
@@ -46,7 +46,7 @@ module.exports.verifyPassword = async (req, res, next) => {
 module.exports.sendToken = (req, res) => {
   const { id } = req.db.user;
   const options = { expiresIn: "30d" }
-  const token = jwt.sign({ id }, config.TOKEN_KEY, options);
+  const token = jwt.sign({ id }, env.TOKEN_KEY, options);
   return res.json({ token });
 }
 

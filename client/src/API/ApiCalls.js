@@ -1,4 +1,4 @@
-import { files, folders, projects, permissions } from "./ApiEndPonts";
+import { files, folders, projects, permissions } from "./ApiEndPoints";
 import axios from "axios";
 import { update } from "../store/filesDataSlice";
 

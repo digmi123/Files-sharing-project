@@ -16,13 +16,14 @@ const passwordRequirements = require("./routes/passwordRequirements");
 const { emailNoExists } = require("./controllers/users");
 
 dotenv.config()
-config = process.env;
+env = process.env;
 
 db = mysql.createConnection({
-  user: config.DB_USER,
-  host: config.DB_HOST,
-  password: config.DB_PASSWORD,
-  database: config.DB_NAME,
+  user: env.DB_USER,
+  host: env.DB_HOST,
+  password: env.DB_PASSWORD,
+  database: env.DB_NAME,
+  port: env.DB_PORT
 });
 app.use(cors());
 app.use(cookies());
@@ -37,6 +38,6 @@ app.use("/users", usersRoutes);
 app.use("/projects", projectsRoutes);
 app.use("/permissions", permissionsRoutes);
 
-app.listen(config.PORT, () => {
-  serverLogger.debug(`Server listening on port ${config.PORT}`)
+app.listen(env.PORT, () => {
+  serverLogger.debug(`Server listening on port ${env.PORT}`)
 });

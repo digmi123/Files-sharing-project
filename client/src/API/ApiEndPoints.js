@@ -1,8 +1,9 @@
-const protocol_ = "http"
-const addresses = "localhost"
-const port = 5000
+const dotenv = require("dotenv");
 
-const server = `${protocol_}://${addresses}:${port}`
+dotenv.config()
+env = process.env;
+
+const server = `${env.API_PROTOCOL}://${env.API_ADDRESS}:${env.API_PORT}`
 
 const headers = { "x-access-token": localStorage.getItem("access-token") };
 

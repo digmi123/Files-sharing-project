@@ -3,7 +3,7 @@ const encrypt = require('node-file-encrypt');
 const fs = require('fs');
 
 // ------------------- Upload Files ------------------------
-// MidlleWares
+// Middlewares
 module.exports.updateDB = (req, res, next) => {
   let sql = "INSERT INTO files (physical_path, folder, type, size, name) VALUES ?";
   const values = req.files.map((file) => {
@@ -40,7 +40,7 @@ module.exports.EncryptFiles = (req, res, next) => {
     req.files = req.files.map(function (file) {
       let f = new encrypt.FileEncrypt(file.path);
       f.openSourceFile();
-      f.encrypt(config.ENCRYPTION_KEY);
+      f.encrypt(env.ENCRYPTION_KEY);
       file = { ...file, encryptFileName: f.encryptFileName }
       fs.unlink(file.path, (erorr) => { if (erorr) serverLogger.error(err) });
       return file;
@@ -84,7 +84,7 @@ module.exports.DecryptFiles = (req, res, next) => {
     const path = "./filesData/" + physical_path;
     let f = new encrypt.FileEncrypt(path);
     f.openSourceFile();
-    f.decrypt(config.ENCRYPTION_KEY);
+    f.decrypt(env.ENCRYPTION_KEY);
     req.decrypt = f;
     serverLogger.info(`decrypt file ${id} complete`);
     return next();
