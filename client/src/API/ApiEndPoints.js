@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 
 dotenv.config()
-env = process.env;
+const {env} = process;
 
 const server = `${env.API_PROTOCOL}://${env.API_ADDRESS}:${env.API_PORT}`
 

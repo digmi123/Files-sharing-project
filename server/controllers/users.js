@@ -1,11 +1,10 @@
-const passwordRequirements = require('../config')["password_requirements"];
+const passwordRequirements = require('../config').password_requirements;
 const { serverLogger } = require('../logger');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const Axios = require("axios");
 
 module.exports.captcha = (req, res, next) => {
-  return next() // offline mode
   const { recaptcha } = req.body
   Axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${env.CAPTCHA_KEY}&response=${recaptcha}`)
     .then((response) => {
