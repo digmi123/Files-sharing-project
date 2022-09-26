@@ -31,16 +31,8 @@ function Login() {
         <Title>Login 🔒</Title>
         <LoginWrapper onSubmit={handleSubmit}>
           <Fields>
-            <Input
-              type="text"
-              name="email"
-              placeholder={"Email"}
-            />
-            <Input
-              type="password"
-              name="password"
-              placeholder={"Password"}
-            />
+            <Input type="text" name="email" placeholder={"Email"} />
+            <Input type="password" name="password" placeholder={"Password"} />
           </Fields>
           <ReCAPTCHA
             ref={recaptchaRef}
@@ -57,6 +49,7 @@ function Login() {
               Register
             </Button>
           </Buttons>
+          <LinkTest to="/forgotpass">Forgot password?</LinkTest>
         </LoginWrapper>
       </LoginContainer>
     </PageContainer>
@@ -89,6 +82,8 @@ const Title = styled.p`
   font-size: 1.5rem;
   font-weight: bold;
 `;
+
+const LinkTest = styled.link``;
 
 const LoginWrapper = styled.form`
   display: flex;

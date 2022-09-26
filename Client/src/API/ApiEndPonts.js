@@ -21,9 +21,9 @@ const folders = {
     move: { method: 'post', url: server + "/folders/move", headers },
 }
 const users = {
-    register: { method: 'post', url: server + "/users/register" },
-    login: { method: 'post', url: server + "/users/login" },
-}
+  register: { method: "post", url: server + "/users/register" },
+  login: { method: "post", url: server + "/users/login" },
+};
 const projects = {
     getProjects: { method: 'get', url: server + "/projects/getProjects", headers },
     createProject: { method: 'get', url: server + "/projects/createProject", headers },

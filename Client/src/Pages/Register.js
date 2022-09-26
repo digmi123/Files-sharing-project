@@ -51,9 +51,11 @@ function Register() {
     const data = new FormData(e.target)
     data.append("recaptcha", recaptcha);
     axios({ ...users.register, data })
-      .then((response) => {
-        navigate("/login");
+      .then((response) => { 
         console.log(response.data);
+      }).then(() => {
+        // axios({ ...users.register, data });
+        navigate("/login");
       })
       .catch((error) => {
         console.log(error);
