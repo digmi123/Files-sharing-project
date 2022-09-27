@@ -18,16 +18,18 @@ module.exports.updateDB = (req, res, next) => {
 
   let query = db.query(sql, [values]);
 
-  query.on("error", function (err) {
-    req.files.map((file) => {
-      fs.unlink("./file/" + file.encryptFileName, (erorr) => {
-        if (erorr) { serverLogger.error(err) };
-        serverLogger.info(`Delete ${file.encryptFileName} due to error`)
-      })
+    query.on("error", function (err) {
+        req.files.map((file) => {
+            fs.unlink("./filesData/" + file.encryptFileName, (error) => {
+                if (error) {
+                    serverLogger.error(err)
+                }
+                serverLogger.info(`Deleted ${file.encryptFileName} due to error`)
+            })
+        });
+        serverLogger.error(err)
+        res.status(500).send("There was an error uploading files to db");
     });
-    serverLogger.error(err)
-    res.status(500).send("There was an error uploading files to db");
-  });
 
   query.on("result", function (result) {
     req.db = result;

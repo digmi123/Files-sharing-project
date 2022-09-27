@@ -37,3 +37,4 @@ server/logger/*
 
 *.log
 yarn.lock
+secrets.env

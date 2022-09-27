@@ -1,11 +1,5 @@
-const dotenv = require("dotenv");
-
-dotenv.config()
-const {env} = process;
-
-const server = `${env.API_PROTOCOL}://${env.API_ADDRESS}:${env.API_PORT}`
-
-const headers = { "x-access-token": localStorage.getItem("access-token") };
+const server = `http://localhost:5000`
+const headers = {"x-access-token": localStorage.getItem("access-token")};
 
 const files = {
     upload: { method: 'post', url: server + "/files/upload", headers, },
