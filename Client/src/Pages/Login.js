@@ -49,7 +49,7 @@ function Login() {
               Register
             </Button>
           </Buttons>
-          <LinkTest to="/forgotpass">Forgot password?</LinkTest>
+          <LinkTest href="/forgotpass">Forgot password?</LinkTest>
         </LoginWrapper>
       </LoginContainer>
     </PageContainer>

@@ -7,33 +7,32 @@ import { users, ps } from "../API/ApiEndPonts";
 import ReCAPTCHA from "react-google-recaptcha";
 
 function Register() {
-
   const navigate = useNavigate();
   const recaptchaRef = React.useRef();
   const [passwordRequirements, setPasswordRequirements] = useState([]);
   const [requirementsIsOpen, setRequirementsIsOpen] = useState(true);
 
   useEffect(() => {
-    getPasswordRequirements()
+    getPasswordRequirements();
   }, []);
 
   //Server requests:
   const getPasswordRequirements = async () => {
     const response = await axios(ps.getPs);
     if (response.status === 200) {
-      setPasswordRequirements(response.data)
+      setPasswordRequirements(response.data);
     }
   };
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
 
   const handleRequirements = () => {
     setRequirementsIsOpen(!requirementsIsOpen);
-  }
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -44,23 +43,21 @@ function Register() {
 
   const handleSubmit = (e) => {
     if (formData.password !== formData.confirmPassword) {
-      return
+      return;
     }
     const recaptcha = recaptchaRef.current.execute();
-    e.preventDefault()
-    const data = new FormData(e.target)
+    e.preventDefault();
+    const data = new FormData(e.target);
     data.append("recaptcha", recaptcha);
     axios({ ...users.register, data })
-      .then((response) => { 
+      .then((response) => {
         console.log(response.data);
-      }).then(() => {
-        // axios({ ...users.register, data });
         navigate("/login");
       })
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   return (
     <PageContainer>
@@ -128,7 +125,13 @@ function Register() {
           />
           <Buttons>
             <Button type="submit">Register</Button>
-            <Button onClick={() => { navigate("/login") }}>Login</Button>
+            <Button
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              Login
+            </Button>
           </Buttons>
         </RegisterWrapper>
       </RegisterContainer>
@@ -171,7 +174,6 @@ const RegisterWrapper = styled.form`
   width: 60%;
   height: 70%;
 `;
-
 
 const Fields = styled.div`
   display: flex;

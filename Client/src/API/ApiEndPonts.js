@@ -23,6 +23,7 @@ const folders = {
 const users = {
   register: { method: "post", url: server + "/users/register" },
   login: { method: "post", url: server + "/users/login" },
+  forgotPassword: { method: "post", url: server + "/users/forgotPassword" },
 };
 const projects = {
     getProjects: { method: 'get', url: server + "/projects/getProjects", headers },

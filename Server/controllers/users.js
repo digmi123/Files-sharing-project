@@ -3,7 +3,7 @@ const { serverLogger } = require("../logger");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Axios = require("axios");
-const sendMail = require("../sendMail");
+const sendEmail = require("../sendMail");
 
 module.exports.captcha = (req, res, next) => {
   return next(); // offline mode
@@ -79,29 +79,10 @@ module.exports.emailNoExists = async (req, res, next) => {
   });
 };
 
-module.exports.sendEmail = async (req, res, next) => {
+module.exports.sendVerificationEmail = async (req, res, next) => {
   try {
     const { email } = req.body;
-    // db.query(
-    //   "SELECT * FROM users where email=(?)",
-    //   [email],
-    //   async (error, results, fields) => {
-    //     if (error) {
-    //       return res.status(500).send("An error occurred");
-    //     }
-    //     if (results.length === 0) {
-    //       return res.status(400).send("The account not exists");
-    //     }
-    // const { id, email, firstName, lastName, password } = results[0];
-    // const userKey = config.TOKEN_KEY + password;
-    // const paylode = {
-    //   id: id,
-    //   email: email,
-    // };
-    // const token = jwt.sign(paylode, userKey, { expiresIn: "15m" });
-    // const link = config.FRONT_URL + `/resetpass/${id}/${token}`;
-    // console.log("link: ",link)
-    sendMail(email);
+    sendEmail(email, "verification");
     next();
   } catch (error) {
     //);
@@ -136,4 +117,29 @@ module.exports.insertNewUserIntoDB = async (req, res, next) => {
 
 module.exports.register = async (req, res) => {
   res.status(200).send("Registration completed successfully");
+};
+
+module.exports.checkIfEmailExist = (req, res, next) => {
+  const { email } = req.body;
+  const sql = "SELECT id FROM users WHERE email=(?)";
+  db.query(sql, [email], (error, results) => {
+    if (error) return res.status(500).send("An error occurred");
+    if (!results.length) {
+      return res.status(200).send("Email sent if account exists");
+    }
+    req.userID = res[0].id;
+    next();
+  });
+};
+
+module.exports.createLink = (req, res, next) => {
+  const { userID } = req;
+  const token = jwt.sign({ userID }, process.env.TOKEN_KEY);
+  req.link = `http//localhost:3000/passwordRecovery/${token}`;
+  next();
+};
+
+module.exports.sendForgotPasswordEmail = (req, res, next) => {
+  const { email, link } = req;
+  sendEmail(email, "forgotPassword", { link });
 };

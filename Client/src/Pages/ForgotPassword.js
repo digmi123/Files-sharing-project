@@ -1,27 +1,19 @@
 import React from "react";
-import axios from "axios";
-import { users } from "../API/ApiEndPonts";
+import { forgotPassword } from "../API/ApiCalls";
 
-function forgotPassword() {
+function forgotPass() {
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    axios
-      .post({ ...users.forgotPassword, data })
-      // {
-      //   email: data.get("email"),
-      // }
-      .then((response) => {})
-      .catch((error) => {
-        console.log(error);
-      });
+    const data = new FormData(event.target);
+    forgotPassword(data);
   };
+
   return (
-    <form>
-      <input>Enter your email here</input>
-      <button onClick={handleSubmit}></button>
+    <form onSubmit={handleSubmit}>
+      <input name="email" placeholder="Enter your email here" />
+      <button type="submit">Submit</button>
     </form>
   );
 }
 
-export default forgotPassword;
+export default forgotPass;

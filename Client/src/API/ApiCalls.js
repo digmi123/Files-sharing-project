@@ -1,4 +1,4 @@
-import { files, folders, projects, permissions } from "./ApiEndPonts";
+import { files, folders, projects, permissions, users } from "./ApiEndPonts";
 import axios from "axios";
 import { update } from "../store/filesDataSlice";
 
@@ -11,84 +11,92 @@ export const downloadFile = async (fileInfo) => {
   axios({ ...files.download, data })
     .then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', fileInfo.name);
+      link.setAttribute("download", fileInfo.name);
       document.body.appendChild(link);
       link.click();
     })
-    .catch((error => console.error(error.response.data)))
-}
+    .catch((error) => console.error(error.response.data));
+};
 
 export const uploadFiles = async (folder, filesData) => {
   const data = new FormData();
   data.append("folder", folder.id);
-  filesData.forEach(file => { data.append("files", file, file.name) });
+  filesData.forEach((file) => {
+    data.append("files", file, file.name);
+  });
   axios({ ...files.upload, data })
-    .then(response => console.log(response.data))
-    .catch((error => console.error(error.response.data)))
+    .then((response) => console.log(response.data))
+    .catch((error) => console.error(error.response.data));
 };
 
 export const deleteData = async (fileInfo) => {
   const { deleteData } = fileInfo.type === "Folder" ? folders : files;
-  const data = { fileID: fileInfo.id }
+  const data = { fileID: fileInfo.id };
   axios({ ...deleteData, data })
-    .then(response => console.log(response.data))
-    .catch((error => console.error(error.response.data)))
-}
+    .then((response) => console.log(response.data))
+    .catch((error) => console.error(error.response.data));
+};
 
 export const updateFilesData = (navigate) => async (dispatch) => {
   const projectID = localStorage.getItem("projectID");
-  if (!projectID) navigate("/projects", { replace: true })
-  const data = { projectID }
+  if (!projectID) navigate("/projects", { replace: true });
+  const data = { projectID };
   axios({ ...folders.getProjectTree, data })
-    .then(response => dispatch(update(response.data)))
-    .catch(error => navigate("/login", { replace: true }))
-}
+    .then((response) => dispatch(update(response.data)))
+    .catch((error) => navigate("/login", { replace: true }));
+};
 
 export const rename = async (file, name) => {
   const { rename } = file.type === "Folder" ? folders : files;
-  const data = { id: file.id, name }
+  const data = { id: file.id, name };
   axios({ ...rename, data })
-    .then(response => console.log(response.data))
-    .catch((error => console.error(error.response.data)))
-}
+    .then((response) => console.log(response.data))
+    .catch((error) => console.error(error.response.data));
+};
 
 export const createFolder = async (folderInfo) => {
-  const data = { parentId: folderInfo.id, name: "New Folder" }
+  const data = { parentId: folderInfo.id, name: "New Folder" };
   axios({ ...folders.create, data })
-    .then(response => console.log(response.data))
-    .catch((error => console.error(error.response.data)))
-}
+    .then((response) => console.log(response.data))
+    .catch((error) => console.error(error.response.data));
+};
 
 export const moveData = async (source, destinationID) => {
   const { move } = source.type === "Folder" ? folders : files;
   const data = { destinationID, sourceID: source.id };
   axios({ ...move, data })
-    .then(response => console.log(response.data))
-    .catch((error => console.error(error.response.data)))
-}
+    .then((response) => console.log(response.data))
+    .catch((error) => console.error(error.response.data));
+};
 
 export const getProjectsList = async (setList) => {
   axios(projects.getProjects)
-    .then(response => setList(response.data))
-    .catch((error => console.error(error.response.data)))
-}
+    .then((response) => setList(response.data))
+    .catch((error) => console.error(error.response.data));
+};
 
 export const createProject = async (updateProjectsList) => {
   axios(projects.createProject)
-    .then(response => updateProjectsList())
-    .catch((error => console.error(error.response.data)))
-}
+    .then((response) => updateProjectsList())
+    .catch((error) => console.error(error.response.data));
+};
 
 export const getPermissionsList = async (PermissionsList) => {
   axios(permissions.permissionsList)
-    .then(response => PermissionsList(response.data))
-    .catch((error => console.error(error.response.data)))
-}
+    .then((response) => PermissionsList(response.data))
+    .catch((error) => console.error(error.response.data));
+};
 
 export const editProject = async (data) => {
   axios({ ...projects.editProject, data })
-    .then(response => console.log(response.data))
-    .catch((error => console.error(error.response.data)))
-}
+    .then((response) => console.log(response.data))
+    .catch((error) => console.error(error.response.data));
+};
+
+export const forgotPassword = async (data) => {
+  axios({ ...users.forgotPassword, data })
+    .then((response) => console.log(response.data))
+    .catch((error) => console.error(error.response.data));
+};
