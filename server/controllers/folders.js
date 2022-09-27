@@ -1,10 +1,10 @@
-const { serverLogger } = require('../logger')
+const {serverLogger} = require('../logger');
 
 
 module.exports.InsertNewFolderIntoDB = (req, res, next) => {
     try {
         const sql = "INSERT INTO folders (name, parent_id) VALUES (?,?);"
-        const { name, parentId } = req.body
+        const {name, parentId} = req.body
         let query = db.query(sql, [name, parentId])
         query.on("error", function (err) {
             serverLogger.error(err)
@@ -40,8 +40,8 @@ module.exports.insertRootFolderIntoDB = async (req, res, next) => {
 }
 
 module.exports.createFolder = async (req, res) => {
-    const { insertId } = req.db;
-    const { parentId } = req.body
+    const {insertId} = req.db;
+    const {parentId} = req.body
     serverLogger.info(`folders id ${insertId} in ${parentId} was created in DB`);
     res.status(200).send("Folder created successfully");
 }
@@ -77,7 +77,7 @@ const createTree = async (folderID) => {
 }
 
 module.exports.findRootFolder = (req, res, next) => {
-    const { projectID } = req.body;
+    const {projectID} = req.body;
     const sql = "SELECT folder_id FROM projects WHERE id=(?);"
     let query = db.query(sql, [projectID])
     query.on("error", function (err) {
@@ -92,7 +92,7 @@ module.exports.findRootFolder = (req, res, next) => {
 
 module.exports.getFolder = async (req, res) => {
     try {
-        const { folderID } = req;
+        const {folderID} = req;
         const sql = "SELECT * FROM folders WHERE id = (?)";
         const query = db.query(sql, [folderID])
         query.on("error", function (err) {
@@ -114,7 +114,7 @@ module.exports.getFolder = async (req, res) => {
 
 module.exports.renameFolder = async (req, res) => {
     const sql = "UPDATE folders SET name = (?) WHERE id = (?);";
-    const { name, id } = req.body;
+    const {name, id} = req.body;
     query = db.query(sql, [name, id]);
     query.on("error", (err) => {
         serverLogger.error(err)
@@ -126,7 +126,7 @@ module.exports.renameFolder = async (req, res) => {
 }
 
 module.exports.moveFolder = async (req, res) => {
-    const { destinationID, sourceID } = req.body
+    const {destinationID, sourceID} = req.body
     const sql = "UPDATE folders SET parent_id = (?) WHERE id = (?);";
     let query = db.query(sql, [destinationID, sourceID]);
     query.on("error", (err) => {

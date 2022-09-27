@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
@@ -8,130 +8,132 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 function Register() {
 
-  const navigate = useNavigate();
-  const recaptchaRef = React.useRef();
-  const [passwordRequirements, setPasswordRequirements] = useState([]);
-  const [requirementsIsOpen, setRequirementsIsOpen] = useState(true);
+    const navigate = useNavigate();
+    const recaptchaRef = React.useRef();
+    const [passwordRequirements, setPasswordRequirements] = useState([]);
+    const [requirementsIsOpen, setRequirementsIsOpen] = useState(true);
 
-  useEffect(() => {
-    getPasswordRequirements()
-  }, []);
+    useEffect(() => {
+        getPasswordRequirements()
+    }, []);
 
-  //Server requests:
-  const getPasswordRequirements = async () => {
-    const response = await axios(ps.getPs);
-    if (response.status === 200) {
-      setPasswordRequirements(response.data)
-    }
-  };
+    //Server requests:
+    const getPasswordRequirements = async () => {
+        const response = await axios(ps.getPs);
+        if (response.status === 200) {
+            setPasswordRequirements(response.data)
+        }
+    };
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    confirmPassword: ""
-  });
-
-  const handleRequirements = () => {
-    setRequirementsIsOpen(!requirementsIsOpen);
-  }
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+        confirmPassword: ""
     });
-  };
 
-  const handleSubmit = (e) => {
-    if (formData.password !== formData.confirmPassword) {
-      return
+    const handleRequirements = () => {
+        setRequirementsIsOpen(!requirementsIsOpen);
     }
-    const recaptcha = recaptchaRef.current.execute();
-    e.preventDefault()
-    const data = new FormData(e.target)
-    data.append("recaptcha", recaptcha);
-    axios({ ...users.register, data })
-      .then((response) => {
-        navigate("/login");
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
 
-  return (
-    <PageContainer>
-      <RegisterContainer>
-        <Title>Register 🔒</Title>
-        <RegisterWrapper onSubmit={handleSubmit}>
-          <Fields>
-            <Input
-              onChange={handleChange}
-              name="email"
-              value={formData.email}
-              placeholder={"Email"}
-              email
-            />
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
 
-            <Input
-              type="password"
-              onChange={handleChange}
-              name="password"
-              value={formData.password}
-              placeholder={"Password"}
-            />
-            <Input
-              type="password"
-              onChange={handleChange}
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              placeholder={"Confirm Password"}
-            />
+    const handleSubmit = (e) => {
+        if (formData.password !== formData.confirmPassword) {
+            return
+        }
+        const recaptcha = recaptchaRef.current.execute();
+        e.preventDefault()
+        const data = new FormData(e.target)
+        data.append("recaptcha", recaptcha);
+        axios({...users.register, data})
+            .then((response) => {
+                navigate("/login");
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
-            <Button
-              onClick={handleRequirements}
-              style={{ marginBottom: "15px", fontSize: "13px", width: "70%" }}
-            >
-              {requirementsIsOpen ? "Hide requirements" : "Show requirements"}
-            </Button>
+    return (
+        <PageContainer>
+            <RegisterContainer>
+                <Title>Register 🔒</Title>
+                <RegisterWrapper onSubmit={handleSubmit}>
+                    <Fields>
+                        <Input
+                            onChange={handleChange}
+                            name="email"
+                            value={formData.email}
+                            placeholder={"Email"}
+                            email
+                        />
 
-            {passwordRequirements &&
-              requirementsIsOpen &&
-              Object.keys(passwordRequirements).reduce((filtered, key) => {
-                if (passwordRequirements[key].require) {
-                  let re = new RegExp(passwordRequirements[key].regex);
-                  filtered.push(
-                    <Alert
-                      style={{
-                        marginBottom: "10px",
-                        borderRadius: "29px",
-                      }}
-                      key={key}
-                      severity={
-                        re.test(formData.password) ? "success" : "error"
-                      }
-                    >
-                      {passwordRequirements[key].errorMessage}
-                    </Alert>
-                  );
-                }
-                return filtered;
-              }, [])}
-          </Fields>
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            size="invisible"
-            sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-          />
-          <Buttons>
-            <Button type="submit">Register</Button>
-            <Button onClick={() => { navigate("/login") }}>Login</Button>
-          </Buttons>
-        </RegisterWrapper>
-      </RegisterContainer>
-    </PageContainer>
-  );
+                        <Input
+                            type="password"
+                            onChange={handleChange}
+                            name="password"
+                            value={formData.password}
+                            placeholder={"Password"}
+                        />
+                        <Input
+                            type="password"
+                            onChange={handleChange}
+                            name="confirmPassword"
+                            value={formData.confirmPassword}
+                            placeholder={"Confirm Password"}
+                        />
+
+                        <Button
+                            onClick={handleRequirements}
+                            style={{marginBottom: "15px", fontSize: "13px", width: "70%"}}
+                        >
+                            {requirementsIsOpen ? "Hide requirements" : "Show requirements"}
+                        </Button>
+
+                        {passwordRequirements &&
+                            requirementsIsOpen &&
+                            Object.keys(passwordRequirements).reduce((filtered, key) => {
+                                if (passwordRequirements[key].require) {
+                                    let re = new RegExp(passwordRequirements[key].regex);
+                                    filtered.push(
+                                        <Alert
+                                            style={{
+                                                marginBottom: "10px",
+                                                borderRadius: "29px",
+                                            }}
+                                            key={key}
+                                            severity={
+                                                re.test(formData.password) ? "success" : "error"
+                                            }
+                                        >
+                                            {passwordRequirements[key].errorMessage}
+                                        </Alert>
+                                    );
+                                }
+                                return filtered;
+                            }, [])}
+                    </Fields>
+                    <ReCAPTCHA
+                        ref={recaptchaRef}
+                        size="invisible"
+                        sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                    />
+                    <Buttons>
+                        <Button type="submit">Register</Button>
+                        <Button onClick={() => {
+                            navigate("/login")
+                        }}>Login</Button>
+                    </Buttons>
+                </RegisterWrapper>
+            </RegisterContainer>
+        </PageContainer>
+    );
 }
 
 export default Register;
@@ -208,8 +210,10 @@ const Button = styled.button`
   margin-top: 30px;
   cursor: pointer;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
   &:hover {
     background-color: #e32748;
   }
+
   padding: 10px 20px;
 `;

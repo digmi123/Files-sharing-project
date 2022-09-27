@@ -1,12 +1,12 @@
-const { serverLogger } = require('../logger')
+const {serverLogger} = require('../logger');
 const passReq = require("../config.json");
 
 
 module.exports.getPassRequirements = async (req, res) => {
-  try {
-    res.json(passReq.password_requirements);
-  } catch (err) {
-    serverLogger.error(err)
-    res.status(500).send("unable to fetch the requirements file")
-  }
+    try {
+        res.json(passReq.password_requirements);
+    } catch (err) {
+        serverLogger.error(err)
+        res.status(500).send("unable to fetch the requirements file")
+    }
 };

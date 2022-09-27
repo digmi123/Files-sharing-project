@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
-import { MdEdit } from 'react-icons/md';
-import { useNavigate } from "react-router-dom";
-import { getProjectsList, createProject } from "../API/ApiCalls"
+import {MdEdit} from 'react-icons/md';
+import {useNavigate} from "react-router-dom";
+import {getProjectsList, createProject} from "../API/ApiCalls"
 import EditeProject from "./EditProject"
 
 
@@ -46,14 +46,14 @@ function ProjectsList() {
                             >{item.name}
                             </Button>
                             <Button onClick={() => showEditeProject(item)}>
-                                <MdEdit />
+                                <MdEdit/>
                             </Button>
                         </div>
                     ))}
                 </ButtonsWrapper>
                 <Button onClick={newProject}>New +</Button>
             </Container>
-            <EditeProject projectInfoState={projectInfoState} EditProjectState={EditProjectState} />
+            <EditeProject projectInfoState={projectInfoState} EditProjectState={EditProjectState}/>
         </>
     );
 }
@@ -65,8 +65,8 @@ const Container = styled.div`
 `;
 
 const ButtonsWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Button = styled.button`
@@ -77,7 +77,8 @@ const Button = styled.button`
   border-radius: 3px;
   background: white;
   color: #5499C7;
+
   &:hover {
     background: #5499C7;
     color: white;
-}`
+  }`

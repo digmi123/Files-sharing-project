@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const verifyToken = require("../auth")
 
-const { getProjectsList, insertProjectIntoDB, giveAccess, rename } = require("../controllers/projects");
-const { insertRootFolderIntoDB } = require("../controllers/folders");
-const { createAndUpdateAccess, removeAccess } = require("../controllers/permissions");
+const {getProjectsList, insertProjectIntoDB, giveAccess, rename} = require("../controllers/projects");
+const {insertRootFolderIntoDB} = require("../controllers/folders");
+const {createAndUpdateAccess, removeAccess} = require("../controllers/permissions");
 
 
 router.use(verifyToken)

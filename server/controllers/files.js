@@ -1,22 +1,16 @@
-const { serverLogger } = require('../logger')
+const {serverLogger} = require('../logger');
 const encrypt = require('node-file-encrypt');
 const fs = require('fs');
 
 // ------------------- Upload Files ------------------------
 // Middlewares
 module.exports.updateDB = (req, res, next) => {
-  let sql = "INSERT INTO files (physical_path, folder, type, size, name) VALUES ?";
-  const values = req.files.map((file) => {
-    return [
-      file.encryptFileName,
-      req.body.folder,
-      file.mimetype,
-      file.size,
-      file.originalname,
-    ];
-  });
+    let sql = "INSERT INTO files (physical_path, folder, type, size, name) VALUES ?";
+    const values = req.files.map((file) => {
+        return [file.encryptFileName, req.body.folder, file.mimetype, file.size, file.originalname,];
+    });
 
-  let query = db.query(sql, [values]);
+    let query = db.query(sql, [values]);
 
     query.on("error", function (err) {
         req.files.map((file) => {
@@ -31,10 +25,10 @@ module.exports.updateDB = (req, res, next) => {
         res.status(500).send("There was an error uploading files to db");
     });
 
-  query.on("result", function (result) {
-    req.db = result;
-    return next();
-  });
+    query.on("result", function (result) {
+        req.db = result;
+        return next();
+    });
 };
 
 module.exports.EncryptFiles = (req, res, next) => {
@@ -124,18 +118,18 @@ module.exports.cleanUp = (req, res) => {
 // ------------------- Delete Files ------------------------
 
 module.exports.removeFromDB = (req, res, next) => {
-  const { fileID } = req.body
-  const sql = "DELETE FROM files WHERE id = (?);"
-  let query = db.query(sql, [fileID]);
+    const {fileID} = req.body
+    const sql = "DELETE FROM files WHERE id = (?);"
+    let query = db.query(sql, [fileID]);
 
     query.on("error", function (err) {
         serverLogger.error(err)
         res.status(500).send("There was an error deleting files from the database");
     });
 
-  query.on("result", function (result) {
-    return next();
-  });
+    query.on("result", function (result) {
+        return next();
+    });
 
 }
 
@@ -195,17 +189,17 @@ module.exports.removeLocalFiles = (req, res, next) => {
 }
 
 module.exports.removeFilesFromDB = (req, res, next) => {
-  serverLogger.debug("removeFilesFromDB")
-  const IDs = req.files.map(item => item.id)
-  const sql = "delete from files where id in (?)"
-  if (!IDs.length) return next();
-  const query = db.query(sql, [IDs])
-  query.on("error", function (err) {
-    serverLogger.error(err)
-    res.status(500).send("There was an error deleting files the db");
-  });
+    serverLogger.debug("removeFilesFromDB")
+    const IDs = req.files.map(item => item.id)
+    const sql = "delete from files where id in (?)"
+    if (!IDs.length) return next();
+    const query = db.query(sql, [IDs])
+    query.on("error", function (err) {
+        serverLogger.error(err)
+        res.status(500).send("There was an error deleting files the db");
+    });
 
-  query.on("result", function (result) {
-    return next();
-  });
+    query.on("result", function (result) {
+        return next();
+    });
 }

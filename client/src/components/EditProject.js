@@ -1,27 +1,27 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import styled from "styled-components";
-import { editProject } from "../API/ApiCalls";
-import { MdDelete } from 'react-icons/md';
+import {editProject} from "../API/ApiCalls";
+import {MdDelete} from 'react-icons/md';
 import ProjectAccess from "./ProjectAccess";
 
 
-function EditProject({ projectInfoState, EditProjectState }) {
-  const [projectInfo, setProjectInfo] = projectInfoState
+function EditProject({projectInfoState, EditProjectState}) {
+    const [projectInfo, setProjectInfo] = projectInfoState
 
-  useEffect(() => {
-    console.log(projectInfo?.id);
-  }, [projectInfo])
+    useEffect(() => {
+        console.log(projectInfo?.id);
+    }, [projectInfo])
 
-  const [show, setShow] = EditProjectState;
+    const [show, setShow] = EditProjectState;
 
-  const close = e => {
-    e.preventDefault();
-    setShow(false);
-  }
+    const close = e => {
+        e.preventDefault();
+        setShow(false);
+    }
 
-  const handleRename = e => {
-    setProjectInfo(pre => ({ ...pre, name: e.target.value }))
-  }
+    const handleRename = e => {
+        setProjectInfo(pre => ({...pre, name: e.target.value}))
+    }
 
     const handleSubmit = async (e) => {
         await editProject(projectInfo)
@@ -46,12 +46,12 @@ function EditProject({ projectInfoState, EditProjectState }) {
                     </DeleteButton>)}
             </div>
 
-    </Container>
-  )
+        </Container>
+    )
 }
 
 const Container = styled.div`
-  background-color:#ffffff;
+  background-color: #ffffff;
   border: 2px solid #5499C7;
   border-radius: 5px;
   box-sizing: border-box;
@@ -62,14 +62,14 @@ const Container = styled.div`
   left: 50%;
   margin-top: -50px;
   margin-left: -100px;
-  z-index:9;
+  z-index: 9;
 `;
 
 const Text = styled.p`
-    color: #5499C7;
-    font-size: larger;
-    font-weight: bold;
-    font-family: inherit;
+  color: #5499C7;
+  font-size: larger;
+  font-weight: bold;
+  font-family: inherit;
 `
 
 const Button = styled.button`
@@ -80,6 +80,7 @@ const Button = styled.button`
   border-radius: 3px;
   background: white;
   color: #5499C7;
+
   &:hover {
     background: #5499C7;
     color: white;
@@ -94,9 +95,10 @@ const DeleteButton = styled.button`
   border-radius: 3px;
   background: white;
   color: #ff0000;
+
   &:hover {
     background: #ff0000;
     color: white;
-}`
+  }`
 
 export default EditProject;

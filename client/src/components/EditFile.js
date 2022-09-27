@@ -1,35 +1,37 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
-import { rename, updateFilesData } from "../API/ApiCalls";
-import { useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom";
+import {rename, updateFilesData} from "../API/ApiCalls";
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 
-function EditFile({ info, close }) {
-  const dispatch = useDispatch()
-  const [name, setName] = useState()
-  const navigate = useNavigate()
+function EditFile({info, close}) {
+    const dispatch = useDispatch()
+    const [name, setName] = useState()
+    const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
-    await rename(info, name);
-    dispatch(updateFilesData(navigate));
-    close();
-  }
+    const handleSubmit = async (e) => {
+        await rename(info, name);
+        dispatch(updateFilesData(navigate));
+        close();
+    }
 
-  return (
-    <Container onContextMenu={(e) => { e.stopPropagation() }}>
-      <Text>Rename</Text>
-      <input defaultValue={info.name} onChange={(e) => setName(e.target.value)}></input>
-      <div>
-        <Button onClick={close}>Cancel</Button>
-        <Button onClick={handleSubmit}>Submit</Button>
-      </div>
-    </Container>
-  )
+    return (
+        <Container onContextMenu={(e) => {
+            e.stopPropagation()
+        }}>
+            <Text>Rename</Text>
+            <input defaultValue={info.name} onChange={(e) => setName(e.target.value)}></input>
+            <div>
+                <Button onClick={close}>Cancel</Button>
+                <Button onClick={handleSubmit}>Submit</Button>
+            </div>
+        </Container>
+    )
 }
 
 const Container = styled.div`
-  background-color:#fff;
+  background-color: #fff;
   border: 2px solid #5499C7;
   border-radius: 5px;
   box-sizing: border-box;
@@ -40,14 +42,14 @@ const Container = styled.div`
   left: 50%;
   margin-top: -50px;
   margin-left: -100px;
-  z-index:9;
+  z-index: 9;
 `;
 
 const Text = styled.p`
-    color: #5499C7;
-    font-size: larger;
-    font-weight: bold;
-    font-family: inherit;
+  color: #5499C7;
+  font-size: larger;
+  font-weight: bold;
+  font-family: inherit;
 `
 
 const Button = styled.button`
@@ -58,6 +60,7 @@ const Button = styled.button`
   border-radius: 3px;
   background: white;
   color: #5499C7;
+
   &:hover {
     background: #5499C7;
     color: white;

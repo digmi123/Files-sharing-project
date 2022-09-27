@@ -1,29 +1,29 @@
-import { AiOutlineFile } from "react-icons/ai";
-import { FiFolder } from "react-icons/fi";
-import { AiOutlineFilePdf } from "react-icons/ai";
-import { AiOutlineFileJpg } from "react-icons/ai";
-import { AiOutlineFileText } from "react-icons/ai";
+import {AiOutlineFile} from "react-icons/ai";
+import {FiFolder} from "react-icons/fi";
+import {AiOutlineFilePdf} from "react-icons/ai";
+import {AiOutlineFileJpg} from "react-icons/ai";
+import {AiOutlineFileText} from "react-icons/ai";
 
 
 export const getIconByType = (fileType) => {
-  const type = fileType?.toLowerCase();
-  switch (type) {
-    case "folder":
-      return FiFolder;
+    const type = fileType?.toLowerCase();
+    switch (type) {
+        case "folder":
+            return FiFolder;
 
-    case "application/pdf":
-      return AiOutlineFilePdf;
+        case "application/pdf":
+            return AiOutlineFilePdf;
 
-    case "image/jpeg":
-      return AiOutlineFileJpg;
+        case "image/jpeg":
+            return AiOutlineFileJpg;
 
         case "image/png":
             return AiOutlineFileJpg;
 
-    case "text/plain":
-      return AiOutlineFileText;
+        case "text/plain":
+            return AiOutlineFileText;
 
-    default:
-      return AiOutlineFile;
-  }
+        default:
+            return AiOutlineFile;
+    }
 };

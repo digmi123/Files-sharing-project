@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const verifyToken = require("../auth")
+const verifyToken = require("../auth");
 
-const { EncryptFiles,
+const {
+    EncryptFiles,
     updateDB,
     uploadFiles,
     getFileData,
@@ -12,7 +13,8 @@ const { EncryptFiles,
     deleteFile,
     renameFile,
     moveFile,
-    cleanUp } = require("../controllers/files");
+    cleanUp
+} = require("../controllers/files");
 
 router.use(verifyToken)
 router.post("/upload", EncryptFiles, updateDB, uploadFiles)

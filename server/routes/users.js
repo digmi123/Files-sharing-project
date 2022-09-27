@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-const { captcha,
+const {
+    captcha,
     getUserFromDB, verifyPassword, sendToken,
     register, emailNoExists, hashPassword, verifyPasswordRequirements,
-    insertNewUserIntoDB } = require("../controllers/users");
+    insertNewUserIntoDB
+} = require("../controllers/users");
 
 router.use(captcha)
 router.post("/register", verifyPasswordRequirements, emailNoExists, hashPassword, insertNewUserIntoDB, register);

@@ -1,4 +1,4 @@
-const { serverLogger } = require('../logger');
+const {serverLogger} = require('../logger');
 
 
 module.exports.getPermissionsList = (req, res, next) => {
@@ -15,10 +15,12 @@ module.exports.getPermissionsList = (req, res, next) => {
 
 module.exports.createAndUpdateAccess = (req, res, next) => {
     sql = "REPLACE INTO access (user_id, project_id, roll) VALUES ((select id from users where email =?),?,?);"
-    const { id, accessinfo } = req.body
-    for (let { roll, email } of accessinfo) {
+    const {id, accessinfo} = req.body
+    for (let {roll, email} of accessinfo) {
         db.query(sql, [email, id, roll], (error, results) => {
-            if (error) { serverLogger.error(error) }
+            if (error) {
+                serverLogger.error(error)
+            }
             // else { serverLogger.info(`update user ${email} to roll ${roll}`) }
         });
     }
@@ -27,10 +29,12 @@ module.exports.createAndUpdateAccess = (req, res, next) => {
 
 module.exports.removeAccess = (req, res, next) => {
     sql = "DELETE FROM access where project_id=? and user_id not in (select id from users where email in (?));"
-    const { id, accessinfo } = req.body
+    const {id, accessinfo} = req.body
     const emails = accessinfo.map(access => access.email)
     db.query(sql, [id, emails], (error, results) => {
-        if (error) { serverLogger.error(error) }
+        if (error) {
+            serverLogger.error(error)
+        }
     });
     next()
 }

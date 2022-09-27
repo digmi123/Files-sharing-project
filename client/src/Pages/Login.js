@@ -1,66 +1,66 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import axios from "axios"
 import ReCAPTCHA from "react-google-recaptcha";
 import {users} from "../API/ApiEndPoints";
 
 
 function Login() {
-  const navigate = useNavigate();
-  const recaptchaRef = React.useRef();
+    const navigate = useNavigate();
+    const recaptchaRef = React.useRef();
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const data = new FormData(e.target)
-    const recaptcha = recaptchaRef.current.execute();
-    data.append("recaptcha", recaptcha)
-    axios({ ...users.login, data })
-      .then((response) => {
-        localStorage.setItem("access-token", response.data.token);
-        navigate("/projects")
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const data = new FormData(e.target)
+        const recaptcha = recaptchaRef.current.execute();
+        data.append("recaptcha", recaptcha)
+        axios({...users.login, data})
+            .then((response) => {
+                localStorage.setItem("access-token", response.data.token);
+                navigate("/projects")
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
-  return (
-    <PageContainer>
-      <LoginContainer>
-        <Title>Login 🔒</Title>
-        <LoginWrapper onSubmit={handleSubmit}>
-          <Fields>
-            <Input
-              type="text"
-              name="email"
-              placeholder={"Email"}
-            />
-            <Input
-              type="password"
-              name="password"
-              placeholder={"Password"}
-            />
-          </Fields>
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            size="invisible"
-            sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-          />
-          <Buttons>
-            <Button type="submit">Login</Button>
-            <Button
-              onClick={() => {
-                navigate("/register");
-              }}
-            >
-              Register
-            </Button>
-          </Buttons>
-        </LoginWrapper>
-      </LoginContainer>
-    </PageContainer>
-  );
+    return (
+        <PageContainer>
+            <LoginContainer>
+                <Title>Login 🔒</Title>
+                <LoginWrapper onSubmit={handleSubmit}>
+                    <Fields>
+                        <Input
+                            type="text"
+                            name="email"
+                            placeholder={"Email"}
+                        />
+                        <Input
+                            type="password"
+                            name="password"
+                            placeholder={"Password"}
+                        />
+                    </Fields>
+                    <ReCAPTCHA
+                        ref={recaptchaRef}
+                        size="invisible"
+                        sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                    />
+                    <Buttons>
+                        <Button type="submit">Login</Button>
+                        <Button
+                            onClick={() => {
+                                navigate("/register");
+                            }}
+                        >
+                            Register
+                        </Button>
+                    </Buttons>
+                </LoginWrapper>
+            </LoginContainer>
+        </PageContainer>
+    );
 }
 
 export default Login;
@@ -136,8 +136,10 @@ const Button = styled.button`
   margin-top: 30px;
   cursor: pointer;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
   &:hover {
     background-color: #e32748;
   }
+
   padding: 10px 20px;
 `;

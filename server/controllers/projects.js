@@ -1,4 +1,4 @@
-const { serverLogger } = require('../logger');
+const {serverLogger} = require('../logger');
 
 
 module.exports.getProjectsList = (req, res, next) => {
@@ -27,7 +27,7 @@ module.exports.insertProjectIntoDB = (req, res, next) => {
 }
 
 module.exports.giveAccess = (req, res, next) => {
-    const { userID, projectID, roll } = req.body;
+    const {userID, projectID, roll} = req.body;
     sql = "INSERT INTO access (user_id, project_id, roll) VALUES (?,?,?)";
     db.query(sql, [userID, projectID, roll], async (error, results) => {
         if (error) {
@@ -40,7 +40,7 @@ module.exports.giveAccess = (req, res, next) => {
 
 
 module.exports.rename = (req, res, next) => {
-    const { name, projectID } = req.body;
+    const {name, projectID} = req.body;
     const sql = "UPDATE projects SET name = (?) WHERE id = (?);"
     db.query(sql, [name, projectID], async (error, results) => {
         if (error) {

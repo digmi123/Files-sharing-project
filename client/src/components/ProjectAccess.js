@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { getPermissionsList } from "../API/ApiCalls"
+import React, {useEffect, useState} from "react";
+import {getPermissionsList} from "../API/ApiCalls"
 import styled from "styled-components";
-import { MdDelete } from 'react-icons/md';
+import {MdDelete} from 'react-icons/md';
 
 
-function ProjectAccess({ projectInfoState }) {
+function ProjectAccess({projectInfoState}) {
     const [projectInfo, setProjectInfo] = projectInfoState
     const [permissionsList, setPermissionsList] = useState([])
 
@@ -18,25 +18,31 @@ function ProjectAccess({ projectInfoState }) {
 
     const onAdd = e => {
         e.preventDefault();
-        setProjectInfo(prev => ({ ...prev, accessinfo: [...prev.accessinfo, { email: "example@email.com", roll: "None" }] }))
+        setProjectInfo(prev => ({
+            ...prev,
+            accessinfo: [...prev.accessinfo, {email: "example@email.com", roll: "None"}]
+        }))
     }
 
     const removeIndex = (indexToRemove) => e => {
-        setProjectInfo(prev => ({ ...prev, accessinfo: prev.accessinfo.filter((item, index) => index !== indexToRemove) }))
+        setProjectInfo(prev => ({
+            ...prev,
+            accessinfo: prev.accessinfo.filter((item, index) => index !== indexToRemove)
+        }))
     }
 
     const handleChange = (index, key) => e => {
         setProjectInfo(prev => {
             let next = [...prev.accessinfo];
             next[index][key] = e.target.value;
-            return { ...prev, accessinfo: next }
+            return {...prev, accessinfo: next}
         })
     }
 
 
     return (
         <Container>
-            {projectInfo && projectInfo.accessinfo.map(({ email, roll }, index) => (
+            {projectInfo && projectInfo.accessinfo.map(({email, roll}, index) => (
                 <div key={index}>
                     <Input value={email} onChange={handleChange(index, "email")}></Input>
                     <select value={roll} onChange={handleChange(index, "roll")}>
@@ -45,7 +51,7 @@ function ProjectAccess({ projectInfoState }) {
                         ))}
                     </select>
                     <button type="button" onClick={removeIndex(index)}>
-                        <MdDelete />
+                        <MdDelete/>
                     </button>
                 </div>
             ))}
@@ -57,17 +63,17 @@ function ProjectAccess({ projectInfoState }) {
 }
 
 const Container = styled.div`
-  background-color:#fff;
+  background-color: #fff;
   border: 2px solid #5499C7;
   border-radius: 5px;
   box-sizing: border-box;
   margin: 1em;
   padding: 1em;
-  width : 90%;
+  width: 90%;
 `;
 
 const Input = styled.input`
-    width : 50%;
+  width: 50%;
 `;
 
 export default ProjectAccess;

@@ -4,11 +4,11 @@ import ProjectsList from '../components/ProjectsList';
 
 function Projects() {
 
-  return (
-    <Container>
-      <ProjectsList />
-    </Container>
-  );
+    return (
+        <Container>
+            <ProjectsList/>
+        </Container>
+    );
 }
 
 export default Projects

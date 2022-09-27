@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const verifyToken = require("../auth")
-const { findRootFolder,
+const {
+    findRootFolder,
     InsertNewFolderIntoDB,
     createFolder,
     getFolder,
