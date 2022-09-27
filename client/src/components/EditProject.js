@@ -23,28 +23,28 @@ function EditProject({ projectInfoState, EditProjectState }) {
     setProjectInfo(pre => ({ ...pre, name: e.target.value }))
   }
 
-  const handleSubmit = async (e) => {
-    editProject(projectInfo)
-    close(e);
-  }
-  if (!show) return (<></>);
-  return (
-    <Container>
-      <Text>{projectInfo?.id ? 'Edit' : 'New'} Project</Text>
-      <form onSubmit={handleSubmit}>
-        <input value={projectInfo.name} onChange={handleRename}></input>
-        <ProjectAccess projectInfoState={projectInfoState} name="ProjectAccess" />
-        <div>
-          <Button onClick={close}>Cancel</Button>
-          <Button type="submit">Submit</Button>
-        </div>
-      </form>
-      <div>
-        {projectInfo?.id && (
-          <DeleteButton>
-            <MdDelete />
-          </DeleteButton>)}
-      </div>
+    const handleSubmit = async (e) => {
+        await editProject(projectInfo)
+        close(e);
+    }
+    if (!show) return (<></>);
+    return (
+        <Container>
+            <Text>{projectInfo?.id ? 'Edit' : 'New'} Project</Text>
+            <form onSubmit={handleSubmit}>
+                <input value={projectInfo.name} onChange={handleRename}></input>
+                <ProjectAccess projectInfoState={projectInfoState} name="ProjectAccess"/>
+                <div>
+                    <Button onClick={close}>Cancel</Button>
+                    <Button type="submit">Submit</Button>
+                </div>
+            </form>
+            <div>
+                {projectInfo?.id && (
+                    <DeleteButton>
+                        <MdDelete/>
+                    </DeleteButton>)}
+            </div>
 
     </Container>
   )

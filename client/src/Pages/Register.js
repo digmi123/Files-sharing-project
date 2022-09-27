@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { users, ps } from "../API/ApiEndPonts";
+import {useNavigate} from "react-router-dom";
+import {users, ps} from "../API/ApiEndPoints";
 import ReCAPTCHA from "react-google-recaptcha";
 
 function Register() {

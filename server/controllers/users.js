@@ -19,27 +19,27 @@ module.exports.captcha = (req, res, next) => {
 }
 
 module.exports.getUserFromDB = async (req, res, next) => {
-  const { password, email } = req.body;
-  const sql = "SELECT id,email,hased_password FROM users WHERE email=(?)"
-  db.query(sql, [email], async (error, results) => {
-    if (error) {
-      serverLogger.error(error)
-      return res.status(500).send("An error occurred");
-    }
-    if (!results.length) return res.status(400).send("Email or Password is incorrect");
-    req.db = { user: results[0] };
-    next();
-  })
+    const {password, email} = req.body;
+    const sql = "SELECT id,email,hashed_password FROM users WHERE email=(?)"
+    db.query(sql, [email], async (error, results) => {
+        if (error) {
+            serverLogger.error(error)
+            return res.status(500).send("An error occurred");
+        }
+        if (!results.length) return res.status(400).send("Email or Password is incorrect");
+        req.db = {user: results[0]};
+        next();
+    })
 }
 
 module.exports.verifyPassword = async (req, res, next) => {
-  const { hased_password } = req.db.user;
-  const { password } = req.body;
-  const isPasswordValid = await bcrypt.compare(password, hased_password);
-  if (!isPasswordValid) {
-    return res.status(500).send("Email or Password is incorrect");
-  }
-  next()
+    const {hashed_password} = req.db.user;
+    const {password} = req.body;
+    const isPasswordValid = await bcrypt.compare(password, hashed_password);
+    if (!isPasswordValid) {
+        return res.status(500).send("Email or Password is incorrect");
+    }
+    next()
 }
 
 module.exports.sendToken = (req, res) => {
@@ -82,18 +82,18 @@ module.exports.hashPassword = async (req, res, next) => {
 }
 
 module.exports.insertNewUserIntoDB = async (req, res, next) => {
-  const { email, password } = req.body;
-  const sql = "INSERT INTO users (email, hased_password) VALUES (?,?)"
-  var query = db.query(sql, [email, password])
-  query.on("error", function (err) {
-    serverLogger.error(err)
-    res.status(500).send("There was an error updataing the DB");
-  });
-  query.on("result", function (result) {
-    req.db = { users: result };
-    serverLogger.info(`User id ${result.insertId} was created in the DB`)
-    return next();
-  });
+    const {email, password} = req.body;
+    const sql = "INSERT INTO users (email, hashed_password) VALUES (?,?)"
+    var query = db.query(sql, [email, password])
+    query.on("error", function (err) {
+        serverLogger.error(err)
+        res.status(500).send("There was an error updataing the DB");
+    });
+    query.on("result", function (result) {
+        req.db = {users: result};
+        serverLogger.info(`User id ${result.insertId} was created in the DB`)
+        return next();
+    });
 }
 
 module.exports.register = async (req, res) => {

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
 import ReCAPTCHA from "react-google-recaptcha";
-import { users } from "../API/ApiEndPonts";
+import {users} from "../API/ApiEndPoints";
 
 
 function Login() {

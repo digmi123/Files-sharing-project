@@ -9,11 +9,13 @@ function FileContextMenu({ position, fileInfo, functions, setContextMenu }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  useEffect(() => {
-    const handleClik = () => { setContextMenu({ show: false, x: 0, y: 0 }) }
-    window.addEventListener('click', handleClik)
-    return () => window.removeEventListener('click', handleClik)
-  }, [setContextMenu])
+    useEffect(() => {
+        const handleClick = () => {
+            setContextMenu({show: false, x: 0, y: 0})
+        }
+        window.addEventListener('click', handleClick)
+        return () => window.removeEventListener('click', handleClick)
+    }, [setContextMenu])
 
   const onDelete = async () => {
     await deleteData(fileInfo)

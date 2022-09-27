@@ -17,8 +17,8 @@ export const getIconByType = (fileType) => {
     case "image/jpeg":
       return AiOutlineFileJpg;
 
-    case "image/png":
-      return AiOutlineFileJpg;;
+        case "image/png":
+            return AiOutlineFileJpg;
 
     case "text/plain":
       return AiOutlineFileText;

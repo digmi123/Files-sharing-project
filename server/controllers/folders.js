@@ -43,7 +43,7 @@ module.exports.createFolder = async (req, res) => {
     const { insertId } = req.db;
     const { parentId } = req.body
     serverLogger.info(`folders id ${insertId} in ${parentId} was created in DB`);
-    res.status(200).send("Folder created successfuly");
+    res.status(200).send("Folder created successfully");
 }
 
 const createFileTree = (folderID) => {
@@ -121,7 +121,7 @@ module.exports.renameFolder = async (req, res) => {
         res.status(500).send("There was an error uploading files to db");
     })
     query.on("result", (result) => {
-        res.status(200).send("Name Update successfuly")
+        res.status(200).send("Name Update successfully")
     });
 }
 
@@ -134,7 +134,7 @@ module.exports.moveFolder = async (req, res) => {
         res.status(500).send("There was an error uploading files to db");
     })
     query.on("result", (result) => {
-        res.status(200).send("Location update successfuly")
+        res.status(200).send("Location update successfully")
     });
 }
 
@@ -153,10 +153,10 @@ const getAllSubFolders = async (folderIds) => {
 }
 
 
-module.exports.findSubfolders = async (req, res, next) => {
+module.exports.findSubFolders = async (req, res, next) => {
     try {
-        serverLogger.debug("findSubfolders")
-        const { folderID } = req.body
+        serverLogger.debug("findSubFolders")
+        const {folderID} = req.body
         req.folders = [folderID, ...await getAllSubFolders(folderID)]
         next()
     } catch (error) {
@@ -178,8 +178,8 @@ module.exports.findFolderFiles = (req, res, next) => {
     })
 }
 
-module.exports.removefoldersFromDB = (req, res) => {
-    serverLogger.debug("removefoldersFromDB")
+module.exports.removeFoldersFromDB = (req, res) => {
+    serverLogger.debug("removeFoldersFromDB")
     const IDs = req.folders
     const sql = "delete from folders where id in (?);"
 
@@ -188,6 +188,6 @@ module.exports.removefoldersFromDB = (req, res) => {
             serverLogger.error(err)
             return res.status(500).send("There was an error deleting folders the db");
         }
-        return res.status(200).send("folder has been deleted successfuly")
+        return res.status(200).send("folder has been successfully deleted")
     });
 }
