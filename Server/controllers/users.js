@@ -127,7 +127,7 @@ module.exports.checkIfEmailExist = (req, res, next) => {
     if (!results.length) {
       return res.status(200).send("Email sent if account exists");
     }
-    req.userID = res[0].id;
+    req.userID = results[0].id;
     next();
   });
 };

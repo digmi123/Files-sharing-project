@@ -12,14 +12,27 @@ const {
   verifyPasswordRequirements,
   insertNewUserIntoDB,
   sendVerificationEmail,
-  forgotPassword,
+  checkIfEmailExist,
+  createLink,
+  sendForgotPasswordEmail,
 } = require("../controllers/users");
 
-router.use(captcha)
-router.post("/register", verifyPasswordRequirements, emailNoExists, hashPassword, insertNewUserIntoDB, sendVerificationEmail, register);
+router.use(captcha);
+router.post(
+  "/register",
+  verifyPasswordRequirements,
+  emailNoExists,
+  hashPassword,
+  insertNewUserIntoDB,
+  sendVerificationEmail,
+  register
+);
 router.post("/login", getUserFromDB, verifyPassword, sendToken);
-router.post("/forgotPassword", forgotPassword);
-
-
+router.post(
+  "/forgotPassword",
+  checkIfEmailExist,
+  createLink,
+  sendForgotPasswordEmail
+);
 
 module.exports = router;

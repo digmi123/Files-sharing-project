@@ -10,13 +10,11 @@ require.extensions[".html"] = function (module, filename) {
 };
 
 const sendEmail = (email, emailType, parameters) => {
-
   var html = require(`./emails/${emailType}`);
 
-  for (let [key, val] of parameters){
-      html = html.replace(`@${key}`, val);
+  for (let [key, val] of Object.entries(parameters)) {
+    html = html.replace(`@${key}`, val);
   }
-  
   const transporter = nodemailer.createTransport("SMTP", {
     service: "gmail",
     auth: {
