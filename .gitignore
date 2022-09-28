@@ -25,12 +25,16 @@ yarn-error.log*
 #project files
 .env
 
-Server/filesData/*
+server/filesData/*
 
-!Server/filesData/.gitkeep
+!server/filesData/.gitkeep
 
 # exclude everything
-Server/logger/*
+server/logger/*
 
 # exception to the rule
-!Server/logger/.gitkeep
+!server/logger/.gitkeep
+
+*.log
+yarn.lock
+secrets.env

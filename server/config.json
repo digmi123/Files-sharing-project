@@ -1,0 +1,31 @@
+{
+  "password_requirements": {
+    "minLength": {
+      "require": true,
+      "regex": ".{8,}",
+      "errorMessage": "Password minimum length 8"
+    },
+    "containNumbers": {
+      "require": true,
+      "regex": "[0-9]",
+      "errorMessage": "Password must contain numbers"
+    },
+    "lowerCase": {
+      "require": true,
+      "regex": "[a-z]",
+      "errorMessage": "Password must contain lower case letters"
+    },
+    "upperCase": {
+      "require": true,
+      "regex": "[A-Z]",
+      "errorMessage": "Password must contain upper case letters"
+    },
+    "specialCharacter": {
+      "require": true,
+      "regex": "[$@$!%*#?&]",
+      "errorMessage": "Password must contain special character"
+    }
+  },
+  "history": 3,
+  "maximum attempts": 3
+}
