@@ -7,7 +7,7 @@ const fs = require('fs');
 module.exports.updateDB = (req, res, next) => {
     let sql = "INSERT INTO files (physical_path, folder, type, size, name) VALUES ?";
     const values = req.files.map((file) => {
-        return [file.encryptFileName, req.body.folder, file.mimetype, file.size, file.originalname,];
+        return [file.encryptFileName, req.body.folder, file.mimetype, file.size, file.originalname];
     });
 
     let query = db.query(sql, [values]);
@@ -18,11 +18,11 @@ module.exports.updateDB = (req, res, next) => {
                 if (error) {
                     serverLogger.error(err)
                 }
-                serverLogger.info(`Deleted ${file.encryptFileName} due to error`)
+                serverLogger.info(`Deleted ${file.encryptFileName} due to an error`)
             })
         });
         serverLogger.error(err)
-        res.status(500).send("There was an error uploading files to db");
+        res.status(500).send("There was an error uploading the files to the database");
     });
 
     query.on("result", function (result) {
@@ -33,7 +33,7 @@ module.exports.updateDB = (req, res, next) => {
 
 module.exports.EncryptFiles = (req, res, next) => {
     try {
-        req.files = req.files.map(function (file) {
+        req.files = req.files.map(file => {
             let f = new encrypt.FileEncrypt(file.path);
             f.openSourceFile();
             f.encrypt(env.ENCRYPTION_KEY);
@@ -49,10 +49,11 @@ module.exports.EncryptFiles = (req, res, next) => {
         res.status(500).send("Error")
     }
 }
-// End Point
-module.exports.uploadFiles = (req, res) => {
+
+// Endpoint
+module.exports.respondUpload = (req, res) => {
     const {insertId, affectedRows} = req.db;
-    serverLogger.info(`files id ${insertId}-${insertId + affectedRows - 1} updated to DB`);
+    serverLogger.info(`files id ${insertId}-${insertId + affectedRows - 1} uploaded to the DB`);
     res.send("files uploaded successfully")
 }
 

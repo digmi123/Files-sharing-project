@@ -5,7 +5,7 @@ const verifyToken = require("../auth");
 const {
     EncryptFiles,
     updateDB,
-    uploadFiles,
+    respondUpload,
     getFileData,
     DecryptFiles,
     sendFile,
@@ -17,7 +17,7 @@ const {
 } = require("../controllers/files");
 
 router.use(verifyToken)
-router.post("/upload", EncryptFiles, updateDB, uploadFiles)
+router.post("/upload", EncryptFiles, updateDB, respondUpload)
 router.post("/download", getFileData, DecryptFiles, sendFile, cleanUp)
 router.delete("/delete", getFileData, removeFromDB, deleteFile)
 router.post("/rename", renameFile)
