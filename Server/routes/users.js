@@ -15,6 +15,8 @@ const {
   checkIfEmailExist,
   createLink,
   sendForgotPasswordEmail,
+  validatePasswords,
+  changePassword,
 } = require("../controllers/users");
 
 router.use(captcha);
@@ -33,6 +35,12 @@ router.post(
   checkIfEmailExist,
   createLink,
   sendForgotPasswordEmail
+);
+
+router.post(
+  "/changePassword",
+  validatePasswords,
+  changePassword
 );
 
 module.exports = router;

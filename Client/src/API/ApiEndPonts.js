@@ -24,6 +24,7 @@ const users = {
   register: { method: "post", url: server + "/users/register" },
   login: { method: "post", url: server + "/users/login" },
   forgotPassword: { method: "post", url: server + "/users/forgotPassword" },
+  changePassword: { method: "post", url: server + "/users/changePassword" },
 };
 const projects = {
     getProjects: { method: 'get', url: server + "/projects/getProjects", headers },

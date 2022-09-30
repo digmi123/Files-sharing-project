@@ -135,11 +135,26 @@ module.exports.checkIfEmailExist = (req, res, next) => {
 module.exports.createLink = (req, res, next) => {
   const { userID } = req;
   const token = jwt.sign({ userID }, process.env.TOKEN_KEY);
-  req.link = `http//localhost:3000/passwordRecovery/${token}`;
+  req.link = `${process.env.CLIENT_ADDRESS}/passwordRecovery/${token}`;
   next();
 };
 
 module.exports.sendForgotPasswordEmail = (req, res, next) => {
-  const { email, link } = req;
+  const { link } = req;
+  const { email } = req.body;
   sendEmail(email, "forgotPassword", { link });
+};
+
+module.exports.validatePasswords = (req, res, next) => {
+  const { password, confirmPassword } = req.body;
+  console.log(password, confirmPassword);
+  if (password !== confirmPassword) {
+    return res.status(400).send("The passwords do not match");
+  }
+  next();
+};
+
+module.exports.changePassword = (req, res, next) => {
+  //logic to change password from db
+  console.log("Entered chnage password middleware");
 };

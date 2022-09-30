@@ -100,3 +100,9 @@ export const forgotPassword = async (data) => {
     .then((response) => console.log(response.data))
     .catch((error) => console.error(error.response.data));
 };
+
+export const changePassword = async (data) => {
+  axios({ ...users.changePassword, data })
+    .then((response) => console.log(response.data))
+    .catch((error) => console.error(error.response.data));
+};
