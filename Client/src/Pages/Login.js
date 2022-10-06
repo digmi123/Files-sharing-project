@@ -3,26 +3,26 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
 import ReCAPTCHA from "react-google-recaptcha";
-import {users} from "../API/ApiEndPonts";
+import { users } from "../API/ApiEndPonts";
 
 
 function Login() {
   const navigate = useNavigate();
   const recaptchaRef = React.useRef();
 
-  const handleSubmit = (e)=>{
+  const handleSubmit = (e) => {
     e.preventDefault()
     const data = new FormData(e.target)
     const recaptcha = recaptchaRef.current.execute();
     data.append("recaptcha", recaptcha)
-    axios({...users.login, data })
-  .then((response) => {
-    localStorage.setItem("access-token", response.data.token);
-    navigate("/projects")
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+    axios({ ...users.login, data })
+      .then((response) => {
+        localStorage.setItem("access-token", response.data.token);
+        navigate("/projects")
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   return (
@@ -31,16 +31,8 @@ function Login() {
         <Title>Login 🔒</Title>
         <LoginWrapper onSubmit={handleSubmit}>
           <Fields>
-            <Input
-              type="text"
-              name="email"
-              placeholder={"Email"}
-            />
-            <Input
-              type="password"
-              name="password"
-              placeholder={"Password"}
-            />
+            <Input type="text" name="email" placeholder={"Email"} />
+            <Input type="password" name="password" placeholder={"Password"} />
           </Fields>
           <ReCAPTCHA
             ref={recaptchaRef}
@@ -57,6 +49,7 @@ function Login() {
               Register
             </Button>
           </Buttons>
+          <LinkTest href="/forgotpass">Forgot password?</LinkTest>
         </LoginWrapper>
       </LoginContainer>
     </PageContainer>
@@ -89,6 +82,8 @@ const Title = styled.p`
   font-size: 1.5rem;
   font-weight: bold;
 `;
+
+const LinkTest = styled.link``;
 
 const LoginWrapper = styled.form`
   display: flex;

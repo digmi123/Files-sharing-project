@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import FilesArea from "./FilesArea";
-import {uploadFiles , updateFilesData} from "../API/ApiCalls"
-import {useSelector , useDispatch} from "react-redux"
+import { uploadFiles, updateFilesData } from "../API/ApiCalls";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -18,9 +18,9 @@ function FilesSection() {
   //had a warning cannot render a comp while ...
   //The solution on internet was to inser into useEffect the function were getting from props.
   //Were not getting function so just log fixed it need to think what to do :(  .
-  useEffect(()=>{
+  useEffect(() => {
     console.log(":fgdgdgdf");
-  }, [files])
+  }, [files]);
 
   //Methods:
   const changeHandler = (e) => {
@@ -54,11 +54,17 @@ function FilesSection() {
         </FilesSelectionContainer>
       </ActionsWrapper>
       {/* <hr width="100vw" /> */}
-        <FilesArea filesData={filesData} back={()=>{navigate("/projects")}} path="" setCurrentFolder={setCurrentFolder}/>
+      <FilesArea
+        filesData={filesData}
+        back={() => {
+          navigate("/projects");
+        }}
+        path=""
+        setCurrentFolder={setCurrentFolder}
+      />
     </Container>
   );
 }
-
 
 export default FilesSection;
 

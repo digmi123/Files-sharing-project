@@ -1,7 +1,7 @@
 var mysql = require("mysql2");
 const dotenv = require("dotenv");
 const express = require("express");
-const {serverLogger} = require ('./logger')
+const { serverLogger } = require('./logger')
 const app = express();
 const cors = require("cors");
 const cookies = require('cookie-parser')
@@ -13,6 +13,7 @@ const usersRoutes = require('./routes/users');
 const projectsRoutes = require("./routes/projects")
 const permissionsRoutes = require("./routes/permissions")
 const passwordRequirements = require("./routes/passwordRequirements");
+const { emailNoExists } = require("./controllers/users");
 
 dotenv.config()
 config = process.env;
@@ -28,7 +29,7 @@ app.use(cookies());
 app.use(express.json());
 app.use(upload.array('files'));
 
-app.get("/",(req, res)=>{res.send("server is up and running")})
+app.get("/", (req, res) => { res.send("server is up and running") })
 app.use("/passwordRequirements", passwordRequirements);
 app.use("/files", filesRoutes);
 app.use("/folders", foldersRoutes);

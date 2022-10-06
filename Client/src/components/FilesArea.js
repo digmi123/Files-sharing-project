@@ -51,6 +51,16 @@ function FilesArea({ filesData, back, path, setCurrentFolder }) {
       />
     );
 
+  if (folder.open)
+    return (
+      <FilesArea
+        filesData={filesData.contains.find((item) => item.id === folder.data)}
+        back={closeFolder}
+        path={path + filesData.name + "/"}
+        setCurrentFolder={setCurrentFolder}
+      />
+    );
+
   setCurrentFolder(filesData);
   return (
     <>

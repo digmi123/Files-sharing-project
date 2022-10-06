@@ -1,31 +1,31 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import {createFolder , updateFilesData} from "../API/ApiCalls"
-import {useDispatch} from "react-redux"
+import { createFolder, updateFilesData } from "../API/ApiCalls"
+import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom";
 
 
-function FilesSectionContextMenu({position , filesData , setContextMenu}){
+function FilesSectionContextMenu({ position, filesData, setContextMenu }) {
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-    useEffect(()=>{
-      const handleCloseContextMenu = ()=>{setContextMenu({show:false,x:0,y:0})}
-      window.addEventListener('click',handleCloseContextMenu)
-      return () => window.removeEventListener('click',handleCloseContextMenu)
-    },[setContextMenu])
+  useEffect(() => {
+    const handleCloseContextMenu = () => { setContextMenu({ show: false, x: 0, y: 0 }) }
+    window.addEventListener('click', handleCloseContextMenu)
+    return () => window.removeEventListener('click', handleCloseContextMenu)
+  }, [setContextMenu])
 
-    const onNewFolder = async () =>{
-        await createFolder(filesData)
-        dispatch(updateFilesData(navigate));
-    }
-    if(!position.show) return(<></>)
-    return(
-        <Container position={position}>
-            <Button onClick={onNewFolder}>New Folder</Button>
-        </Container>
-    )
+  const onNewFolder = async () => {
+    await createFolder(filesData)
+    dispatch(updateFilesData(navigate));
+  }
+  if (!position.show) return (<></>)
+  return (
+    <Container position={position}>
+      <Button onClick={onNewFolder}>New Folder</Button>
+    </Container>
+  )
 }
 
 const Container = styled.div`

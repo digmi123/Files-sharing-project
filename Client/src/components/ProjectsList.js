@@ -1,55 +1,59 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import {MdEdit} from 'react-icons/md';
+import { MdEdit } from 'react-icons/md';
 import { useNavigate } from "react-router-dom";
-import { getProjectsList } from "../API/ApiCalls"
+import { getProjectsList, createProject } from "../API/ApiCalls"
 import EditeProject from "./EditProject"
 
 
 function ProjectsList() {
-    const navigate = useNavigate()
-    const [list,setList] = useState([])
-    const EditProjectState = useState(false)
-    const [projectInfo,setProjectInfo] = useState(false);
-    const showEditeProject = (item) =>{
+    const navigate = useNavigate();
+    const [list, setList] = useState([]);
+    const EditProjectState = useState(false);
+    const setEditProject = EditProjectState[1];
+    const projectInfoState = useState(null);
+    const setProjectInfo = projectInfoState[1];
+
+    const showEditeProject = item => {
         setProjectInfo(item)
-        EditProjectState[1](true)
+        setEditProject(true)
     }
 
-    useEffect(()=>{
+    const updateProjectsList = () => {
         getProjectsList(setList)
-    },[])
+    }
 
-    const selectProject = (id) => {
-        localStorage.setItem("projectID",id)
+    useEffect(updateProjectsList, [])
+
+    const selectProject = id => {
+        localStorage.setItem("projectID", id)
         navigate("/");
     }
 
-    const newProject = () =>{
-        setProjectInfo(null)
-        EditProjectState[1](true)
+    const newProject = e => {
+        createProject(updateProjectsList)
     }
 
     return (
         <>
-        <Container>
-            <h2>ProjectsList</h2>
-            <ButtonsWrapper>
-                {list.map(item => (
-                    <div key={item.project_id}>
-                        <Button 
-                            onClick={() => selectProject(item.project_id)}
+            <Container>
+                <h2>ProjectsList</h2>
+                <ButtonsWrapper>
+                    {list.map(item => (
+                        <div key={item.id}>
+                            <Button
+                                onClick={() => selectProject(item.project_id)}
                             >{item.name}
-                        </Button>
-                        <Button onClick={()=>showEditeProject(item)}>
-                            <MdEdit/>
-                        </Button>
-                    </div>
-                ))}
-            </ButtonsWrapper>
-            <Button onClick={newProject}>New +</Button>
-        </Container>
-        <EditeProject info={projectInfo} EditProjectState={EditProjectState} />
+                            </Button>
+                            <Button onClick={() => showEditeProject(item)}>
+                                <MdEdit />
+                            </Button>
+                        </div>
+                    ))}
+                </ButtonsWrapper>
+                <Button onClick={newProject}>New +</Button>
+            </Container>
+            <EditeProject projectInfoState={projectInfoState} EditProjectState={EditProjectState} />
         </>
     );
 }

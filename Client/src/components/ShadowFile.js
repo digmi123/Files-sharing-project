@@ -1,28 +1,28 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import {getIconByType} from "../FilesIcons";
+import { getIconByType } from "../FilesIcons";
 import { IconContext } from "react-icons";
 
 function ShadowFile({ moveState }) {
 
-    const [info , setMove] = moveState;
-    const [mouseCoordinates,satMouseCoordinates] = useState({x:0,y:0})
+    const [info, setMove] = moveState;
+    const [mouseCoordinates, satMouseCoordinates] = useState({ x: 0, y: 0 })
 
-    useEffect(()=>{
-        const handleMouseMove = (e)=>{satMouseCoordinates({x:e.pageX,y:e.pageY})}
-        const handleMouseUp = (e)=>{setMove({show:false, source:null})}
-        window.addEventListener('mousemove',handleMouseMove)
-        window.addEventListener('mouseup',handleMouseUp)
+    useEffect(() => {
+        const handleMouseMove = (e) => { satMouseCoordinates({ x: e.pageX, y: e.pageY }) }
+        const handleMouseUp = (e) => { setMove({ show: false, source: null }) }
+        window.addEventListener('mousemove', handleMouseMove)
+        window.addEventListener('mouseup', handleMouseUp)
         return () => {
-            window.removeEventListener('mousemove',handleMouseMove)
-            window.removeEventListener('mouseup',handleMouseUp)
+            window.removeEventListener('mousemove', handleMouseMove)
+            window.removeEventListener('mouseup', handleMouseUp)
         }
-    },[setMove])
+    }, [setMove])
 
-    const {source} = info
+    const { source } = info
     const Image = getIconByType(source?.type)
 
-    if(!info.show) return(<></>)
+    if (!info.show) return (<></>)
     return (
         <FileInfo location={mouseCoordinates} >
             <IconContext.Provider value={{ color: "rgb(0,0,0,.5)", size: '50px' }}>
@@ -38,9 +38,9 @@ export default ShadowFile;
 const FileInfo = styled.div.attrs(props => ({
     style: {
         top: props.location.y,
-        left:props.location.x
+        left: props.location.x
     },
-  }))`
+}))`
     width: 100px;
     height: 100px;
     position: absolute;

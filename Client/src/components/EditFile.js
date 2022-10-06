@@ -1,30 +1,30 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { rename , updateFilesData} from "../API/ApiCalls";
-import {useDispatch} from "react-redux"
+import { rename, updateFilesData } from "../API/ApiCalls";
+import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom";
 
 
-function EditFile ({info , close}){
+function EditFile({ info, close }) {
   const dispatch = useDispatch()
-  const [name,setName] = useState()
+  const [name, setName] = useState()
   const navigate = useNavigate()
 
-  const handleSubmit = async (e)=>{
-      await rename(info,name);
-      dispatch(updateFilesData(navigate));
-      close();
+  const handleSubmit = async (e) => {
+    await rename(info, name);
+    dispatch(updateFilesData(navigate));
+    close();
   }
 
-  return(
-  <Container onContextMenu={(e)=>{e.stopPropagation()}}>
+  return (
+    <Container onContextMenu={(e) => { e.stopPropagation() }}>
       <Text>Rename</Text>
       <input defaultValue={info.name} onChange={(e) => setName(e.target.value)}></input>
       <div>
-          <Button onClick={close}>Cancel</Button>
-          <Button onClick={handleSubmit}>Submit</Button>        
+        <Button onClick={close}>Cancel</Button>
+        <Button onClick={handleSubmit}>Submit</Button>
       </div>
-  </Container>
+    </Container>
   )
 }
 

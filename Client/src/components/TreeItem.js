@@ -20,7 +20,7 @@ function TreeItem({ info }) {
 
   return (
     <Container>
-      {info.contains?.length  ? (
+      {info.contains?.length ? (
         <Arrow
           style={{ marginRight: "8px" }}
           onClick={HandleArrowToggle}

@@ -1,26 +1,26 @@
-import React, { useEffect } from "react";
-import Sidebar from "../components/Sidebar";
-import FilesSection from "../components/FilesSection";
+import React, { useEffect } from 'react'
+import Sidebar from '../components/Sidebar'
+import FilesSection from '../components/FilesSection'
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import { updateFilesData } from "../API/ApiCalls";
+import { useDispatch } from "react-redux"
+import { updateFilesData } from "../API/ApiCalls"
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 
 function Home() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   useEffect(() => {
-    dispatch(updateFilesData(navigate));
-  }, [dispatch, navigate]);
+    dispatch(updateFilesData(navigate))
+  }, [dispatch, navigate])
 
   return (
     <HomeContainer>
-      {/* folders bar on left */}
-      <Sidebar />
-      <Partition width="1" />
       {/* files section*/}
       <FilesSection />
+      <Partition width="1" />
+      {/* folders bar on left */}
+      <Sidebar />
     </HomeContainer>
   );
 }
