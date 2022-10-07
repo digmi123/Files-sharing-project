@@ -1,10 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { editProject } from "../API/ApiCalls";
 import { MdDelete } from "react-icons/md";
 import ProjectAccess from "./ProjectAccess";
 
-function EditProject({ projectInfoState, EditProjectState }) {
+function EditProject({
+  projectInfoState,
+  EditProjectState,
+  updateProjectsList,
+}) {
   const [projectInfo, setProjectInfo] = projectInfoState;
 
   const [show, setShow] = EditProjectState;
@@ -20,6 +24,7 @@ function EditProject({ projectInfoState, EditProjectState }) {
 
   const handleSubmit = async (e) => {
     editProject(projectInfo);
+    updateProjectsList();
     close(e);
   };
   if (!show) return <></>;
