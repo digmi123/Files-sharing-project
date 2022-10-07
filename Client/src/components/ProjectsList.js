@@ -40,7 +40,7 @@ function ProjectsList() {
         <ButtonsWrapper>
           {list.map((item) => (
             <div key={item.id}>
-              <Button onClick={() => selectProject(item.project_id)}>
+              <Button onClick={() => selectProject(item.projectID)}>
                 {item.name}
               </Button>
               <Button onClick={() => showEditeProject(item)}>

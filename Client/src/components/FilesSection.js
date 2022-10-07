@@ -14,17 +14,14 @@ function FilesSection() {
   const [currentFolder, setCurrentFolder] = useState([]);
   const hiddenFileInput = React.useRef(null);
   const navigate = useNavigate();
+  console.log(filesData);
 
   //had a warning cannot render a comp while ...
   //The solution on internet was to inser into useEffect the function were getting from props.
   //Were not getting function so just log fixed it need to think what to do :(  .
-  useEffect(() => {
-    console.log(":fgdgdgdf");
-  }, [files]);
 
   //Methods:
   const changeHandler = (e) => {
-    console.log("Im on the change handler of the hidden input.");
     setFiles([...files, ...Array.from(e.target.files)]);
   };
 

@@ -1,24 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   filesData: {
     id: null,
     type: "Folder",
     name: "root",
-    contains: []
-  }
-}
+    contains: [],
+  },
+};
 
 export const filesDataSlice = createSlice({
-  name: 'filesData',
+  name: "filesData",
   initialState,
   reducers: {
     update: (state, action) => {
-      state.filesData = action.payload
+      state.filesData = action.payload;
     },
   },
-})
+});
 
-
-export const { update, setProjectID } = filesDataSlice.actions
-export default filesDataSlice.reducer
+export const { update, setProjectID } = filesDataSlice.actions;
+export default filesDataSlice.reducer;
