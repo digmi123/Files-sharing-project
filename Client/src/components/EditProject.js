@@ -1,39 +1,37 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { editProject } from "../API/ApiCalls";
-import { MdDelete } from 'react-icons/md';
+import { MdDelete } from "react-icons/md";
 import ProjectAccess from "./ProjectAccess";
 
-
 function EditProject({ projectInfoState, EditProjectState }) {
-  const [projectInfo, setProjectInfo] = projectInfoState
-
-  useEffect(() => {
-    console.log(projectInfo?.id);
-  }, [projectInfo])
+  const [projectInfo, setProjectInfo] = projectInfoState;
 
   const [show, setShow] = EditProjectState;
 
-  const close = e => {
+  const close = (e) => {
     e.preventDefault();
     setShow(false);
-  }
+  };
 
-  const handleRename = e => {
-    setProjectInfo(pre => ({ ...pre, name: e.target.value }))
-  }
+  const handleRename = (e) => {
+    setProjectInfo((pre) => ({ ...pre, name: e.target.value }));
+  };
 
   const handleSubmit = async (e) => {
-    editProject(projectInfo)
+    editProject(projectInfo);
     close(e);
-  }
-  if (!show) return (<></>);
+  };
+  if (!show) return <></>;
   return (
     <Container>
-      <Text>{projectInfo?.id ? 'Edit' : 'New'} Project</Text>
+      <Text>{projectInfo?.id ? "Edit" : "New"} Project</Text>
       <form onSubmit={handleSubmit}>
         <input value={projectInfo.name} onChange={handleRename}></input>
-        <ProjectAccess projectInfoState={projectInfoState} name="ProjectAccess" />
+        <ProjectAccess
+          projectInfoState={projectInfoState}
+          name="ProjectAccess"
+        />
         <div>
           <Button onClick={close}>Cancel</Button>
           <Button type="submit">Submit</Button>
@@ -43,16 +41,16 @@ function EditProject({ projectInfoState, EditProjectState }) {
         {projectInfo?.id && (
           <DeleteButton>
             <MdDelete />
-          </DeleteButton>)}
+          </DeleteButton>
+        )}
       </div>
-
     </Container>
-  )
+  );
 }
 
 const Container = styled.div`
-  background-color:#ffffff;
-  border: 2px solid #5499C7;
+  background-color: #ffffff;
+  border: 2px solid #5499c7;
   border-radius: 5px;
   box-sizing: border-box;
   margin: 1em;
@@ -62,29 +60,29 @@ const Container = styled.div`
   left: 50%;
   margin-top: -50px;
   margin-left: -100px;
-  z-index:9;
+  z-index: 9;
 `;
 
 const Text = styled.p`
-    color: #5499C7;
-    font-size: larger;
-    font-weight: bold;
-    font-family: inherit;
-`
+  color: #5499c7;
+  font-size: larger;
+  font-weight: bold;
+  font-family: inherit;
+`;
 
 const Button = styled.button`
   font-size: 1em;
   margin: 1em;
   padding: 0.25em 0.5em;
-  border: 2px solid #5499C7;
+  border: 2px solid #5499c7;
   border-radius: 3px;
   background: white;
-  color: #5499C7;
+  color: #5499c7;
   &:hover {
-    background: #5499C7;
+    background: #5499c7;
     color: white;
   }
-`
+`;
 
 const DeleteButton = styled.button`
   font-size: 1em;
@@ -97,6 +95,7 @@ const DeleteButton = styled.button`
   &:hover {
     background: #ff0000;
     color: white;
-}`
+  }
+`;
 
 export default EditProject;
