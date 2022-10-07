@@ -1,29 +1,28 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"
+import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
 import { users } from "../API/ApiEndPonts";
-
 
 function Login() {
   const navigate = useNavigate();
   const recaptchaRef = React.useRef();
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    const data = new FormData(e.target)
+    e.preventDefault();
+    const data = new FormData(e.target);
     const recaptcha = recaptchaRef.current.execute();
-    data.append("recaptcha", recaptcha)
+    data.append("recaptcha", recaptcha);
     axios({ ...users.login, data })
       .then((response) => {
         localStorage.setItem("access-token", response.data.token);
-        navigate("/projects")
+        navigate("/projects");
       })
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   return (
     <PageContainer>
@@ -49,7 +48,7 @@ function Login() {
               Register
             </Button>
           </Buttons>
-          <LinkTest href="/forgotpass">Forgot password?</LinkTest>
+          <Link href="/forgotpass">Forgot password?</Link>
         </LoginWrapper>
       </LoginContainer>
     </PageContainer>
@@ -83,7 +82,7 @@ const Title = styled.p`
   font-weight: bold;
 `;
 
-const LinkTest = styled.link``;
+const Link = styled.a``;
 
 const LoginWrapper = styled.form`
   display: flex;
