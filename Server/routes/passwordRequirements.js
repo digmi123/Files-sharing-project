@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-const passwordRequirementsController = require("../controllers/passwordRequiremnetsController")
+const passwordRequirementsController = require("../controllers/passwordRequiremnetsController");
 
-router.get("/getPasswordRequirements", passwordRequirementsController.getPassRequirements);
+router.get(
+  "/getPasswordRequirements",
+  passwordRequirementsController.getPassRequirements
+);
 
 module.exports = router;

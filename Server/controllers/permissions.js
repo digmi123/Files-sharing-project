@@ -37,5 +37,11 @@ module.exports.removeAccess = (req, res, next) => {
 
 
 module.exports.confirmPermissions = permissions => (req, res, next) => {
-    sql = "SELECT * FROM `secure-collaboration`.permissions where name in (SELECT roll FROM access where user_id=3 and project_id=4)"
+    const { projectID } = req;
+    sql = "SELECT * FROM permissions where name in (SELECT roll FROM access where user_id=? and project_id=?)"
+    db.query(sql, [req.user.id, projectID], (error, results) => {
+        if (error) { serverLogger.error(error); return res.send(500, 'Internal Server Error'); }
+        if (results[0][permissions]) { return next(); }
+        res.status(400).send("Invalid access")
+    })
 }
