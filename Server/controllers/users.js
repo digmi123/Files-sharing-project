@@ -82,10 +82,12 @@ module.exports.emailNoExists = async (req, res, next) => {
 module.exports.sendVerificationEmail = async (req, res, next) => {
   try {
     const { email } = req.body;
-    sendEmail(email, "verification");
+    sendEmail(email, "emailVerification", {
+      link: "http://localhost:3000/login",
+    });
     next();
   } catch (error) {
-    //);
+    serverLogger.error(error);
     return res.status(500).send("An error occurred");
   }
 };

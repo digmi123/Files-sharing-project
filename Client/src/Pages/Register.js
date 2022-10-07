@@ -89,6 +89,7 @@ function Register() {
             />
 
             <Button
+              type="button"
               onClick={handleRequirements}
               style={{ marginBottom: "15px", fontSize: "13px", width: "70%" }}
             >

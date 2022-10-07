@@ -34,11 +34,17 @@ function FilesSection() {
     hiddenFileInput.current.click();
   };
 
+  const handleLogOut = (event) => {
+    localStorage.removeItem("access-token");
+    window.location.reload(false);
+  };
+
   return (
     <Container>
       <ActionsWrapper>
         {/* 3 Buttoons */}
         <FilesSelectionContainer>
+          <Button onClick={handleLogOut}>Log out</Button>
           <Button onClick={handleClick}>Upload a file</Button>
           <FilesInput
             type="file"

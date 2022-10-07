@@ -41,8 +41,6 @@ module.exports.giveAccess = (req, res, next) => {
 module.exports.rename = (req, res, next) => {
   const { name, projectID } = req.body;
   const sql = "UPDATE projects SET name = (?) WHERE id = (?);";
-  console.log(req.body);
-  console.log(db.format(sql, [name, projectID]));
   db.query(sql, [name, projectID], async (error, results) => {
     if (error) {
       serverLogger.error(error);
