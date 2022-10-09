@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
 import { users } from "../API/ApiEndPonts";
+import { getProjectsList } from "../API/ApiCalls";
 
 function Login() {
   const navigate = useNavigate();
   const recaptchaRef = React.useRef();
+
+  useEffect(() => {
+    getProjectsList(() => {
+      navigate("/projects");
+    });
+  }, [navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,7 +24,7 @@ function Login() {
     axios({ ...users.login, data })
       .then((response) => {
         localStorage.setItem("access-token", response.data.token);
-        navigate("/projects");
+        window.location.reload(false);
       })
       .catch((error) => {
         console.log(error);
